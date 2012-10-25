@@ -6,6 +6,7 @@ import org.javatalks.training.hibernate.entity.User;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /** @author stanislav bashkirtsev */
@@ -16,14 +17,26 @@ public class UserJdbcDao implements Crud<User> {
 
     @Override
     public void saveOrUpdate(User entity) throws SQLException {
-        try(Connection connection = dataSource.getConnection(); ){
-            PreparedStatement statement = connection.prepareStatement("");
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement("");
+             ResultSet rs = statement.getResultSet()) {
+
         }
     }
 
     @Override
-    public User get(long id) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public User get(long id) throws SQLException {
+        User user = null;
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement("select * from USERS where ID=?");
+             ResultSet rs = statement.executeQuery()) {
+            if(rs.next()){
+                user = new User();
+                user.setId(rs.getInt("ID"));
+                user.setUsername(rs.getString("USERNAME"));
+            }
+        }
+        return user;
     }
 
     @Override

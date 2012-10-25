@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public interface Crud<T> {
     void saveOrUpdate(T entity) throws SQLException;
 
-    T get(long id);
+    T get(long id) throws SQLException;
 
     void delete(T entity);
 }
