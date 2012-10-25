@@ -32,6 +32,7 @@ Also we'll take a look at Spring Tx & Spring Dao since that's a typical way of w
 - Hibernate
 
 **M2 Objects, their states and residence (2h)**
+
 *1. Object life cycle*
 
 - States of objects 
@@ -89,6 +90,9 @@ Also we'll take a look at Spring Tx & Spring Dao since that's a typical way of w
 - Web Services and other serialization
 
 **M8 Hibernate Validator (1h)**
+
 **M9 Annotations vs XML (2h)**
+
 **M10 Performance Optimization (1h)**
-**M11 Statistics & tools (1h) **
+
+**M11 Statistics & tools (1h)**
