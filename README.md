@@ -47,7 +47,7 @@ Also we'll take a look at Spring Tx & Spring Dao since that's a typical way of w
 - Query cache & how different queries impact it 
 - Distributed cache
 
-** M3 Object graphs (3-4h)**
+**M3 Object graphs (3-4h)**
 *Associations* 
 
 - OTO, MTO, OTM 
