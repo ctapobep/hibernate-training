@@ -48,6 +48,7 @@ Also we'll take a look at Spring Tx & Spring Dao since that's a typical way of w
 - Distributed cache
 
 **M3 Object graphs (3-4h)**
+
 *Associations* 
 
 - OTO, MTO, OTM 
@@ -65,6 +66,7 @@ Also we'll take a look at Spring Tx & Spring Dao since that's a typical way of w
 - Different strategies of ID generation
 
 **M4 Fetching & Collections (2h)**
+
 *Fetching*
 
 - Fetch strategies (select, join, sub-select) 
@@ -82,6 +84,7 @@ Also we'll take a look at Spring Tx & Spring Dao since that's a typical way of w
 - Caveats in Hibernate
 
 **M6 Locking (1.5h)**
+
 **M7 Hibernate Usage (3h)**
 
 - Hibernate & Transactions; Spring Tx & Spring DAO 
