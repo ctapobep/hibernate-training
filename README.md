@@ -1,8 +1,8 @@
 hibernate-training
 ==================
-M1 general overview of technologies (2-3h)
+**M1 general overview of technologies (4h)**
 
-**0. Course description**
+*0. Course description*
 
 During the course we're going to talk about Hibernate, but not only. Hibernate is an ORM tool that gives you an ability to develop your data access levels quickly, but it doesn't free you from knowing DBs. In fact in order to use Hibernate effectively you need to know databases pretty well. So besides Hibernate in scope of this training we'll also get acquainted with general database/JDBC theory:
 
