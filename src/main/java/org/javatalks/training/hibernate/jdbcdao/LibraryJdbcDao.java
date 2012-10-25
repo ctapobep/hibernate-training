@@ -19,7 +19,7 @@ public class LibraryJdbcDao implements Crud<Library> {
     @Override
     public void saveOrUpdate(Library entity) throws SQLException {
         try(Connection connection = dataSource.getConnection()){
-            connection.prepareStatement("update LIBRARY set NAME := name, ")
+            connection.prepareStatement("update LIBRARY set NAME := name, ");
         }
 
     }

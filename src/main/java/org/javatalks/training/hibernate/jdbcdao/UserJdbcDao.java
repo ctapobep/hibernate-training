@@ -18,9 +18,8 @@ public class UserJdbcDao implements Crud<User> {
     @Override
     public void saveOrUpdate(User entity) throws SQLException {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement("");
-             ResultSet rs = statement.getResultSet()) {
-
+             PreparedStatement statement = connection.prepareStatement("insert into USERS(username) values(?)")) {
+            statement.setString(1, entity.getUsername());
         }
     }
 
