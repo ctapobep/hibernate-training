@@ -15,74 +15,80 @@ During the course we're going to talk about Hibernate, but not only. Hibernate i
 - OO/Relational paradigms mismatch (associations and inheritance on the relational level) 
  
 Also we'll take a look at Spring Tx & Spring Dao since that's a typical way of working with Hibernate.
-1. Working with DB is hard, you should know a lot to work with it
 
-Understand and choose appropriate indexes 
-Transaction Isolation & propagation 
-DB & Concurrency (different types of locks) 
-A lot of ways to do the same thing 
-Caches
+*1. Working with DB is hard, you should know a lot to work with it*
 
-2. Difference between frameworks
+- Understand and choose appropriate indexes 
+- Transaction Isolation & propagation 
+- DB & Concurrency (different types of locks) 
+- A lot of ways to do the same thing 
+- Caches
 
-JDBC (need to explain what Prepared Statement is) 
-Spring JDBC 
-iBatis/MyBatis 
-Hibernate
-M2 Objects, their states and residence (2h)
-1. Object life cycle
+*2. Difference between frameworks*
 
-States of objects 
-Session/Persistent Context/Unit Of Work 
-Proxies & laziness 
-get/load/update/merge
+- JDBC (need to explain what Prepared Statement is) 
+- Spring JDBC 
+- iBatis/MyBatis 
+- Hibernate
 
-2. Caches
+**M2 Objects, their states and residence (2h)**
+*1. Object life cycle*
 
-Session level "cache" and how to write tests 
-Process level cache 
-Query cache & how different queries impact it 
-Distributed cache
-M3 Object graphs (3-4h)
-Associations 
+- States of objects 
+- Session/Persistent Context/Unit Of Work 
+- Proxies & laziness 
+- get/load/update/merge
 
-OTO, MTO, OTM 
-Bidirectionals 
-Cascades 
-Embedded objects 
-User Types 
-HQL & Criteria API; Pagination 
-Transformers, Views 
-Hierarchical structures and working with them (Materialized Path, Nested Sets)
+*2. Caches*
 
-Identities
+- Session level "cache" and how to write tests 
+- Process level cache 
+- Query cache & how different queries impact it 
+- Distributed cache
 
-Different types of generators 
-Different strategies of ID generation
-M4 Fetching & Collections (2h)
-Fetching
+** M3 Object graphs (3-4h)**
+*Associations* 
 
-Fetch strategies (select, join, sub-select) 
-Lazy options (true, false, extra, etc.)
+- OTO, MTO, OTM 
+- Bidirectionals 
+- Cascades 
+- Embedded objects 
+- User Types 
+- HQL & Criteria API; Pagination 
+- Transformers, Views 
+- Hierarchical structures and working with them (Materialized Path, Nested Sets)
 
-Collections
+*Identities*
 
-Lists, Sets, Bags, Maps
+- Different types of generators 
+- Different strategies of ID generation
 
-Getting Performance with fetch strategies & collections
-M5 Inheritance (1h)
+**M4 Fetching & Collections (2h)**
+*Fetching*
 
-Fowler Patterns & their implementation in Hibernate 
-Mixed patterns 
-Caveats in Hibernate
-M6 Locking (1.5h)
-M7 Hibernate Usage (3h)
+- Fetch strategies (select, join, sub-select) 
+- Lazy options (true, false, extra, etc.)
 
-Hibernate & Transactions; Spring Tx & Spring DAO 
-Open Session in View 
-Open Session per Conversation 
-Web Services and other serialization
-M8 Hibernate Validator (1h)
-M9 Annotations vs XML (2h)
-M10 Performance Optimization (1h)
-M11 Statistics & tools (1h) 
+*Collections*
+
+- Lists, Sets, Bags, Maps
+- Getting Performance with fetch strategies & collections
+
+**M5 Inheritance (2h)**
+
+- Fowler Patterns & their implementation in Hibernate 
+- Mixed patterns 
+- Caveats in Hibernate
+
+**M6 Locking (1.5h)**
+**M7 Hibernate Usage (3h)**
+
+- Hibernate & Transactions; Spring Tx & Spring DAO 
+- Open Session in View 
+- Open Session per Conversation 
+- Web Services and other serialization
+
+**M8 Hibernate Validator (1h)**
+**M9 Annotations vs XML (2h)**
+**M10 Performance Optimization (1h)**
+**M11 Statistics & tools (1h) **
