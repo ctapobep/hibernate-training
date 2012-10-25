@@ -21,8 +21,9 @@ Also we'll take a look at Spring Tx & Spring Dao since that's a typical way of w
 - Understand and choose appropriate indexes 
 - Transaction Isolation & propagation 
 - DB & Concurrency (different types of locks) 
-- A lot of ways to do the same thing 
 - Caches
+- Connection Pools
+- Error handling
 
 *2. Difference between frameworks*
 
