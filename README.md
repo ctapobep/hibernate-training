@@ -1,15 +1,18 @@
 hibernate-training
 ==================
 M1 general overview of technologies (2-3h)
-0. Course description
+
+**0. Course description**
+
 During the course we're going to talk about Hibernate, but not only. Hibernate is an ORM tool that gives you an ability to develop your data access levels quickly, but it doesn't free you from knowing DBs. In fact in order to use Hibernate effectively you need to know databases pretty well. So besides Hibernate in scope of this training we'll also get acquainted with general database/JDBC theory:
 
-Transaction isolation & propagation 
-Strategies of PK generation 
-Different types of statements & DB caching 
-Concurrent work with DBs (different types of locking) 
-Working with hierarchical data structures 
-OO/Relational paradigms mismatch (associations and inheritance on the relational level) 
+*Transaction isolation & propagation*
+
+- Strategies of PK generation 
+- Different types of statements & DB caching 
+- Concurrent work with DBs (different types of locking) 
+- Working with hierarchical data structures 
+- OO/Relational paradigms mismatch (associations and inheritance on the relational level) 
  
 Also we'll take a look at Spring Tx & Spring Dao since that's a typical way of working with Hibernate.
 1. Working with DB is hard, you should know a lot to work with it
