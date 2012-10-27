@@ -70,23 +70,36 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.6.1</version>
+      <version>1.6.6</version>
     </dependency>
+    <!--Spring for instances uses jcl, so we need this bridge to allow our logback configuration to be applied-->
     <dependency>
       <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>1.6.1</version>
+      <artifactId>jcl-over-slf4j</artifactId>
+      <version>1.6.6</version>
+    </dependency>
+    <!--C3P0 for instance uses log4j, so we need this bridge to allow our logback configuration to be applied-->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>log4j-over-slf4j</artifactId>
+      <version>1.6.6</version>
     </dependency>
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.12</version>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.0.7</version>
     </dependency>
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>apache-log4j-extras</artifactId>
-      <version>1.0</version>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+      <version>1.0.7</version>
     </dependency>
+    <dependency>
+      <groupId>com.mattbertolini</groupId>
+      <artifactId>liquibase-slf4j</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+
     <dependency>
       <groupId>org.hsqldb</groupId>
       <artifactId>hsqldb</artifactId>

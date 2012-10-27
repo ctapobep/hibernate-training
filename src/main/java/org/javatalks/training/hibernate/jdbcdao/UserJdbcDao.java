@@ -2,6 +2,8 @@ package org.javatalks.training.hibernate.jdbcdao;
 
 import org.javatalks.training.hibernate.Crud;
 import org.javatalks.training.hibernate.entity.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -17,6 +19,7 @@ public class UserJdbcDao implements Crud<User> {
 
     @Override
     public void saveOrUpdate(User entity) throws SQLException {
+        logger.info("Creating user with name [{}]", entity.getUsername());
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement("insert into USERS(username) values(?)")) {
             statement.setString(1, entity.getUsername());
@@ -25,6 +28,7 @@ public class UserJdbcDao implements Crud<User> {
 
     @Override
     public User get(long id) throws SQLException {
+        logger.info("Getting user with id [{}]", id);
         User user = null;
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement("select * from USERS where ID=?");
@@ -44,4 +48,5 @@ public class UserJdbcDao implements Crud<User> {
     }
 
     private final DataSource dataSource;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 }
