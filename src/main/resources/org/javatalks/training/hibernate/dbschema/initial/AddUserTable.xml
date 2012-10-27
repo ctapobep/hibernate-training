@@ -10,6 +10,7 @@
     <column name="id" type="bigint" autoIncrement="true">
         <constraints primaryKey="true" nullable="false"/>
       </column>
+      <!--Don't be too restrictive in size on DB level, it's hard to refactor database. Better to be restrictive on UI side-->
       <column name="username" type="varchar(255)">
         <constraints nullable="false"/>
       </column>

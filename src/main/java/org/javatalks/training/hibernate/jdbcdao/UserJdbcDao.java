@@ -16,21 +16,10 @@ public class UserJdbcDao implements Crud<User> {
 
     @Override
     public void saveOrUpdate(User entity) throws SQLException {
-        logger.info("Creating user with name [{}]", entity.getUsername());
-        try (Connection connection = dataSource.getConnection();
-             //Note that Statement.RETURN_GENERATED_KEYS is DB dependent
-             PreparedStatement statement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, entity.getUsername());
-            int affectedRows = statement.executeUpdate();
-            if (affectedRows == 0) {
-                throw new SQLException("Creating user failed, no rows affected.");
-            }
-            ResultSet generatedKeys = statement.getGeneratedKeys();//result set will be closed when statement is closed
-            if (generatedKeys.next()) {
-                entity.setId(generatedKeys.getLong(1));
-            } else {
-                throw new SQLException("Creating user failed, no generated key obtained.");
-            }
+        if(entity.getId() == null){
+            insert(entity);
+        } else{
+            update(entity);
         }
     }
 
@@ -38,8 +27,10 @@ public class UserJdbcDao implements Crud<User> {
     public User get(long id) throws SQLException {
         User user = null;
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement("select * from users where id=?");
-             ResultSet rs = statement.executeQuery()) {
+             PreparedStatement statement = connection.prepareStatement(SELECT)) {
+            statement.setLong(1, id);
+            statement.executeQuery();
+            ResultSet rs = statement.executeQuery();
             if(rs.next()){
                 user = new User();
                 user.setId(rs.getLong("id"));
@@ -49,16 +40,56 @@ public class UserJdbcDao implements Crud<User> {
         return user;
     }
 
+
+    private void insert(User user) throws SQLException {
+        logger.info("Creating user with name [{}]", user.getUsername());
+        try (Connection connection = dataSource.getConnection();
+             //Note that Statement.RETURN_GENERATED_KEYS is DB dependent
+             PreparedStatement statement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, user.getUsername());
+            int affectedRows = statement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Creating user failed, no rows affected.");
+            }
+            ResultSet generatedKeys = statement.getGeneratedKeys();//result set will be closed when statement is closed
+            if (generatedKeys.next()) {
+                user.setId(generatedKeys.getLong(1));
+            } else {
+                throw new SQLException("Creating user failed, no generated key obtained.");
+            }
+        }
+    }
+
+    private void update(User user) throws SQLException {
+        logger.info("Updating user [{}]", user.getUsername());
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE)) {
+            statement.setString(1, user.getUsername());
+            statement.setLong(2, user.getId());
+            int affectedRows = statement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Updating user failed, no rows affected.");
+            }
+        }
+    }
+
     @Override
     public void delete(User entity) throws SQLException {
         logger.info("Deleting user [{}]", entity.getUsername());
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement("delete from users where id=?")) {
-            statement.setString(1, entity.getUsername());
+             PreparedStatement statement = connection.prepareStatement(DELETE)) {
+            statement.setLong(1, entity.getId());
+            int affectedRows = statement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Deleting user failed, no rows affected.");
+            }
         }
     }
 
     private final DataSource dataSource;
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private static final String INSERT = "insert into users(username) values(?)";
+    private static final String UPDATE = "update users set username = ? where id = ?";
+    private static final String DELETE = "delete from users where id = ?";
+    private static final String SELECT = "select * from users where id = ?";
 }
