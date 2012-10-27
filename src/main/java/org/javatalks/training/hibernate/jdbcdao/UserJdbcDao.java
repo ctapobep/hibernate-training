@@ -18,7 +18,8 @@ public class UserJdbcDao implements Crud<User> {
     public void saveOrUpdate(User entity) throws SQLException {
         logger.info("Creating user with name [{}]", entity.getUsername());
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement("insert into users(username) values(?)", Statement.RETURN_GENERATED_KEYS)) {
+             //Note that Statement.RETURN_GENERATED_KEYS is DB dependent
+             PreparedStatement statement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, entity.getUsername());
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
@@ -59,4 +60,5 @@ public class UserJdbcDao implements Crud<User> {
 
     private final DataSource dataSource;
     private final Logger logger = LoggerFactory.getLogger(getClass());
+    private static final String INSERT = "insert into users(username) values(?)";
 }
