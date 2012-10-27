@@ -19,6 +19,7 @@ class UserJdbcDaoTest {
     void testSaveOrUpdate() {
         User user = new User(username: "Diadia Fiodor");
         sut.saveOrUpdate(user)
+        assert user.id != null
     }
 
     @Test

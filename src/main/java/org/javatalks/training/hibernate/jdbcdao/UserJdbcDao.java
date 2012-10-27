@@ -21,30 +21,34 @@ public class UserJdbcDao implements Crud<User> {
     public void saveOrUpdate(User entity) throws SQLException {
         logger.info("Creating user with name [{}]", entity.getUsername());
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement("insert into USERS(username) values(?)")) {
+             PreparedStatement statement = connection.prepareStatement("insert into users(username) values(?)")) {
             statement.setString(1, entity.getUsername());
+            statement.executeUpdate();
         }
     }
 
     @Override
     public User get(long id) throws SQLException {
-        logger.info("Getting user with id [{}]", id);
         User user = null;
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement("select * from USERS where ID=?");
+             PreparedStatement statement = connection.prepareStatement("select * from users where id=?");
              ResultSet rs = statement.executeQuery()) {
             if(rs.next()){
                 user = new User();
-                user.setId(rs.getInt("ID"));
-                user.setUsername(rs.getString("USERNAME"));
+                user.setId(rs.getLong("id"));
+                user.setUsername(rs.getString("username"));
             }
         }
         return user;
     }
 
     @Override
-    public void delete(User entity) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void delete(User entity) throws SQLException {
+        logger.info("Deleting user [{}]", entity.getUsername());
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement("delete from users where id=?")) {
+            statement.setString(1, entity.getUsername());
+        }
     }
 
     private final DataSource dataSource;

@@ -12,5 +12,5 @@ public interface Crud<T> {
 
     T get(long id) throws SQLException;
 
-    void delete(T entity);
+    void delete(T entity) throws SQLException;
 }

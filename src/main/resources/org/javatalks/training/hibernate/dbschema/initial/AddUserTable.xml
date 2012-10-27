@@ -5,8 +5,9 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
   <changeSet id="AddUsersTable" author="ctapobep">
-    <createTable tableName="user">
-      <column name="id" type="bigint">
+    <!--It's cool when you can name tables as you wish, but in MySQL 'user' word is reserved, so falling back to plural-->
+    <createTable tableName="users">
+    <column name="id" type="bigint" autoIncrement="true">
         <constraints primaryKey="true" nullable="false"/>
       </column>
       <column name="username" type="varchar(255)">
