@@ -6,10 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /** @author stanislav bashkirtsev */
 public class UserJdbcDao implements Crud<User> {
@@ -21,9 +18,18 @@ public class UserJdbcDao implements Crud<User> {
     public void saveOrUpdate(User entity) throws SQLException {
         logger.info("Creating user with name [{}]", entity.getUsername());
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement("insert into users(username) values(?)")) {
+             PreparedStatement statement = connection.prepareStatement("insert into users(username) values(?)", Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, entity.getUsername());
-            statement.executeUpdate();
+            int affectedRows = statement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Creating user failed, no rows affected.");
+            }
+            ResultSet generatedKeys = statement.getGeneratedKeys();//result set will be closed when statement is closed
+            if (generatedKeys.next()) {
+                entity.setId(generatedKeys.getLong(1));
+            } else {
+                throw new SQLException("Creating user failed, no generated key obtained.");
+            }
         }
     }
 
