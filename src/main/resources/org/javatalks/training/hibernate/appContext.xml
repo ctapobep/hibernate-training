@@ -32,6 +32,7 @@
 
   <bean id="libraryJdbcDao" class="org.javatalks.training.hibernate.jdbcdao.LibraryJdbcDao">
     <constructor-arg ref="dataSource"/>
+    <constructor-arg ref="userJdbcDao"/>
   </bean>
   <bean id="userJdbcDao" class="org.javatalks.training.hibernate.jdbcdao.UserJdbcDao">
     <constructor-arg ref="dataSource"/>
