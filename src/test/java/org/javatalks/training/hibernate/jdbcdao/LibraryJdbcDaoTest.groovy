@@ -1,6 +1,6 @@
 package org.javatalks.training.hibernate.jdbcdao
 
-import org.javatalks.training.hibernate.entity.User
+import org.javatalks.training.hibernate.entity.Library
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional
 import java.sql.SQLException
 
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals
-
 /**
  * @author stanislav bashkirtsev
  */
@@ -20,52 +19,52 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
 @ContextConfiguration("/org/javatalks/training/hibernate/appContext.xml")
 @TransactionConfiguration
 @Transactional
-class UserJdbcDaoTest {
-
+class LibraryJdbcDaoTest {
     @Test
     void saveOrUpdateShouldInsert() {
-        User user = new User(username: "Alice from Wonderland");
-        sut.saveOrUpdate(user)
-        assertReflectionEquals(user, sut.get(user.id))
+        Library lib = new Library(name: "The National Ukrainian Library (NUL)")
+        sut.saveOrUpdate(lib)
+        assertReflectionEquals(lib, sut.get(lib.id))
     }
 
     @Test
     void getShouldReturnFullObject() {
-        User expected = givenSavedUser()
-        User actual = sut.get(expected.id)
+        Library expected = givenSavedLibrary()
+        Library actual = sut.get(expected.id)
         assertReflectionEquals(expected, actual)
     }
 
     @Test
     void deleteShouldNotLeaveRecordsInDb() {
-        User user = givenSavedUser()
-        sut.delete(user)
-        assert sut.get(user.id) == null
+        Library lib = givenSavedLibrary()
+        sut.delete(lib)
+        assert sut.get(lib.id) == null
     }
 
     @Test
     void updateShouldChangeAllColumns() throws Exception {
-        User alreadySaved = givenSavedUser()
-        alreadySaved.username = "I'm a scat man!"
+        Library alreadySaved = givenSavedLibrary()
+        alreadySaved.name = "The Comics Library for Retarded Children (CLRC)"
         sut.saveOrUpdate(alreadySaved)
         assertReflectionEquals(alreadySaved, sut.get(alreadySaved.id));
     }
 
     @Test(expected = SQLException.class)
     public void updateShouldThrowIfIdIsWrong() throws Exception {
-        User alreadySaved = givenSavedUser()
-        alreadySaved.username = "I'm a scat man!"
+        Library alreadySaved = givenSavedLibrary()
+        alreadySaved.name = "The Comics Library for Retarded Children (CLRC)"
         alreadySaved.id = -1L
         sut.saveOrUpdate(alreadySaved)
         assertReflectionEquals(alreadySaved, sut.get(alreadySaved.id));
     }
 
-    User givenSavedUser() {
-        User user = new User(username: "Kot Matthew Rosskin")
-        sut.saveOrUpdate(user)
-        return user
+
+    Library givenSavedLibrary() {
+        Library lib = new Library(name: "The National Ukrainian Library (NUL)")
+        sut.saveOrUpdate(lib)
+        return lib
     }
 
     @Autowired
-    private UserJdbcDao sut;
+    private LibraryJdbcDao sut;
 }

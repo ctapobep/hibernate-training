@@ -1,7 +1,5 @@
 package org.javatalks.training.hibernate;
 
-import org.javatalks.training.hibernate.entity.User;
-
 import java.sql.SQLException;
 
 /**

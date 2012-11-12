@@ -10,15 +10,18 @@ import javax.sql.DataSource;
 import java.sql.*;
 
 /**
- * This should demonstrate how to work with pure JDBC in order to compare it with Hibernate and other approaches. But we
- * don't actually want to create connections on our own and can use Spring Transaction support to help us, because this
- * is actually what doesn't change regardless whether we're using ORM or JDBC.
- *
+ * Note issues that pure JDBC brings with it:
+ * <ul>
+ *     <li>All exceptions are {@link SQLException}, there is no hierarchy we can rely on to distinguish between problems
+ *     that occurred. Also this exception is checked, we don't want this for 100% cases since it makes API ugly.</li>
+ *     <li>The code is DB dependant, take a look at {@link #insert(User)}</li>
+ *     <li>The code is pretty complicated because we need to work with {@link ResultSet} directly</li>
+ * </ul>
+ * For other issues of JDBC see {@link LibraryJdbcDao}.
  * @author stanislav bashkirtsev
  */
 public class UserJdbcDao implements Crud<User> {
     /**
-     *
      * @param dataSource we need this in order to get a connection created by Spring, see {@link #getConnection()} if
      *                   you need details
      */
@@ -28,9 +31,9 @@ public class UserJdbcDao implements Crud<User> {
 
     @Override
     public void saveOrUpdate(User entity) throws SQLException {
-        if(entity.getId() == null){
+        if (entity.getId() == null) {
             insert(entity);
-        } else{
+        } else {
             update(entity);
         }
     }
@@ -42,7 +45,7 @@ public class UserJdbcDao implements Crud<User> {
             statement.setLong(1, id);
             statement.executeQuery();
             ResultSet rs = statement.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 user = new User();
                 user.setId(rs.getLong("id"));
                 user.setUsername(rs.getString("username"));

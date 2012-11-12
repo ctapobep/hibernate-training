@@ -2,15 +2,15 @@ package org.javatalks.training.hibernate.entity;
 
 /** @author stanislav bashkirtsev */
 public class Library {
-    private String id;
+    private Long id;
     private String name;
     private User owner;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

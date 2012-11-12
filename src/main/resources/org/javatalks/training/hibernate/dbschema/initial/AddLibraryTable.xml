@@ -6,7 +6,7 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
   <changeSet id="AddLibraryTable" author="ctapobep">
     <createTable tableName="library">
-      <column name="id" type="bigint">
+      <column name="id" type="bigint" autoIncrement="true">
         <constraints primaryKey="true" nullable="false"/>
       </column>
       <column name="name" type="varchar(255)">
