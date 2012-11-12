@@ -6,6 +6,8 @@ import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
+import org.springframework.test.context.transaction.TransactionConfiguration
+import org.springframework.transaction.annotation.Transactional
 
 import java.sql.SQLException
 
@@ -15,7 +17,10 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/org/javatalks/training/hibernate/appContext.xml")
+@TransactionConfiguration
+@Transactional
 class UserJdbcDaoTest {
+
     @Test
     void saveOrUpdateShouldInsert() {
         User user = new User(username: "Alice from Wonderland");
@@ -24,6 +29,7 @@ class UserJdbcDaoTest {
     }
 
     @Test
+    @Transactional(readOnly = true)
     void getShouldReturnFullObject() {
         User expected = givenSavedUser()
         User actual = sut.get(expected.id)
@@ -38,7 +44,7 @@ class UserJdbcDaoTest {
     }
 
     @Test
-    public void updateShouldChangeAllColumns() throws Exception {
+    void updateShouldChangeAllColumns() throws Exception {
         User alreadySaved = givenSavedUser()
         alreadySaved.username = "I'm a scat man!"
         sut.saveOrUpdate(alreadySaved)
