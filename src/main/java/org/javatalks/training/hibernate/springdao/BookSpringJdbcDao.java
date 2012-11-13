@@ -78,7 +78,7 @@ public class BookSpringJdbcDao implements Crud<Book> {
      * will have a {@link org.javatalks.training.hibernate.springdao.util.LazySet} written by us specially for this
      * case, so that we don't select the whole database. <p/>
      * It's not cool to work with such methods, but this shows that without using a real ORM tool, we can't do real OOP.
-     * This makes us to use {@code Long authorId} instead of {@code User author}.
+     * This makes us using {@code Long authorId} instead of {@code User author}.
      *
      * @param id the book id to be fetched
      * @return the book with Author being initialized, note that only primitive properties are initialized
