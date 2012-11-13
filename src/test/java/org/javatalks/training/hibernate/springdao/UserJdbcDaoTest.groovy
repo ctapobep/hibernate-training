@@ -1,9 +1,11 @@
-package org.javatalks.training.hibernate.jdbcdao
+package org.javatalks.training.hibernate.springdao
 
 import org.javatalks.training.hibernate.entity.User
+import org.javatalks.training.hibernate.jdbcdao.UserJdbcDao
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.context.transaction.TransactionConfiguration
@@ -51,7 +53,7 @@ class UserJdbcDaoTest {
         assertReflectionEquals(alreadySaved, sut.get(alreadySaved.id));
     }
 
-    @Test(expected = SQLException.class)
+    @Test(expected = DataIntegrityViolationException.class)
     public void updateShouldThrowIfIdIsWrong() throws Exception {
         User alreadySaved = givenSavedUser()
         alreadySaved.username = "I'm a scat man!"
@@ -67,5 +69,5 @@ class UserJdbcDaoTest {
     }
 
     @Autowired
-    private UserJdbcDao sut;
+    private UserSpringJdbcDao sut;
 }

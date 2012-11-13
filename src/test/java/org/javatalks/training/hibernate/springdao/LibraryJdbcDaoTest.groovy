@@ -1,7 +1,8 @@
-package org.javatalks.training.hibernate.jdbcdao
+package org.javatalks.training.hibernate.springdao
 
 import org.javatalks.training.hibernate.entity.Library
 import org.javatalks.training.hibernate.entity.User
+import org.javatalks.training.hibernate.jdbcdao.LibraryJdbcDao
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired

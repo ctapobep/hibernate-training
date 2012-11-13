@@ -29,15 +29,14 @@
     <property name="dataSource" ref="dataSource"/>
     <property name="validateExistingTransaction" value="true"/>
   </bean>
-
-  <bean id="libraryJdbcDao" class="org.javatalks.training.hibernate.jdbcdao.LibraryJdbcDao">
-    <constructor-arg ref="dataSource"/>
-    <constructor-arg ref="userJdbcDao"/>
-  </bean>
-  <bean id="userJdbcDao" class="org.javatalks.training.hibernate.jdbcdao.UserJdbcDao">
-    <constructor-arg ref="dataSource"/>
+  <bean id="userDao" class="org.javatalks.training.hibernate.springdao.UserSpringJdbcDao">
+    <constructor-arg index="0" ref="jdbcTemplate"/>
   </bean>
 
+
+  <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+    <constructor-arg index="0" ref="dataSource"/>
+  </bean>
   <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
     <property name="dataSource" ref="dataSource"/>
     <property name="changeLog" value="classpath:/org/javatalks/training/hibernate/dbschema/IncludeAllDbMigrations.xml"/>
