@@ -8,6 +8,10 @@ import java.util.Set;
 public class User {
     private Long id;
     private String username;
+    /**
+     * Author is the main side of the association, so it's responsible for managing relationship. Main side has to
+     * ensure that book has its author. See {@link Book} for more details on this decision.
+     */
     private Set<Book> books;
 
     public Long getId() {
@@ -28,6 +32,18 @@ public class User {
 
     public Set<Book> getBooks() {
         return books;
+    }
+
+    /**
+     * This is a method for pervert guys, but we need it. Only DAO has to use this method because while fetching objects
+     * from DB, DAO may decide not to load a full User, but leave some its fields not initialized. If we were just
+     * creating and setting an empty collection here, users of the API would not distinguish between 'the collection is
+     * really empty' and 'collection is not initialized during the fetch' cases.
+     *
+     * @param books the collection that may or may not be initialized during the fetching from DB
+     */
+    public void setBooksByDao(Set<Book> books) {
+        this.books = books;
     }
 
     public void setBooks(Collection<Book> books) {

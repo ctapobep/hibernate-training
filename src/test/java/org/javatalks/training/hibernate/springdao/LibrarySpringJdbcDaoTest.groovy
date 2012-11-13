@@ -19,7 +19,7 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
 @ContextConfiguration("/org/javatalks/training/hibernate/appContext.xml")
 @TransactionConfiguration
 @Transactional
-class LibraryJdbcDaoTest {
+class LibrarySpringJdbcDaoTest {
     @Test
     void saveOrUpdateShouldInsert() {
         Library lib = new Library(name: "The Empty Library of Extincted (ELE)")

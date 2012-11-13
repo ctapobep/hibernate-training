@@ -37,6 +37,9 @@
     <constructor-arg index="0" ref="userDao"/>
     <constructor-arg index="1" ref="jdbcTemplate"/>
   </bean>
+  <bean id="springDao" class="org.javatalks.training.hibernate.springdao.BookSpringJdbcDao">
+    <constructor-arg index="0" ref="jdbcTemplate"/>
+  </bean>
 
 
   <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">

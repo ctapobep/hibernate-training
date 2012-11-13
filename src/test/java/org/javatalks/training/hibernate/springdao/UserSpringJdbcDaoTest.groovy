@@ -18,7 +18,7 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
 @ContextConfiguration("/org/javatalks/training/hibernate/appContext.xml")
 @TransactionConfiguration
 @Transactional
-class UserJdbcDaoTest {
+class UserSpringJdbcDaoTest {
 
     @Test
     void saveOrUpdateShouldInsert() {
