@@ -29,8 +29,13 @@
     <property name="dataSource" ref="dataSource"/>
     <property name="validateExistingTransaction" value="true"/>
   </bean>
+
   <bean id="userDao" class="org.javatalks.training.hibernate.springdao.UserSpringJdbcDao">
     <constructor-arg index="0" ref="jdbcTemplate"/>
+  </bean>
+  <bean id="libraryDao" class="org.javatalks.training.hibernate.springdao.LibrarySpringJdbcDao">
+    <constructor-arg index="0" ref="userDao"/>
+    <constructor-arg index="1" ref="jdbcTemplate"/>
   </bean>
 
 

@@ -10,4 +10,5 @@ appender("consoleAppender", ConsoleAppender) {
 }
 
 logger("org.springframework", WARN)
+logger("liquibase", WARN)
 root(INFO, ["consoleAppender"])

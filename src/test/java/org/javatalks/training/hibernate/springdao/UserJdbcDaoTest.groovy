@@ -1,7 +1,6 @@
 package org.javatalks.training.hibernate.springdao
 
 import org.javatalks.training.hibernate.entity.User
-import org.javatalks.training.hibernate.jdbcdao.UserJdbcDao
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,10 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.context.transaction.TransactionConfiguration
 import org.springframework.transaction.annotation.Transactional
 
-import java.sql.SQLException
-
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals
-
 /**
  * @author stanislav bashkirtsev
  */

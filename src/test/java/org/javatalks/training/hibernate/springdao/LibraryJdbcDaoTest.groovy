@@ -2,10 +2,10 @@ package org.javatalks.training.hibernate.springdao
 
 import org.javatalks.training.hibernate.entity.Library
 import org.javatalks.training.hibernate.entity.User
-import org.javatalks.training.hibernate.jdbcdao.LibraryJdbcDao
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.context.transaction.TransactionConfiguration
@@ -66,13 +66,12 @@ class LibraryJdbcDaoTest {
         assertReflectionEquals(alreadySaved, sut.get(alreadySaved.id));
     }
 
-    @Test(expected = SQLException.class)
+    @Test(expected = DataIntegrityViolationException.class)
     public void updateShouldThrowIfIdIsWrong() throws Exception {
         Library alreadySaved = givenSavedLibrary()
         alreadySaved.name = "The Comics Library for Retarded Children (CLRC)"
         alreadySaved.id = -1L
         sut.saveOrUpdate(alreadySaved)
-        assertReflectionEquals(alreadySaved, sut.get(alreadySaved.id));
     }
 
 
@@ -90,5 +89,5 @@ class LibraryJdbcDaoTest {
     }
 
     @Autowired
-    private LibraryJdbcDao sut;
+    private LibrarySpringJdbcDao sut;
 }

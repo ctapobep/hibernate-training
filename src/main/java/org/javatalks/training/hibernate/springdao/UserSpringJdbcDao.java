@@ -49,7 +49,7 @@ public class UserSpringJdbcDao implements Crud<User> {
 
     @Override
     public User get(long id) {
-        List<User> users = jdbcTemplate.query(SELECT, new Object[]{id}, USER_ROW_MAPPER);
+        List<User> users = jdbcTemplate.query(SELECT, new Object[]{id}, RowMappers.userRowMapper());
         return users.isEmpty() ? null : users.get(0);
     }
 
@@ -65,7 +65,6 @@ public class UserSpringJdbcDao implements Crud<User> {
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    private static final UserRowMapper USER_ROW_MAPPER = new UserRowMapper();
     private static final String UPDATE = "update users set username = ? where id = ?";
     private static final String DELETE = "delete from users where id = ?";
     private static final String SELECT = "select * from users where id = ?";
