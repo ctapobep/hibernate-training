@@ -74,10 +74,11 @@ public class BookSpringJdbcDao implements Crud<Book> {
 
     /**
      * Well, here we go with crappy methods that don't ever finish. This method looks through the result set and
-     * constructs the Author of the book from it. Note, that the Author will contain only the book that was returned by
-     * this method so that we don't select the whole database. <p/> It's not cool to work with such methods, but this
-     * shows that without using a real ORM tool, we can't do real OOP. This makes us to use {@code Long authorId}
-     * instead of {@code User author}.
+     * constructs the Author of the book from it. Note, that the Author will not contain  books collection, but rather
+     * will have a {@link org.javatalks.training.hibernate.springdao.util.LazySet} written by us specially for this
+     * case, so that we don't select the whole database. <p/>
+     * It's not cool to work with such methods, but this shows that without using a real ORM tool, we can't do real OOP.
+     * This makes us to use {@code Long authorId} instead of {@code User author}.
      *
      * @param id the book id to be fetched
      * @return the book with Author being initialized, note that only primitive properties are initialized
