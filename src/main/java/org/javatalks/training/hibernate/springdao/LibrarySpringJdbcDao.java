@@ -23,16 +23,7 @@ public class LibrarySpringJdbcDao implements Crud<Library> {
         insertTemplate.setGeneratedKeyName("id");
     }
 
-    @Override
-    public void saveOrUpdate(Library entity) {
-        if (entity.getId() == null) {
-            insert(entity);
-        } else {
-            update(entity);
-        }
-    }
-
-    private void insert(Library library) {
+    public void insert(Library library) {
         logger.info("Creating library with name [{}]", library.getName());
         cascadeSaveOrUpdateToOwner(library.getOwner());
         Map<String, Object> insertArgs = new HashMap<>();
@@ -42,7 +33,7 @@ public class LibrarySpringJdbcDao implements Crud<Library> {
         library.setId((Long) libraryId);
     }
 
-    private void update(Library library) {
+    public void update(Library library) {
         logger.info("Updating library [{}]", library.getName());
         cascadeSaveOrUpdateToOwner(library.getOwner());
         int affectedRows = jdbcTemplate.update(UPDATE, library.getName(), library.getOwnerId(), library.getId());

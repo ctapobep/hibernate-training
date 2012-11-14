@@ -23,7 +23,6 @@ public class UserSpringJdbcDao implements Crud<User> {
         jdbcInsert.setGeneratedKeyName("id");
     }
 
-    @Override
     public void saveOrUpdate(User entity) {
         if (entity.getId() == null) {
             insert(entity);
@@ -33,7 +32,7 @@ public class UserSpringJdbcDao implements Crud<User> {
         cascadeSaveOrUpdateToBooks(entity.getBooks());
     }
 
-    private void update(User entity) {
+    public void update(User entity) {
         logger.info("Updating user [{}]", entity.getUsername());
         int affectedRows = jdbcTemplate.update(UPDATE, entity.getUsername(), entity.getId());
         if (affectedRows == 0) {
@@ -41,7 +40,7 @@ public class UserSpringJdbcDao implements Crud<User> {
         }
     }
 
-    private void insert(User entity) {
+    public void insert(User entity) {
         logger.info("Creating user with name [{}]", entity.getUsername());
         Map<String, Object> valuesToInsert = new HashMap<>();
         valuesToInsert.put("username", entity.getUsername());

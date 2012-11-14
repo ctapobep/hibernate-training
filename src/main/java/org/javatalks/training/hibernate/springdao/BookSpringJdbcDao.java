@@ -23,7 +23,6 @@ public class BookSpringJdbcDao implements Crud<Book> {
         jdbcInsert.setGeneratedKeyName("id");
     }
 
-    @Override
     public void saveOrUpdate(Book entity) {
         throwIfConstraintsViolated(entity);
         if (entity.getId() == null) {
@@ -33,7 +32,7 @@ public class BookSpringJdbcDao implements Crud<Book> {
         }
     }
 
-    private void insert(Book entity) {
+    public void insert(Book entity) {
         logger.info("Creating book with title [{}]", entity.getTitle());
         Map<String, Object> valuesToInsert = new HashMap<>();
         valuesToInsert.put("title", entity.getTitle());
@@ -42,7 +41,7 @@ public class BookSpringJdbcDao implements Crud<Book> {
         entity.setId((Long) bookId);
     }
 
-    private void update(Book entity) {
+    public void update(Book entity) {
         logger.info("Updating book [{}]", entity.getTitle());
         int affectedRows = jdbc.update(UPDATE, entity.getTitle(), entity.getAuthorId(), entity.getId());
         if (affectedRows == 0) {

@@ -6,7 +6,9 @@ package org.javatalks.training.hibernate;
  * @author stanislav bashkirtsev
  */
 public interface Crud<T> {
-    void saveOrUpdate(T entity);
+    void insert(T entity);
+
+    void update(T entity);
 
     T get(long id);
 

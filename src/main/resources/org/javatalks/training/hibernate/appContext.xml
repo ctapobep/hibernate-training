@@ -29,6 +29,19 @@
     <property name="dataSource" ref="dataSource"/>
     <property name="validateExistingTransaction" value="true"/>
   </bean>
+  <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <property name="dataSource" ref="dataSource"/>
+    <property name="typeAliasesPackage" value="org.javatalks.training.hibernate.entity"/>
+    <property name="mapperLocations">
+      <array>
+        <value>/org/javatalks/training/hibernate/mybatisdao/mapper/Book.Mybatis.xml</value>
+      </array>
+    </property>
+  </bean>
+  <bean id="bookMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    <property name="mapperInterface" value="org.javatalks.training.hibernate.mybatisdao.mapper.BookMapper" />
+    <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+  </bean>
 
   <bean id="userDao" class="org.javatalks.training.hibernate.springdao.UserSpringJdbcDao">
     <constructor-arg index="0" ref="jdbcTemplate"/>
