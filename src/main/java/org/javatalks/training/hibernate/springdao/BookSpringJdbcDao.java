@@ -85,7 +85,7 @@ public class BookSpringJdbcDao implements Crud<Book> {
      * @return the book with Author being initialized, note that only primitive properties are initialized
      */
     public Book getWithAuthor(long id) {
-        List<Book> books = jdbcTemplate.query(SELECT_WITH_AUTHOR, new Object[]{id}, RowMappers.bookRowMapper());
+        List<Book> books = jdbcTemplate.query(SELECT_WITH_AUTHOR, new Object[]{id}, RowMappers.bookWithAuthorRowMapper());
         return books.isEmpty() ? null : books.get(0);
     }
 
@@ -95,13 +95,6 @@ public class BookSpringJdbcDao implements Crud<Book> {
     private static final String UPDATE = "update book set title = ?, author_id = ? where id = ?";
     private static final String DELETE = "delete from book where id = ?";
     private static final String SELECT = "select * from book as book where book.id = ?";
-    /**
-     * Eh, JDBC doesn't return columns with prefixes if we simply use {@code select *} which means author.id and book.id
-     * would be returned as id and id. So we have to specified those prefixes manually and thus to iterate through all
-     * the columns.
-     */
-    private static final String SELECT_WITH_AUTHOR =
-            "select book.id `book.id`, book.title `book.title`, " +
-                    "author.id `author.id`, author.username `author.username` " +
-                    "from book as book left join users as author on book.author_id = author.id where book.id = ?";
+    private static final String SELECT_WITH_AUTHOR = "select book.id, book.title, author.id, author.username " +
+            "from book as book left join users as author on book.author_id = author.id where book.id = ?";
 }

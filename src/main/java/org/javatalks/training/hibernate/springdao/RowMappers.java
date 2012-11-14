@@ -7,7 +7,6 @@ import org.javatalks.training.hibernate.springdao.util.LazySet;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 /** @author stanislav bashkirtsev */
@@ -22,6 +21,10 @@ class RowMappers {
 
     public static BookRowMapper bookRowMapper() {
         return new BookRowMapper();
+    }
+
+    public static BookWithAuthorRowMapper bookWithAuthorRowMapper() {
+        return new BookWithAuthorRowMapper();
     }
 
     private static class UserRowMapper implements RowMapper<User> {
@@ -58,33 +61,22 @@ class RowMappers {
             Book book = new Book();
             book.setId(rs.getLong(1));
             book.setTitle(rs.getString(2));
-            if (containsColumn(rs, "author.username")) {
-                User user = new User();
-                user.setId(rs.getLong(3));
-                user.setUsername(rs.getString(4));
-                user.setBooksByDao(new LazySet<Book>(user, "books"));
-                book.setAuthor(user);
-            }
             return book;
         }
     }
 
-    /**
-     * This is not efficient because for each record we'll iterate through its columns, so ideally we would want to have
-     * result set with strictly defined columns, but for the same of simplicity and less duplication, it will work for
-     * us.
-     */
-    private static boolean containsColumn(ResultSet rs, String columnToFind) throws SQLException {
-        ResultSetMetaData rsMetaData = rs.getMetaData();
-        int numberOfColumns = rsMetaData.getColumnCount();
-        // get the column names; column indexes start from 1
-        for (int i = 1; i < numberOfColumns + 1; i++) {
-            String columnName = rsMetaData.getColumnLabel(i);
-            // Get the name of the column's table name
-            if (columnToFind.equals(columnName)) {
-                return true;
-            }
+    private static class BookWithAuthorRowMapper implements RowMapper<Book> {
+        @Override
+        public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Book book = new Book();
+            book.setId(rs.getLong(1));
+            book.setTitle(rs.getString(2));
+            User user = new User();
+            user.setId(rs.getLong(3));
+            user.setUsername(rs.getString(4));
+            user.setBooksByDao(new LazySet<Book>(user, "books"));
+            book.setAuthor(user);
+            return book;
         }
-        return false;
     }
 }
