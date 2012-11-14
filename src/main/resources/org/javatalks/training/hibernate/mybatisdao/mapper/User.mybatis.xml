@@ -25,10 +25,10 @@
   <resultMap id="userResult" type="user">
     <id property="id" column="id"/>
     <result property="username" column="username"/>
-    <!--<association property="author" javaType="author">-->
-    <!--<id property="id" column="id"/>-->
-    <!--<result property="username" column="username"/>-->
-    <!--<collection property="userss"-->
+    <!--<association property="author" resultMap="author">-->
+      <!--<id property="id" column="id"/>-->
+      <!--<result property="username" column="username"/>-->
+      <!--<collection property="userss"-->
     <!--</association>-->
   </resultMap>
 </mapper>

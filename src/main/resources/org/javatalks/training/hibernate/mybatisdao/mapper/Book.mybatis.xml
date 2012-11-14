@@ -25,10 +25,6 @@
   <resultMap id="bookResult" type="book">
     <id property="id" column="id" />
     <result property="title" column="title"/>
-    <!--<association property="author" javaType="author">-->
-      <!--<id property="id" column="id"/>-->
-      <!--<result property="username" column="username"/>-->
-      <!--<collection property="books"-->
-    <!--</association>-->
+    <association property="author" javaType="user" select="org.javatalks.training.hibernate.mybatisdao.mapper.UserMapper.get" column="author_id"/>
   </resultMap>
 </mapper>

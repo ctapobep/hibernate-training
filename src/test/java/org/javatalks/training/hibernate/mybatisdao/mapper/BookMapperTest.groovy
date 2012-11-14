@@ -1,6 +1,7 @@
 package org.javatalks.training.hibernate.mybatisdao.mapper
 
 import org.javatalks.training.hibernate.entity.Book
+import org.javatalks.training.hibernate.entity.User
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,13 +17,23 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/org/javatalks/training/hibernate/appContext.xml")
-@TransactionConfiguration
+@TransactionConfiguration(defaultRollback = false)
 @Transactional
 class BookMapperTest {
     @Test
     void "insert() should store and get() should return stored Book"() {
         Book expected = givenBookSaved()
-        assertReflectionEquals(sut.get(expected.id), expected)
+        assert expected.id != null
+        assertReflectionEquals(expected, sut.get(expected.id))
+    }
+
+    @Test
+    void "get should return stored Book with author"() {
+        User author = givenSavedUser()
+        Book expected = givenBookSaved()
+        expected.author = author
+        sut.insert(expected)
+        assertReflectionEquals(expected, sut.get(expected.id))
     }
 
     @Test
@@ -46,6 +57,14 @@ class BookMapperTest {
         return book
     }
 
+    private User givenSavedUser(){
+        User user = new User(username: "username")
+        userMapper.insert(user)
+        return user
+    }
+
     @Autowired
     private BookMapper sut;
+    @Autowired
+    private UserMapper userMapper;
 }

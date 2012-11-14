@@ -21,6 +21,7 @@ class UserMapperTest {
     @Test
     void "insert() should store and get() should return stored User"() {
         User expected = givenUserSaved()
+        assert expected.id != null
         assertReflectionEquals(sut.get(expected.id), expected)
     }
 
