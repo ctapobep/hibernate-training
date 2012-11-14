@@ -17,10 +17,6 @@
       <column name="author_id" type="bigint">
         <constraints foreignKeyName="book_author_fk" references="users(id)"/>
       </column>
-      <!--one to many, not mandatory since there can be a book not registered in any library-->
-      <column name="library_id" type="bigint">
-        <constraints foreignKeyName="book_library_fk" references="library(id)"/>
-      </column>
     </createTable>
   </changeSet>
 </databaseChangeLog>

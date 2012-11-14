@@ -1,5 +1,6 @@
 package org.javatalks.training.hibernate.springdao
 
+import org.javatalks.training.hibernate.entity.Book
 import org.javatalks.training.hibernate.entity.User
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -24,14 +25,14 @@ class UserSpringJdbcDaoTest {
     void saveOrUpdateShouldInsert() {
         User user = new User(username: "Alice from Wonderland");
         sut.saveOrUpdate(user)
-        assertReflectionEquals(user, sut.get(user.id))
+        assertUsersEqualIgnoringAssociations(user, sut.get(user.id))
     }
 
     @Test
-    void getShouldReturnFullObject() {
+    void "get() should fetch all private fields"() {
         User expected = givenSavedUser()
         User actual = sut.get(expected.id)
-        assertReflectionEquals(expected, actual)
+        assertUsersEqualIgnoringAssociations actual, expected
     }
 
     @Test
@@ -42,11 +43,43 @@ class UserSpringJdbcDaoTest {
     }
 
     @Test
-    void updateShouldChangeAllColumns() throws Exception {
+    void "saveOrUpdate() should update all the columns. With no books"() throws Exception {
         User alreadySaved = givenSavedUser()
         alreadySaved.username = "I'm a scat man!"
         sut.saveOrUpdate(alreadySaved)
-        assertReflectionEquals(alreadySaved, sut.get(alreadySaved.id));
+
+        assertUsersEqualIgnoringAssociations alreadySaved, sut.get(alreadySaved.id)
+    }
+
+    @Test
+    void "save should update authors of books"() {
+        Book book = givenSavedBook()
+        User user = givenSavedUser("Plagiarist")
+        user.addBook(book)
+        sut.saveOrUpdate(user)
+
+        assert bookDao.getWithAuthor(book.id).authorId == user.id
+    }
+
+    @Test
+    void "update of users should insert new books"() {
+        User user = givenSavedUser("Poor Author")
+        user.addBook(new Book(title: "About Poor People"))
+        user.addBook(new Book(title: "Poor People against Rich Conquerors"))
+        sut.saveOrUpdate(user)
+
+        assert bookDao.ofAuthor(user).containsAll(user.getBooks())
+    }
+
+    @Test
+    void "getWithBooks() should return User with books"() {
+        User user = new User(
+                username: "user",
+                books: [new Book(title: "1"), new Book(title: "2")]
+        )
+        sut.saveOrUpdate(user)
+
+        assertReflectionEquals(sut.getWithBooks(user.getId()), user)
     }
 
     @Test(expected = DataIntegrityViolationException.class)
@@ -58,12 +91,31 @@ class UserSpringJdbcDaoTest {
         assertReflectionEquals(alreadySaved, sut.get(alreadySaved.id));
     }
 
-    User givenSavedUser() {
+    private User givenSavedUser() {
         User user = new User(username: "Kot Matthew Rosskin")
         sut.saveOrUpdate(user)
         return user
     }
 
+    private User givenSavedUser(String username) {
+        User user = new User(username: username)
+        sut.saveOrUpdate(user)
+        return user
+    }
+
+    private Book givenSavedBook() {
+        Book book = new Book(title: "Generation P", author: givenSavedUser("Pelevin"))
+        bookDao.saveOrUpdate(book)
+        return book
+    }
+
+    private void assertUsersEqualIgnoringAssociations(User actual, User expected) {
+        actual.setBooksByDao(expected.books)
+        assertReflectionEquals(expected, actual)
+    }
+
     @Autowired
     private UserSpringJdbcDao sut;
+    @Autowired
+    private BookSpringJdbcDao bookDao;
 }

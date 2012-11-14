@@ -1,5 +1,6 @@
 package org.javatalks.training.hibernate.springdao;
 
+import org.javatalks.training.hibernate.Crud;
 import org.javatalks.training.hibernate.entity.Book;
 import org.javatalks.training.hibernate.entity.Library;
 import org.javatalks.training.hibernate.entity.User;
@@ -11,34 +12,35 @@ import java.sql.SQLException;
 
 /** @author stanislav bashkirtsev */
 class RowMappers {
-    public static UserRowMapper userRowMapper() {
-        return new UserRowMapper();
+    public static UserMapper userMapper() {
+        return new UserMapper();
     }
 
-    public static LibraryRowMapper libraryRowMapper(UserSpringJdbcDao userSpringJdbcDao) {
-        return new LibraryRowMapper(userSpringJdbcDao);
+    public static LibraryMapper libraryMapper(UserSpringJdbcDao userSpringJdbcDao) {
+        return new LibraryMapper(userSpringJdbcDao);
     }
 
-    public static BookRowMapper bookRowMapper() {
-        return new BookRowMapper();
+    public static BookMapper bookMapper() {
+        return new BookMapper();
     }
 
-    public static BookWithAuthorRowMapper bookWithAuthorRowMapper() {
-        return new BookWithAuthorRowMapper();
+    public static BookWithAuthorMapper bookWithAuthorMapper() {
+        return new BookWithAuthorMapper();
     }
 
-    private static class UserRowMapper implements RowMapper<User> {
+    private static class UserMapper implements RowMapper<User> {
         @Override
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
             User user = new User();
             user.setId(rs.getLong("id"));
             user.setUsername(rs.getString("username"));
+            user.setBooksByDao(new LazySet<Book>(user, "books"));
             return user;
         }
     }
 
-    private static class LibraryRowMapper implements RowMapper<Library> {
-        private LibraryRowMapper(UserSpringJdbcDao userDao) {
+    private static class LibraryMapper implements RowMapper<Library> {
+        private LibraryMapper(UserSpringJdbcDao userDao) {
             this.userDao = userDao;
         }
 
@@ -55,7 +57,7 @@ class RowMappers {
         private final UserSpringJdbcDao userDao;
     }
 
-    private static class BookRowMapper implements RowMapper<Book> {
+    private static class BookMapper implements RowMapper<Book> {
         @Override
         public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
             Book book = new Book();
@@ -65,7 +67,7 @@ class RowMappers {
         }
     }
 
-    private static class BookWithAuthorRowMapper implements RowMapper<Book> {
+    private static class BookWithAuthorMapper implements RowMapper<Book> {
         @Override
         public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
             Book book = new Book();

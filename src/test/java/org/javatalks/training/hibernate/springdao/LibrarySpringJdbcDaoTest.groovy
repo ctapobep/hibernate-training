@@ -28,18 +28,20 @@ class LibrarySpringJdbcDaoTest {
     }
 
     @Test
-    void saveOrUpdateShouldInsert_withOwner() {
+    void "saveOrUpdate() should insert. With Owner"() {
         User owner = new User(username: "Mr. Nobody")
         Library lib = new Library(name: "The National Ukrainian Library (NUL)", owner: owner)
         sut.saveOrUpdate(lib)
-        assertReflectionEquals(lib, sut.get(lib.id))
+
+        Library actual = sut.get(lib.id)
+        assertAllFieldsEqual(actual, lib)
     }
 
     @Test
-    void getShouldReturnFullObject_WithOwner() {
+    void "get() should return full object"() {
         Library expected = givenSavedLibraryWithOwner()
         Library actual = sut.get(expected.id)
-        assertReflectionEquals(expected, actual)
+        assertAllFieldsEqual(actual, expected)
     }
 
     @Test
@@ -72,18 +74,23 @@ class LibrarySpringJdbcDaoTest {
         sut.saveOrUpdate(alreadySaved)
     }
 
-
     Library givenSavedLibrary() {
         Library lib = new Library(name: "The National Ukrainian Library (NUL)")
         sut.saveOrUpdate(lib)
         return lib
     }
 
+
     Library givenSavedLibraryWithOwner() {
         User owner = new User(username: "Ashurbanipal")
         Library lib = new Library(name: "The Plain Old Assyrian Library (POAL)", owner: owner)
         sut.saveOrUpdate(lib)
         return lib
+    }
+
+    private void assertAllFieldsEqual(Library actual, Library expected) {
+        actual.owner.setBooksByDao(expected.owner.books)//we shouldn't care about User#books because it's lazy
+        assertReflectionEquals(expected, actual)
     }
 
     @Autowired

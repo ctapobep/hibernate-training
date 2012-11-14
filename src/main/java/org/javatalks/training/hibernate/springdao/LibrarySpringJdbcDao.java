@@ -54,7 +54,7 @@ public class LibrarySpringJdbcDao implements Crud<Library> {
 
     @Override
     public Library get(long id) {
-        List<Library> libs = jdbcTemplate.query(SELECT, new Object[]{id}, RowMappers.libraryRowMapper(userDao));
+        List<Library> libs = jdbcTemplate.query(SELECT, new Object[]{id}, RowMappers.libraryMapper(userDao));
         return libs.isEmpty() ? null : libs.get(0);
     }
 

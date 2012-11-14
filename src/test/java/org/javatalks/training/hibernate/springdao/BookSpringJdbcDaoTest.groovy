@@ -19,7 +19,7 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/org/javatalks/training/hibernate/appContext.xml")
-@TransactionConfiguration(defaultRollback = false)
+@TransactionConfiguration
 @Transactional
 class BookSpringJdbcDaoTest {
     @Test
@@ -69,6 +69,29 @@ class BookSpringJdbcDaoTest {
     }
 
     @Test
+    void "ofAuthor() should fetch books"() {
+        User user = new User(username: "Guy with a good fantasy")
+        user.addBook(new Book(title: "Final Fantasy1"))
+        user.addBook(new Book(title: "Final Fantasy2"))
+        user.addBook(new Book(title: "Final Fantasy3"))
+        userDao.saveOrUpdate(user)
+
+        List<Book> actualBooks = sut.ofAuthor(user)
+        assert actualBooks.containsAll(user.books)
+        assert user.books.containsAll(actualBooks)
+    }
+
+    @Test
+    void "ofAuthor() should return books with passed author"() {
+        User user = new User(username: "Guy with a good fantasy")
+        user.addBook(new Book(title: "Final Fantasy1"))
+        userDao.saveOrUpdate(user)
+
+        List<Book> actualBooks = sut.ofAuthor(user)
+        assert actualBooks.each {it.author == user}
+    }
+
+    @Test
     void "delete should not cascade to Author"() {
         Book lib = givenSavedBook()
         sut.delete(lib)
@@ -95,9 +118,9 @@ class BookSpringJdbcDaoTest {
     }
 
     private Book givenSavedBook() {
-        Book lib = new Book(title: "The National Ukrainian Book (NUL)", author: givenSavedUser("Lev Tolstoy"))
-        sut.saveOrUpdate(lib)
-        return lib
+        Book book = new Book(title: "The National Ukrainian Book (NUL)", author: givenSavedUser("Lev Tolstoy"))
+        sut.saveOrUpdate(book)
+        return book
     }
 
     private User givenSavedUser(String username) {

@@ -2,6 +2,7 @@ package org.javatalks.training.hibernate.springdao;
 
 import org.javatalks.training.hibernate.Crud;
 import org.javatalks.training.hibernate.entity.Book;
+import org.javatalks.training.hibernate.entity.User;
 import org.javatalks.training.hibernate.springdao.util.WrongCascadeDirectionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,7 @@ import java.util.Map;
 /** @author stanislav bashkirtsev */
 public class BookSpringJdbcDao implements Crud<Book> {
     public BookSpringJdbcDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+        this.jdbc = jdbcTemplate;
         this.jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.setTableName("book");
         jdbcInsert.setGeneratedKeyName("id");
@@ -43,7 +44,7 @@ public class BookSpringJdbcDao implements Crud<Book> {
 
     private void update(Book entity) {
         logger.info("Updating book [{}]", entity.getTitle());
-        int affectedRows = jdbcTemplate.update(UPDATE, entity.getTitle(), entity.getAuthorId(), entity.getId());
+        int affectedRows = jdbc.update(UPDATE, entity.getTitle(), entity.getAuthorId(), entity.getId());
         if (affectedRows == 0) {
             throw new DataIntegrityViolationException("Updating book failed, no rows affected.");
         }
@@ -59,14 +60,22 @@ public class BookSpringJdbcDao implements Crud<Book> {
 
     @Override
     public Book get(long id) {
-        List<Book> books = jdbcTemplate.query(SELECT, new Object[]{id}, RowMappers.bookRowMapper());
+        List<Book> books = jdbc.query(SELECT, new Object[]{id}, RowMappers.bookMapper());
         return books.isEmpty() ? null : books.get(0);
+    }
+
+    public List<Book> ofAuthor(User user){
+        List<Book> books = jdbc.query(SELECT_BOOKS_OF_AUTHOR, new Object[]{user.getId()}, RowMappers.bookMapper());
+        for(Book book: books){
+            book.setAuthor(user);
+        }
+        return books;
     }
 
     @Override
     public void delete(Book entity) {
         logger.info("Deleting book [{}]", entity.getTitle());
-        int affectedRows = jdbcTemplate.update(DELETE, entity.getId());
+        int affectedRows = jdbc.update(DELETE, entity.getId());
         if (affectedRows == 0) {
             throw new DataIntegrityViolationException("Deleting book failed, no rows affected.");
         }
@@ -85,16 +94,17 @@ public class BookSpringJdbcDao implements Crud<Book> {
      * @return the book with Author being initialized, note that only primitive properties are initialized
      */
     public Book getWithAuthor(long id) {
-        List<Book> books = jdbcTemplate.query(SELECT_WITH_AUTHOR, new Object[]{id}, RowMappers.bookWithAuthorRowMapper());
+        List<Book> books = jdbc.query(SELECT_WITH_AUTHOR, new Object[]{id}, RowMappers.bookWithAuthorMapper());
         return books.isEmpty() ? null : books.get(0);
     }
 
-    private final JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbc;
     private final SimpleJdbcInsert jdbcInsert;
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private static final String UPDATE = "update book set title = ?, author_id = ? where id = ?";
     private static final String DELETE = "delete from book where id = ?";
     private static final String SELECT = "select * from book as book where book.id = ?";
+    private static final String SELECT_BOOKS_OF_AUTHOR = "select * from book where book.author_id=?";
     private static final String SELECT_WITH_AUTHOR = "select book.id, book.title, author.id, author.username " +
             "from book as book left join users as author on book.author_id = author.id where book.id = ?";
 }

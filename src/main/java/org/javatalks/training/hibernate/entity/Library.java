@@ -1,13 +1,10 @@
 package org.javatalks.training.hibernate.entity;
 
-import java.util.Set;
-
 /** @author stanislav bashkirtsev */
 public class Library {
     private Long id;
     private String name;
     private User owner;
-    private Set<Book> books;
 
     public Long getId() {
         return id;
@@ -31,14 +28,6 @@ public class Library {
 
     public void setOwner(User owner) {
         this.owner = owner;
-    }
-
-    public Set<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(Set<Book> books) {
-        this.books = books;
     }
 
     /**

@@ -12,7 +12,7 @@ public class User {
      * Author is the main side of the association, so it's responsible for managing relationship. Main side has to
      * ensure that book has its author. See {@link Book} for more details on this decision.
      */
-    private Set<Book> books;
+    private Set<Book> books = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -41,15 +41,16 @@ public class User {
      * really empty' and 'collection is not initialized during the fetch' cases.
      *
      * @param books the collection that may or may not be initialized during the fetching from DB
+     * @return this
      */
-    public void setBooksByDao(Set<Book> books) {
+    public User setBooksByDao(Set<Book> books) {
         this.books = books;
+        return this;
     }
 
     public void setBooks(Collection<Book> books) {
         removeAllBooks();
-        this.books = new HashSet<>(books);
-        for (Book book : this.books) {
+        for (Book book : books) {
             addBook(book);
         }
     }
@@ -72,5 +73,10 @@ public class User {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "User[" + username + "]";
     }
 }
