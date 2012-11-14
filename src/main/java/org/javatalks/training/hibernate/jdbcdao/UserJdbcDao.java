@@ -57,7 +57,9 @@ public class UserJdbcDao implements Crud<User> {
 
     private void insert(User user) throws SQLException {
         logger.info("Creating user with name [{}]", user.getUsername());
-        //Note that Statement.RETURN_GENERATED_KEYS is DB dependent, Oracle does not implement it
+        //Note that Statement.RETURN_GENERATED_KEYS is DB dependent, e.g. Oracle does not implement it
+        //Also HSQLDB can handle this only via an additional query
+        //PostgreSQL also doesn't support it, but can still be hacked using RETURNING clause
         try (PreparedStatement statement = getConnection().prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, user.getUsername());
             int affectedRows = statement.executeUpdate();

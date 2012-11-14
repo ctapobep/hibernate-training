@@ -29,7 +29,9 @@ public class LibraryJdbcDao implements Crud<Library> {
     private void insert(Library library) throws SQLException {
         logger.info("Creating library with name [{}]", library.getName());
         cascadeSaveOrUpdateToOwner(library.getOwner());
-        //Note that Statement.RETURN_GENERATED_KEYS is DB dependent, Oracle does not implement it
+        //Note that Statement.RETURN_GENERATED_KEYS is DB dependent, e.g. Oracle does not implement it
+        //Also HSQLDB can handle this only via an additional query
+        //PostgreSQL also doesn't support it, but can still be hacked using RETURNING clause
         try (PreparedStatement statement = getConnection().prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, library.getName());
             setOwnerId(statement, library.getOwner());
