@@ -27,6 +27,8 @@ class BookMybatisDaoTest {
         assertReflectionEquals(expected, sut.get(expected.id))
     }
 
+
+
     @Test
     void "inserting collection should generate IDs for each of them"() {
         List<Book> books = [new Book(title: "title1"), new Book(title: "title2")]
@@ -64,17 +66,27 @@ class BookMybatisDaoTest {
         assert sut.get(expected.id) == null
     }
 
+    @Test
+    void "ofAuthor() should return all the books with author"() throws Exception {
+        def author = givenSavedUser()
+        author.books = [new Book(title: "Book1"), new Book(title: "Book2")]
+        userMapper.update(author)
+
+        List<Book> actual = sut.ofAuthor(author)
+        assertReflectionEquals(author, actual[0].author)//by comparing authors we check the whole collection of books
+    }
+
     private Book givenBookSaved() {
         Book book = new Book(title: "Pink Unicorns")
         sut.insert(book)
         return book
     }
+
     private Book givenBookWithAuthorSaved() {
         User author = givenSavedUser()
         Book book = new Book(title: "Pink Unicorns")
-        book.author = author
         author.addBook(book)
-        userMapper.insert(author)
+        userMapper.update(author)
         return book
     }
 

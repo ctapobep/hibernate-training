@@ -9,6 +9,12 @@
     from book
     where id = #{id}
   </select>
+  <select id="ofAuthor" parameterType="long" resultMap="bookResult">
+    select
+      *
+    from book
+    where author_id = #{id}
+  </select>
   <select id="getWithAuthor" parameterType="long" resultMap="bookWithAuthorResult">
     select
       *

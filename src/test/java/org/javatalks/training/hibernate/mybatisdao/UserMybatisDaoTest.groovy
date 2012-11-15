@@ -16,7 +16,7 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/org/javatalks/training/hibernate/appContext.xml")
-@TransactionConfiguration(defaultRollback = false)
+@TransactionConfiguration
 @Transactional
 class UserMybatisDaoTest {
     @Test
@@ -27,23 +27,16 @@ class UserMybatisDaoTest {
     }
 
     @Test
-    void "get() should return User with lazy books"() {
-        User user = new User(username: "with a lot of books",
-                books: [new Book(title: "title1")]
-        )
-        sut.insert(user)
-
-        assert sut.get(user.getId()).books.size() == user.books.size()
+    void "get() should return User with no books"() {
+        def expected = givenUserWithBooksSaved()
+        expected.books.clear()
+        assertReflectionEquals(expected, sut.get(expected.id))
     }
 
     @Test
     void "getWithBooks() should return initialized books"() {
-        User user = new User(username: "with a lot of books",
-                books: [new Book(title: "title1")]
-        )
-        sut.insert(user)
-
-        assert sut.getWithBooks(user.getId()) == user
+        def expected = givenUserWithBooksSaved()
+        assertReflectionEquals(expected, sut.getWithBooks(expected.getId()))
     }
 
     @Test
@@ -63,6 +56,14 @@ class UserMybatisDaoTest {
 
     private User givenUserSaved() {
         User user = new User(username: "username")
+        sut.insert(user)
+        return user
+    }
+
+    private User givenUserWithBooksSaved() {
+        User user = new User(username: "Classical User",
+                books: [new Book(title: "Romantic Book"), new Book(title: "Epic Book")]
+        )
         sut.insert(user)
         return user
     }

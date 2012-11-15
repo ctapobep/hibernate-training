@@ -32,7 +32,11 @@ public class UserMybatisDao implements UserMapper {
 
     @Override
     public User getWithBooks(long id) {
-        return userMapper.getWithBooks(id);
+        User user = userMapper.getWithBooks(id);
+        for(Book book: user.getBooks()){
+            book.setAuthor(user);
+        }
+        return user;
     }
 
     @Override

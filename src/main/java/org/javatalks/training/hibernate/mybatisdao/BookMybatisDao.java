@@ -15,7 +15,11 @@ public class BookMybatisDao implements BookMapper {
 
     @Override
     public List<Book> ofAuthor(User user) {
-        return null;
+        List<Book> books = bookMapper.ofAuthor(user);
+        for (Book book : books) {
+            book.setAuthor(user);
+        }
+        return books;
     }
 
     public void insertOrUpdateBooks(Collection<Book> books) {

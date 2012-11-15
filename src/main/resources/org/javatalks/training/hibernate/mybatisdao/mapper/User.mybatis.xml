@@ -37,7 +37,7 @@
   <resultMap id="userWithBooksResult" type="user">
     <id property="id" column="id"/>
     <result property="username" column="username"/>
-    <collection property="books" ofType="book" column="author_id"
-                resultMap="org.javatalks.training.hibernate.mybatisdao.mapper.BookMapper.bookResult"/>
+    <collection property="books" ofType="book" column="id"
+                select="org.javatalks.training.hibernate.mybatisdao.mapper.BookMapper.ofAuthor"/>
   </resultMap>
 </mapper>
