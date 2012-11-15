@@ -1,4 +1,4 @@
-package org.javatalks.training.hibernate;
+package org.javatalks.training.hibernate.dao;
 
 /**
  * Base interface for all DAOs for Create-Read-Update-Delete operations.

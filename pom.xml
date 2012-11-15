@@ -9,16 +9,6 @@
   <version>1.0</version>
 
   <dependencies>
-    <dependency>
-      <groupId>org.mybatis</groupId>
-      <artifactId>mybatis</artifactId>
-      <version>3.1.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.mybatis</groupId>
-      <artifactId>mybatis-spring</artifactId>
-      <version>1.1.1</version>
-    </dependency>
 
     <dependency>
       <groupId>org.springframework</groupId>
@@ -43,6 +33,11 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jdbc</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
       <version>${spring.version}</version>
     </dependency>
     <dependency>
@@ -154,11 +149,6 @@
       <dependency>
         <groupId>org.jboss.byteman</groupId>
         <artifactId>byteman</artifactId>
-        <version>2.1.0</version>
-      </dependency>
-      <dependency>
-        <groupId>org.jboss.byteman</groupId>
-        <artifactId>byteman-install</artifactId>
         <version>2.1.0</version>
       </dependency>
       <dependency>
