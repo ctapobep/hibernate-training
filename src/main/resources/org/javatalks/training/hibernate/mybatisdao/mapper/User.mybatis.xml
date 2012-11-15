@@ -3,12 +3,19 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.javatalks.training.hibernate.mybatisdao.mapper.UserMapper">
-  <select id="get" parameterType="long" resultMap="userResult">
+  <select id="get" parameterType="user" resultMap="userResult">
     select
       *
     from users
-    where id = #{id}
+    where id = #{user.id}
   </select>
+  <select id="getWithBooks" parameterType="user" resultMap="userWithBooksResult">
+    select
+      *
+    from users
+    where id = #{user.id}
+  </select>
+
   <insert id="insert" parameterType="user" useGeneratedKeys="true" keyProperty="id">
     insert into users (username) values (#{username})
   </insert>
@@ -25,10 +32,12 @@
   <resultMap id="userResult" type="user">
     <id property="id" column="id"/>
     <result property="username" column="username"/>
-    <!--<association property="author" resultMap="author">-->
-      <!--<id property="id" column="id"/>-->
-      <!--<result property="username" column="username"/>-->
-      <!--<collection property="userss"-->
-    <!--</association>-->
+  </resultMap>
+
+  <resultMap id="userWithBooksResult" type="user">
+    <id property="id" column="id"/>
+    <result property="username" column="username"/>
+    <collection property="books" ofType="book" column="author_id"
+                resultMap="org.javatalks.training.hibernate.mybatisdao.mapper.BookMapper.bookResult"/>
   </resultMap>
 </mapper>

@@ -9,6 +9,12 @@
     from book
     where id = #{id}
   </select>
+  <select id="getWithAuthor" parameterType="long" resultMap="bookWithAuthorResult">
+    select
+      *
+    from book
+    where id = #{id}
+  </select>
   <insert id="insert" parameterType="book" useGeneratedKeys="true" keyProperty="id">
     insert into book (title, author_id) values (#{title}, #{author.id})
   </insert>
@@ -22,9 +28,14 @@
     where id = #{id}
   </delete>
 
-  <resultMap id="bookResult" type="book">
+
+  <resultMap id="bookWithAuthorResult" type="book">
     <id property="id" column="id" />
     <result property="title" column="title"/>
     <association property="author" javaType="user" select="org.javatalks.training.hibernate.mybatisdao.mapper.UserMapper.get" column="author_id"/>
+  </resultMap>
+  <resultMap id="bookResult" type="book">
+    <id property="id" column="id" />
+    <result property="title" column="title"/>
   </resultMap>
 </mapper>

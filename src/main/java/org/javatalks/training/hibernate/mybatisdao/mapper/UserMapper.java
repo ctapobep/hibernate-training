@@ -5,4 +5,5 @@ import org.javatalks.training.hibernate.entity.User;
 
 /** @author stanislav bashkirtsev */
 public interface UserMapper extends Crud<User> {
+    User getWithBooks(long id);
 }
