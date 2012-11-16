@@ -44,6 +44,18 @@ class BookDaoTest {
         assertReflectionEquals(saved, loadedAgainFromDb)
     }
 
+    @Test
+    void "update() is not necessary for Hibernate to update the state of changed object"() {
+        Book saved = new Book(title: "I'm going to be stored!")
+        sut.insert(saved)
+
+        saved.title = "I'm going to be stored even though save() was not invoked"
+        sut.session().flush() //flushes all outstanding changes to objects
+
+        sut.session().evict(saved)
+        assert sut.get(saved.id).title == "I'm going to be stored even though save() was not invoked"
+    }
+
 
     @Autowired
     private BookDao sut;
