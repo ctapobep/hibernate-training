@@ -29,6 +29,10 @@ public class BookDao implements Crud<Book> {
         return (Book) session().load(Book.class, id);
     }
 
+    public Book merge(Book toBeMergedAndThrownAway){
+        return (Book) session().merge(toBeMergedAndThrownAway);
+    }
+
     @Override
     public void delete(Book entity) {
         session().delete(entity);

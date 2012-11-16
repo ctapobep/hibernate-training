@@ -47,7 +47,7 @@ class BookDaoTest {
     void "get() should load the same entity from DB because it was evicted from session cache"() {
         Book saved = new Book(title: "I need to be loaded from DB because I was removed from session level cache!")
         sut.insert(saved)
-        sut.session().evict(saved)
+        sut.session().evict(saved) //now the object is detached!
 
         Book loadedAgainFromDb = sut.get(saved.id)
         assert !saved.is(loadedAgainFromDb) // not the same reference
@@ -102,6 +102,45 @@ class BookDaoTest {
         assert sut.get(saved.id).title == "I'm going to be stored even though save() was not invoked"
     }
 
+    @Test
+    void "merge() is saving if object was transient"(){
+        Book toBeMerged = new Book(title: "I'm going to be stored!")
+        Book merged = (Book) sut.merge(toBeMerged)//after that original object should be thrown away!
+
+        assert merged.id != null
+        assert toBeMerged.id == null
+    }
+
+    @Test
+    void "merge() does nothing if object is in session"(){
+        Book originalBook = new Book(title: "I'm going to be stored!")
+        sut.insert(originalBook)
+
+        Book merged = (Book) sut.merge(originalBook) //no-op, but still safer not to reuse the same object, use the returned one!
+        assert merged.is(originalBook)
+    }
+
+    @Test
+    void "merge() is attaching if object was detached"(){
+        Book originalBook = new Book(title: "I'm going to be stored!")
+        sut.insert(originalBook)
+        sut.session().evict(originalBook)
+
+        Book merged = (Book) sut.merge(originalBook) //issues select
+        assertReflectionEquals(originalBook, merged)
+    }
+
+    @Test
+    void "merge() is updating if object was detached and changed"(){
+        Book originalBook = new Book(title: "I'm going to be stored!")
+        sut.insert(originalBook)
+        sut.session().evict(originalBook)
+
+        originalBook.title = "Updated by merge"
+        Book merged = (Book) sut.merge(originalBook) //issues select and copies new value to the selected object
+        sut.session().flush() //issues update
+        assertReflectionEquals(originalBook, merged)
+    }
 
     @Autowired
     private BookDao sut;
