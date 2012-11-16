@@ -1,3 +1,6 @@
+/**
+ * Moved it to test resources because IntelliJ had problems in compiling it in main.
+ */
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder
 import ch.qos.logback.core.ConsoleAppender
 
