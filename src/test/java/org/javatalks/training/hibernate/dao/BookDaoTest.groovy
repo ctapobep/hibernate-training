@@ -1,5 +1,6 @@
 package org.javatalks.training.hibernate.dao
 
+import org.hibernate.ObjectNotFoundException
 import org.javatalks.training.hibernate.entity.Book
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -54,6 +55,12 @@ class BookDaoTest {
         assertReflectionEquals(saved, loadedAgainFromDb) // but the same values
     }
 
+    @Test(expected = ObjectNotFoundException.class)
+    void "load() will throw if there is no such record in DB when we initialize the proxy"(){
+        Book book = sut.load(-1L)
+        book.title
+    }
+
     @Test
     void "load() should create a proxy instead of retrieving object from DB"() {
         Book saved = new Book(title: "Soon I'll be a proxy")
@@ -69,7 +76,7 @@ class BookDaoTest {
         //demonstrate that the object is not loaded, its all fields are null (we need to bypass getter here)
         Field titleField = Book.class.getDeclaredField("title")
         titleField.accessible = true
-        titleField.get(proxyOfBook) == null // here we go, nothing is loaded yet
+        assert titleField.get(proxyOfBook) == null // here we go, nothing is loaded yet
     }
 
     @Test
@@ -84,9 +91,9 @@ class BookDaoTest {
         titleField.accessible = true
         //now let's initialize the object, select is going to be issued
         assert proxyOfBook.title == "Soon I'll be a proxy" //yap, that's what was saved, we fetched that from DB
-        titleField.get(proxyOfBook) == null //hehe, still nothing, because it simply delegates all the job to INTERNAL Book, proxy doesn't contain values per se!
+        assert titleField.get(proxyOfBook) == null //hehe, still nothing, because it simply delegates all the job to INTERNAL Book, proxy doesn't contain values per se!
         //now let's actually see where title value is
-        assert proxyOfBook.@handler.target.title == "Soon I'll be a proxy" //each proxy has a Handler which knows how to load lazy objects
+        assert proxyOfBook.handler.target.title == "Soon I'll be a proxy" //each proxy has a Handler which knows how to load lazy objects
     }
 
 
