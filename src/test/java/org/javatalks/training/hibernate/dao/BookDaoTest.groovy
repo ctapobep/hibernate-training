@@ -142,6 +142,15 @@ class BookDaoTest {
         assertReflectionEquals(originalBook, merged)
     }
 
+    @Test
+    void "delete() should remove record from DB"() {
+        assert sut.count() == 0, "Make sure the DB is empty before you're running the tests"
+        Book originalBook = new Book(title: "I'm going to be stored!")
+        sut.insert(originalBook)
+        sut.delete(originalBook)
+        assert sut.count() == 0
+    }
+
     @Autowired
     private BookDao sut;
 }
