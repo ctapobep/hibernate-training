@@ -9,6 +9,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.context.transaction.TransactionConfiguration
 import org.springframework.transaction.annotation.Transactional
 
+import java.lang.reflect.Field
+
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals
 /**
  * @author stanislav bashkirtsev
@@ -34,6 +36,14 @@ class BookDaoTest {
     }
 
     @Test
+    void "load() also returns object from the cache if it's there"() {
+        Book saved = new Book(title: "I need to be stored and retrieved from session level cache!")
+        sut.insert(saved)
+        Book fromCache = sut.load(saved.id)
+        assert fromCache.is(saved)
+    }
+
+    @Test
     void "get() should load the same entity from DB because it was evicted from session cache"() {
         Book saved = new Book(title: "I need to be loaded from DB because I was removed from session level cache!")
         sut.insert(saved)
@@ -45,9 +55,33 @@ class BookDaoTest {
     }
 
     @Test
+    void "load() should create a proxy instead of retrieving object from DB"() {
+        Book saved = new Book(title: "Soon I'll be a proxy")
+        sut.insert(saved)
+        sut.session().evict(saved)
+
+        Book proxyOfBook = sut.load(saved.id)
+
+        assert proxyOfBook.id == saved.id //where do we get ID? well, we specified it into load() ;)
+        assert proxyOfBook instanceof Book //the proxy is a subclass of Book created in runtime
+        assert proxyOfBook.class.name == "org.javatalks.training.hibernate.entity.Book_\$\$_javassist_0"
+
+        //demonstrate that the object is not loaded, its all fields are null (we need to bypass getter here)
+        Field titleField = Book.class.getDeclaredField("title")
+        titleField.accessible = true
+        titleField.get(proxyOfBook) == null // here we go, nothing is loaded yet
+        //now let's initialize the object, select is going to be issued
+        assert proxyOfBook.title == "Soon I'll be a proxy" //yap, that's what was saved, we fetched that from DB
+        titleField.get(proxyOfBook) == null //hehe, still nothing, because it simply delegates all the job to INTERNAL Book, proxy doesn't contain values per se!
+        //now let's actually see where title value is
+        assert proxyOfBook.@handler.target.title == "Soon I'll be a proxy"//each proxy has a Handler which knows how to load lazy objects
+    }
+
+
+    @Test
     void "update() is not necessary for Hibernate to update the state of changed object"() {
         Book saved = new Book(title: "I'm going to be stored!")
-        sut.insert(saved)
+        sut.insert(saved)//we need that only to associate object with the session
 
         saved.title = "I'm going to be stored even though save() was not invoked"
         sut.session().flush() //flushes all outstanding changes to objects

@@ -25,6 +25,10 @@ public class BookDao implements Crud<Book> {
         return (Book) session().get(Book.class, id);
     }
 
+    public Book load(long id) {
+        return (Book) session().load(Book.class, id);
+    }
+
     @Override
     public void delete(Book entity) {
         session().delete(entity);
