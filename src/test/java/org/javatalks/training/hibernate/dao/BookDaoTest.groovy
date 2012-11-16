@@ -50,8 +50,8 @@ class BookDaoTest {
         sut.session().evict(saved)
 
         Book loadedAgainFromDb = sut.get(saved.id)
-        assert !saved.is(loadedAgainFromDb)
-        assertReflectionEquals(saved, loadedAgainFromDb)
+        assert !saved.is(loadedAgainFromDb) // not the same reference
+        assertReflectionEquals(saved, loadedAgainFromDb) // but the same values
     }
 
     @Test
@@ -70,11 +70,23 @@ class BookDaoTest {
         Field titleField = Book.class.getDeclaredField("title")
         titleField.accessible = true
         titleField.get(proxyOfBook) == null // here we go, nothing is loaded yet
+    }
+
+    @Test
+    void "load() should issue select when one of getters is invoked"() {
+        Book saved = new Book(title: "Soon I'll be a proxy")
+        sut.insert(saved)
+        sut.session().evict(saved)
+
+        Book proxyOfBook = sut.load(saved.id)
+
+        Field titleField = Book.class.getDeclaredField("title")
+        titleField.accessible = true
         //now let's initialize the object, select is going to be issued
         assert proxyOfBook.title == "Soon I'll be a proxy" //yap, that's what was saved, we fetched that from DB
         titleField.get(proxyOfBook) == null //hehe, still nothing, because it simply delegates all the job to INTERNAL Book, proxy doesn't contain values per se!
         //now let's actually see where title value is
-        assert proxyOfBook.@handler.target.title == "Soon I'll be a proxy"//each proxy has a Handler which knows how to load lazy objects
+        assert proxyOfBook.@handler.target.title == "Soon I'll be a proxy" //each proxy has a Handler which knows how to load lazy objects
     }
 
 
