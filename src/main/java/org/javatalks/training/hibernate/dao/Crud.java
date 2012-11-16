@@ -6,7 +6,7 @@ package org.javatalks.training.hibernate.dao;
  * @author stanislav bashkirtsev
  */
 public interface Crud<T> {
-    void insert(T entity);
+    void save(T entity);
 
     void update(T entity);
 

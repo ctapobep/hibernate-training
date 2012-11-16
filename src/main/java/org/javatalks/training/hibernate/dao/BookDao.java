@@ -11,7 +11,7 @@ public class BookDao implements Crud<Book> {
     }
 
     @Override
-    public void insert(Book entity) {
+    public void save(Book entity) {
         session().save(entity);
     }
 

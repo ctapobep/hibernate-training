@@ -24,14 +24,14 @@ class BookDaoTest {
     @Test
     void "save() sets the ID since generator=native is used"() {
         Book book = new Book(title: "I need an ID to be generated and set!")
-        sut.insert(book)
+        sut.save(book)
         assert book.id != null
     }
 
     @Test
     void "get() returns same reference to object that was stored because it's taken from session-level cache"() {
         Book saved = new Book(title: "I need to be stored and retrieved from session level cache!")
-        sut.insert(saved)
+        sut.save(saved)
         Book fromCache = sut.get(saved.id)
         assert fromCache.is(saved)
     }
@@ -39,7 +39,7 @@ class BookDaoTest {
     @Test
     void "load() also returns object from the cache if it's there"() {
         Book saved = new Book(title: "I need to be stored and retrieved from session level cache!")
-        sut.insert(saved)
+        sut.save(saved)
         Book fromCache = sut.load(saved.id)
         assert fromCache.is(saved)
     }
@@ -47,7 +47,7 @@ class BookDaoTest {
     @Test
     void "get() should load the same entity from DB because it was evicted from session cache"() {
         Book saved = new Book(title: "I need to be loaded from DB because I was removed from session level cache!")
-        sut.insert(saved)
+        sut.save(saved)
         sut.session().evict(saved) //now the object is detached!
 
         Book loadedAgainFromDb = sut.get(saved.id)
@@ -64,7 +64,7 @@ class BookDaoTest {
     @Test
     void "load() should create a proxy instead of retrieving object from DB"() {
         Book saved = new Book(title: "Soon I'll be a proxy")
-        sut.insert(saved)
+        sut.save(saved)
         sut.session().evict(saved)
 
         Book proxyOfBook = sut.load(saved.id)
@@ -82,7 +82,7 @@ class BookDaoTest {
     @Test
     void "load() should issue select when one of getters is invoked"() {
         Book saved = new Book(title: "Soon I'll be a proxy")
-        sut.insert(saved)
+        sut.save(saved)
         sut.session().evict(saved)
 
         Book proxyOfBook = sut.load(saved.id)
@@ -96,11 +96,10 @@ class BookDaoTest {
         assert proxyOfBook.handler.target.title == "Soon I'll be a proxy" //each proxy has a Handler which knows how to load lazy objects
     }
 
-
     @Test
     void "update() is not necessary for Hibernate to update the state of changed object"() {
         Book saved = new Book(title: "I'm going to be stored!")
-        sut.insert(saved)//we need that only to associate object with the session
+        sut.save(saved)//we need that only to associate object with the session
 
         saved.title = "I'm going to be stored even though save() was not invoked"
         sut.session().flush() //flushes all outstanding changes to objects
@@ -121,7 +120,7 @@ class BookDaoTest {
     @Test
     void "merge() does nothing if object is in session"(){
         Book originalBook = new Book(title: "I'm going to be stored!")
-        sut.insert(originalBook)
+        sut.save(originalBook)
 
         Book merged = (Book) sut.merge(originalBook) //no-op, but still safer not to reuse the same object, use the returned one!
         assert merged.is(originalBook)
@@ -130,7 +129,7 @@ class BookDaoTest {
     @Test
     void "merge() is attaching if object was detached"(){
         Book originalBook = new Book(title: "I'm going to be stored!")
-        sut.insert(originalBook)
+        sut.save(originalBook)
         sut.session().evict(originalBook)
 
         Book merged = (Book) sut.merge(originalBook) //issues select
@@ -140,7 +139,7 @@ class BookDaoTest {
     @Test
     void "merge() is updating if object was detached and changed"(){
         Book originalBook = new Book(title: "I'm going to be stored!")
-        sut.insert(originalBook)
+        sut.save(originalBook)
         sut.session().evict(originalBook)
 
         originalBook.title = "Updated by merge"
@@ -153,7 +152,7 @@ class BookDaoTest {
     void "delete() should remove record from DB"() {
         assert sut.count() == 0, "Make sure the DB is empty before you're running the tests"
         Book originalBook = new Book(title: "I'm going to be stored!")
-        sut.insert(originalBook)
+        sut.save(originalBook)
         sut.delete(originalBook)
         assert sut.count() == 0
     }
