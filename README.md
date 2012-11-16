@@ -6,8 +6,7 @@ hibernate-training
 
 During the course we're going to talk about Hibernate, but not only. Hibernate is an ORM tool that gives you an ability to develop your data access levels quickly, but it doesn't free you from knowing DBs. In fact in order to use Hibernate effectively you need to know databases pretty well. So besides Hibernate in scope of this training we'll also get acquainted with general database/JDBC theory:
 
-*Transaction isolation & propagation*
-
+- Transaction isolation & propagation
 - Strategies of PK generation 
 - Different types of statements & DB caching 
 - Concurrent work with DBs (different types of locking) 
