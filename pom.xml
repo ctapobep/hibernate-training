@@ -47,17 +47,6 @@
       <version>0.9.1</version>
     </dependency>
     <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-core</artifactId>
-      <version>${hibernate.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-testing</artifactId>
-      <version>${hibernate.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <version>5.1.18</version>
@@ -126,42 +115,10 @@
     </dependency>
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
-      <artifactId>groovy</artifactId>
+      <artifactId>groovy-all</artifactId>
       <version>2.0.4</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>asm</groupId>
-      <artifactId>asm</artifactId>
-      <version>1.4.1</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
-  <dependencyManagement>
-    <dependencies>
-      <!--Hibernate transitive dependencies-->
-      <dependency>
-        <groupId>org.jboss.byteman</groupId>
-        <artifactId>byteman</artifactId>
-        <version>2.1.0</version>
-      </dependency>
-      <dependency>
-        <groupId>org.jboss.byteman</groupId>
-        <artifactId>byteman-install</artifactId>
-        <version>2.1.0</version>
-      </dependency>
-      <dependency>
-        <groupId>org.jboss.byteman</groupId>
-        <artifactId>byteman-install</artifactId>
-        <version>2.1.0</version>
-      </dependency>
-      <dependency>
-        <groupId>org.jboss.byteman</groupId>
-        <artifactId>byteman-bmunit</artifactId>
-        <version>2.1.0</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
   <build>
     <plugins>
       <plugin>
@@ -177,13 +134,31 @@
         <groupId>org.codehaus.gmaven</groupId>
         <artifactId>gmaven-plugin</artifactId>
         <version>1.4</version>
+        <configuration>
+          <sources>
+            <fileset>
+              <directory>${project.basedir}/src/test/java</directory>
+              <includes>
+                <include>**/*.groovy</include>
+              </includes>
+            </fileset>
+          </sources>
+        </configuration>
         <executions>
           <execution>
+            <phase>process-test-sources</phase>
             <goals>
               <goal>testCompile</goal>
             </goals>
           </execution>
         </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>2.0.4</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>
