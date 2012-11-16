@@ -30,7 +30,15 @@ public class BookDao implements Crud<Book> {
         session().delete(entity);
     }
 
-    private Session session() {
+    public long count(){
+        return (long) session().createQuery("select count(*) from Book").uniqueResult();
+    }
+
+    /**
+     * This method will be handy for both this class and its test.
+     * @return the session currently associated with the tread
+     */
+    Session session() {
         return sessionFactory.getCurrentSession();
     }
 
