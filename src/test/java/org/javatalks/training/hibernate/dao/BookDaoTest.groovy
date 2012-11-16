@@ -1,6 +1,7 @@
 package org.javatalks.training.hibernate.dao
 
 import org.hibernate.LockOptions
+import org.hibernate.ObjectDeletedException
 import org.hibernate.ObjectNotFoundException
 import org.javatalks.training.hibernate.entity.Book
 import org.junit.Test
@@ -162,17 +163,37 @@ class BookDaoTest {
         sut.session().evict(originalBook)
 
         originalBook.title = "Updated by merge"
-        sut.session().buildLockRequest(LockOptions.NONE).lock(originalBook) //issues select and copies new value to the selected object
+        sut.session().buildLockRequest(LockOptions.NONE).lock(originalBook) //now object is in the session
         sut.session().flush() //does not issue because Hibernate doesn't know that object was changed
     }
 
     @Test
     void "delete() should remove record from DB"() {
         assert sut.count() == 0, "Make sure the DB is empty before you're running the tests"
-        Book originalBook = new Book(title: "I'm going to be stored!")
-        sut.save(originalBook)
-        sut.delete(originalBook)
+        Book book = new Book(title: "I'm going to be deleted after store!")
+        sut.save(book)
+        sut.delete(book)
         assert sut.count() == 0
+    }
+
+    @Test(expected = ObjectDeletedException.class)
+    void "delete() should not be followed by update()"() {
+        Book book = new Book(title: "Don't try to update me after you removed me!")
+        sut.save(book)
+        sut.delete(book)
+
+        sut.update(book)//you can't update the same object that was removed. of course unless you evict the object
+    }
+
+    @Test
+    void "saveOrUpdate() will insert new record if entity was just removed"() {
+        Book book = new Book(title: "I'll be back 8-)")
+        sut.save(book)
+        long originalId = book.id
+        sut.delete(book)
+
+        sut.saveOrUpdate(book)//save() is actually invoked under the hood, which inserts a new record
+        assert book.id != originalId
     }
 
     @Autowired
