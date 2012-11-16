@@ -1,5 +1,6 @@
 package org.javatalks.training.hibernate.dao
 
+import org.hibernate.LockOptions
 import org.hibernate.ObjectNotFoundException
 import org.javatalks.training.hibernate.entity.Book
 import org.junit.Test
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.lang.reflect.Field
 
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals
+
 /**
  * @author stanislav bashkirtsev
  */
@@ -99,7 +101,7 @@ class BookDaoTest {
     @Test
     void "update() is not necessary for Hibernate to update the state of changed object"() {
         Book saved = new Book(title: "I'm going to be stored!")
-        sut.save(saved)//we need that only to associate object with the session
+        sut.save(saved) //we need that only to associate object with the session
 
         saved.title = "I'm going to be stored even though save() was not invoked"
         sut.session().flush() //flushes all outstanding changes to objects
@@ -113,8 +115,8 @@ class BookDaoTest {
         Book toBeMerged = new Book(title: "I'm going to be stored!")
         Book merged = (Book) sut.merge(toBeMerged)//after that original object should be thrown away!
 
-        assert merged.id != null
         assert toBeMerged.id == null
+        assert merged.id != null
     }
 
     @Test
@@ -146,6 +148,22 @@ class BookDaoTest {
         Book merged = (Book) sut.merge(originalBook) //issues select and copies new value to the selected object
         sut.session().flush() //issues update
         assertReflectionEquals(originalBook, merged)
+    }
+
+    /**
+     * If you really know that object wasn't changed since it was loaded and detached, but you want to attach it to
+     * the session without any extra selects, you may want to use lock(). But if the object was actually changed,
+     * Hibernate won't know about that and won't issue update query during flush.
+     */
+    @Test
+    void "lock() is a trick that allows attaching of the object without issuing select"() {
+        Book originalBook = new Book(title: "I'm going to be stored!")
+        sut.save(originalBook)
+        sut.session().evict(originalBook)
+
+        originalBook.title = "Updated by merge"
+        sut.session().buildLockRequest(LockOptions.NONE).lock(originalBook) //issues select and copies new value to the selected object
+        sut.session().flush() //does not issue because Hibernate doesn't know that object was changed
     }
 
     @Test
