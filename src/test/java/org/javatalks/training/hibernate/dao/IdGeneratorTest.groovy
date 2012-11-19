@@ -25,7 +25,6 @@ class IdGeneratorTest {
         assert book.id == jdbc.queryForLong("select id from book where title = ?", "I'm inserted right away on save()")
     }
 
-
     @Autowired
     private BookDao bookDao;
     @Autowired
