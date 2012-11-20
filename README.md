@@ -33,7 +33,7 @@ Also we'll take a look at Spring Tx & Spring Dao since that's a typical way of w
 
 **M2 Objects, their states and residence (2h)**
 
-*1. Object life cycle*
+*Object life cycle*
 
 - States of objects 
 - Session/Persistent Context/Unit Of Work
@@ -41,13 +41,6 @@ Also we'll take a look at Spring Tx & Spring Dao since that's a typical way of w
 - get/load/update/merge
 - Proxies & laziness
 - ID Generators and strategies
-
-*2. Caches*
-
-- Session level "cache" and how to write tests
-- Process level cache
-- Query cache & how different queries impact it
-- Distributed cache
 
 **M3 Object graphs (3-4h)**
 
@@ -73,6 +66,13 @@ Also we'll take a look at Spring Tx & Spring Dao since that's a typical way of w
 
 - Lists, Sets, Bags, Maps
 - Getting Performance with fetch strategies & collections
+
+*Caches*
+
+- Session level "cache" and how to write tests
+- Process level cache
+- Query cache & how different queries impact it
+- Distributed cache
 
 **M5 Inheritance (2h)**
 
