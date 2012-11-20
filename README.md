@@ -69,7 +69,6 @@ Also we'll take a look at Spring Tx & Spring Dao since that's a typical way of w
 
 *Caches*
 
-- Session level "cache" and how to write tests
 - Process level cache
 - Query cache & how different queries impact it
 - Distributed cache
