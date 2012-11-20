@@ -30,12 +30,4 @@ public class Library {
         this.owner = owner;
     }
 
-    /**
-     * Returns the ID of the owner or null if the owner is null or she is not persisted yet.
-     *
-     * @return the ID of the owner or null if the owner is null or she is not persisted yet.
-     */
-    public Long getOwnerId() {
-        return owner == null ? null : owner.getId();
-    }
 }

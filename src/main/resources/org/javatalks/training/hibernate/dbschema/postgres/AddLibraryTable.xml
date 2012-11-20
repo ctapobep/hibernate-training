@@ -8,8 +8,7 @@
     <sql>
       create table library (
         id bigint NOT NULL DEFAULT nextval('hibernate_sequence'),
-        name varchar(255) NOT NULL,
-        owner_id bigint);
+        name varchar(255) NOT NULL);
     </sql>
   </changeSet>
 </databaseChangeLog>

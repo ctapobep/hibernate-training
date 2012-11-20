@@ -2,6 +2,7 @@ package org.javatalks.training.hibernate.dao
 
 import org.hibernate.id.IdentifierGenerationException
 import org.javatalks.training.hibernate.entity.Book
+import org.javatalks.training.hibernate.entity.Library
 import org.javatalks.training.hibernate.entity.User
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -18,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/org/javatalks/training/hibernate/appContext.xml")
-@TransactionConfiguration
+@TransactionConfiguration(defaultRollback = false)
 @Transactional
 class IdGeneratorTest {
     @Test
@@ -45,6 +46,15 @@ class IdGeneratorTest {
         userDao.save(new User(id: 12300L,  username: "I'll throw up because no one assigned ID to me :~"))
     }
 
+    @Test
+    void "foreign uses another property as an ID"() {
+        User owner = new User(id: 100500L, username: "Da Boss")
+        Library lib = new Library(name: "Get my name hash!", owner: owner)
+        assert libraryDao.get(lib.name.hashCode()) == null, "Make sure you don't have records in the database before you run this test"
+        libraryDao.save(lib)
+        assert lib.id == lib.owner.id
+    }
+
     private boolean isIdentityGenerator() {
         return ["mysql", "hsqldb"].contains(dbname)
     }
@@ -55,6 +65,7 @@ class IdGeneratorTest {
 
     @Autowired BookDao bookDao;
     @Autowired UserDao userDao;
+    @Autowired LibraryDao libraryDao;
     @Autowired JdbcTemplate jdbc;
     @Value("\${dbname}") String dbname;
 }

@@ -12,7 +12,6 @@
       <column name="name" type="varchar(255)">
         <constraints nullable="false"/>
       </column>
-      <column name="owner_id" type="bigint"/>
     </createTable>
   </changeSet>
 </databaseChangeLog>

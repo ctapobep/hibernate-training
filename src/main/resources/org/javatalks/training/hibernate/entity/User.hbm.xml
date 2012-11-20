@@ -5,6 +5,7 @@
 <hibernate-mapping package="org.javatalks.training.hibernate.entity">
   <class name="User" table="users">
     <id name="id">
+      <!--you have to manually assign the value-->
       <generator class="assigned"/>
     </id>
     <property name="username"/>

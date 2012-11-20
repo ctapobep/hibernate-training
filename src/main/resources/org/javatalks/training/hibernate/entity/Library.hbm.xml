@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.javatalks.training.hibernate.entity">
+  <class name="Library" table="library">
+    <id name="id">
+      <!--Uses association's property to get the ID value, useful for one-to-one mapping when you want for both
+      object to have same IDs -->
+      <generator class="foreign">
+        <param name="property">owner</param>
+      </generator>
+    </id>
+    <property name="name"/>
+    <one-to-one name="owner" class="User" cascade="save-update"/>
+  </class>
+</hibernate-mapping>

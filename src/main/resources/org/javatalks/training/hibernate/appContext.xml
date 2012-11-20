@@ -36,6 +36,7 @@
       <list>
         <value>/org/javatalks/training/hibernate/entity/Book.hbm.xml</value>
         <value>/org/javatalks/training/hibernate/entity/User.hbm.xml</value>
+        <value>/org/javatalks/training/hibernate/entity/Library.hbm.xml</value>
       </list>
     </property>
     <property name="hibernateProperties">
@@ -54,6 +55,9 @@
     <constructor-arg index="0" ref="sessionFactory"/>
   </bean>
   <bean id="userDao" class="org.javatalks.training.hibernate.dao.UserDao">
+    <constructor-arg index="0" ref="sessionFactory"/>
+  </bean>
+  <bean id="libraryDao" class="org.javatalks.training.hibernate.dao.LibraryDao">
     <constructor-arg index="0" ref="sessionFactory"/>
   </bean>
 
