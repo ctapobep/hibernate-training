@@ -6,7 +6,10 @@
   <class name="Book" table="book">
     <id name="id">
       <!--Asks database to generate the ID according to THIS database' default strategy. It might be
-      IdentityGenerator (MySQL), SequenceGenerator (Oracle, Postgres), TableHiLoGenerator (Derby).-->
+      IdentityGenerator (MySQL), SequenceGenerator (Oracle, Postgres), TableHiLoGenerator (Derby).
+      What's common between all the cases - numbers (long, int, short) are used for ID.
+      See org.hibernate.id.factory.internal#getIdentifierGeneratorClass() for the logic of choosing the underlying
+      strategy.-->
       <generator class="native"/>
     </id>
     <property name="title"/>
