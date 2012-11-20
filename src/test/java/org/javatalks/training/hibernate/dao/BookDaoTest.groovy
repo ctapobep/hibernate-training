@@ -75,7 +75,7 @@ class BookDaoTest {
 
         assert proxyOfBook.id == saved.id //where do we get ID? well, we specified it into load() ;)
         assert proxyOfBook instanceof Book //the proxy is a subclass of Book created in runtime
-        assert proxyOfBook.class.name == "org.javatalks.training.hibernate.entity.Book_\$\$_javassist_0"
+        assert proxyOfBook.class.name == "org.javatalks.training.hibernate.entity.Book_\$\$_javassist_2"
 
         //demonstrate that the object is not loaded, its all fields are null (we need to bypass getter here)
         Field titleField = Book.class.getDeclaredField("title")

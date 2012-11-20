@@ -8,4 +8,6 @@
   <include file="/org/javatalks/training/hibernate/dbschema/postgres/AddUserTable.xml"/>
   <include file="/org/javatalks/training/hibernate/dbschema/postgres/AddBookTable.xml"/>
   <include file="/org/javatalks/training/hibernate/dbschema/postgres/AddLibraryTable.xml"/>
+  <!--does not include sequences, thus can be reused in Postgres-->
+  <include file="/org/javatalks/training/hibernate/dbschema/mysql/AddPublisherTable.xml"/>
 </databaseChangeLog>

@@ -7,4 +7,5 @@
   <include file="/org/javatalks/training/hibernate/dbschema/mysql/AddUserTable.xml"/>
   <include file="/org/javatalks/training/hibernate/dbschema/mysql/AddBookTable.xml"/>
   <include file="/org/javatalks/training/hibernate/dbschema/mysql/AddLibraryTable.xml"/>
+  <include file="/org/javatalks/training/hibernate/dbschema/mysql/AddPublisherTable.xml"/>
 </databaseChangeLog>
