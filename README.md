@@ -36,15 +36,17 @@ Also we'll take a look at Spring Tx & Spring Dao since that's a typical way of w
 *1. Object life cycle*
 
 - States of objects 
-- Session/Persistent Context/Unit Of Work 
-- Proxies & laziness 
+- Session/Persistent Context/Unit Of Work
+- Session level "cache" and how to write tests
 - get/load/update/merge
+- Proxies & laziness
+- ID Generators and strategies
 
 *2. Caches*
 
-- Session level "cache" and how to write tests 
-- Process level cache 
-- Query cache & how different queries impact it 
+- Session level "cache" and how to write tests
+- Process level cache
+- Query cache & how different queries impact it
 - Distributed cache
 
 **M3 Object graphs (3-4h)**
@@ -59,11 +61,6 @@ Also we'll take a look at Spring Tx & Spring Dao since that's a typical way of w
 - HQL & Criteria API; Pagination 
 - Transformers, Views 
 - Hierarchical structures and working with them (Materialized Path, Nested Sets)
-
-*Identities*
-
-- Different types of generators 
-- Different strategies of ID generation
 
 **M4 Fetching & Collections (2h)**
 
