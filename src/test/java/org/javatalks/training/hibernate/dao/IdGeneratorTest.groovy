@@ -1,6 +1,8 @@
 package org.javatalks.training.hibernate.dao
 
+import org.hibernate.id.IdentifierGenerationException
 import org.javatalks.training.hibernate.entity.Book
+import org.javatalks.training.hibernate.entity.User
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -32,6 +34,17 @@ class IdGeneratorTest {
         }
     }
 
+    @Test(expected = IdentifierGenerationException.class)
+    void "assigned throws exception if you actually didn't assign"() {
+        userDao.save(new User(username: "I'll throw up because no one assigned ID to me :~"))
+    }
+
+    @Test
+    void "assigned uses the same value you specified"() {
+        assert userDao.get(12300L) == null, "Make sure you don't have records in the database before you run this test"
+        userDao.save(new User(id: 12300L,  username: "I'll throw up because no one assigned ID to me :~"))
+    }
+
     private boolean isIdentityGenerator() {
         return ["mysql", "hsqldb"].contains(dbname)
     }
@@ -40,10 +53,8 @@ class IdGeneratorTest {
         return "postgres" == dbname
     }
 
-    @Autowired
-    private BookDao bookDao;
-    @Autowired
-    private JdbcTemplate jdbc;
-    @Value("\${dbname}")
-    private String dbname;
+    @Autowired BookDao bookDao;
+    @Autowired UserDao userDao;
+    @Autowired JdbcTemplate jdbc;
+    @Value("\${dbname}") String dbname;
 }

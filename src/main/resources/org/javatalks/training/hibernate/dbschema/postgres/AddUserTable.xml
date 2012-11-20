@@ -8,7 +8,7 @@
     <sql>
       create table users (
         id bigint PRIMARY KEY DEFAULT nextval('hibernate_sequence'),
-        username varchar(255) NOT NULL );
+        username varchar(255) NOT NULL);
     </sql>
   </changeSet>
 </databaseChangeLog>
