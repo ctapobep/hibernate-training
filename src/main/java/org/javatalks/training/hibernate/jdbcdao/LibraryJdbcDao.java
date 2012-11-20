@@ -31,7 +31,7 @@ public class LibraryJdbcDao implements Crud<Library> {
         cascadeSaveOrUpdateToOwner(library.getOwner());
         //Note that Statement.RETURN_GENERATED_KEYS is DB dependent, e.g. Oracle does not implement it
         //Also HSQLDB can handle this only via an additional query
-        //PostgreSQL also doesn't support it, but can still be hacked using RETURNING clause
+        //Different versions of PostgreSQL also work differently depending on mechanism of id generation, they can be using RETURNING clause in order to get the ID back
         try (PreparedStatement statement = getConnection().prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, library.getName());
             setOwnerId(statement, library.getOwner());
