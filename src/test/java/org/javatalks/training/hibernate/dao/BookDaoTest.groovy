@@ -51,6 +51,7 @@ class BookDaoTest {
     void "get() should load the same entity from DB because it was evicted from session cache"() {
         Book saved = new Book(title: "I need to be loaded from DB because I was removed from session level cache!")
         sut.save(saved)
+        sut.session().flush()
         sut.session().evict(saved) //now the object is detached!
 
         Book loadedAgainFromDb = sut.get(saved.id)
@@ -86,7 +87,7 @@ class BookDaoTest {
     void "load() should issue select when one of getters is invoked"() {
         Book saved = new Book(title: "Soon I'll be a proxy")
         sut.save(saved)
-        sut.session().evict(saved)
+        evict(saved)
 
         Book proxyOfBook = sut.load(saved.id)
 
@@ -133,7 +134,7 @@ class BookDaoTest {
     void "merge() is attaching if object was detached"(){
         Book originalBook = new Book(title: "I'm going to be stored!")
         sut.save(originalBook)
-        sut.session().evict(originalBook)
+        evict(originalBook)
 
         Book merged = (Book) sut.merge(originalBook) //issues select
         assertReflectionEquals(originalBook, merged)
@@ -143,7 +144,7 @@ class BookDaoTest {
     void "merge() is updating if object was detached and changed"(){
         Book originalBook = new Book(title: "I'm going to be stored!")
         sut.save(originalBook)
-        sut.session().evict(originalBook)
+        evict(originalBook)
 
         originalBook.title = "Updated by merge"
         Book merged = (Book) sut.merge(originalBook) //issues select and copies new value to the selected object
@@ -158,13 +159,15 @@ class BookDaoTest {
      */
     @Test
     void "lock() is a trick that allows attaching of the object without issuing select"() {
-        Book originalBook = new Book(title: "I'm going to be stored!")
+        Book originalBook = new Book(title: "First value which is not going to be overwritten")
         sut.save(originalBook)
-        sut.session().evict(originalBook)
+        evict(originalBook)
 
         originalBook.title = "Updated by merge"
         sut.session().buildLockRequest(LockOptions.NONE).lock(originalBook) //now object is in the session
         sut.session().flush() //does not issue because Hibernate doesn't know that object was changed
+        evict(originalBook)
+        assert sut.get(originalBook.id).title == "First value which is not going to be overwritten"
     }
 
     @Test
@@ -194,6 +197,17 @@ class BookDaoTest {
 
         sut.saveOrUpdate(book)//save() is actually invoked under the hood, which inserts a new record
         assert book.id != originalId
+    }
+
+    /**
+     * Flushes session and evicts the specified entity from it. Flush is actually very important: if we use sequences,
+     * the object might not been inserted yet, evicting it without flushing will result in object being never inserted.
+     *
+     * @param entity an entity to be removed from first level cache
+     */
+    private void evict(Object entity) {
+        sut.session().flush()
+        sut.session().evict(entity)
     }
 
     @Autowired
