@@ -5,9 +5,8 @@
 <hibernate-mapping package="org.javatalks.training.hibernate.entity">
   <class name="Book" table="book">
     <id name="id">
-      <!--Asks database to generate the ID. Then either gets the generated id via additional select, or
-      uses JDBC support for returning them. Note, that when it comes to Oracle, it uses sequence and thus
-      we need explicitly specify the sequence name, or it will use HIBERNATE_SEQUENCE by default-->
+      <!--Asks database to generate the ID according to THIS database' default strategy. It might be
+      IdentityGenerator (MySQL), SequenceGenerator (Oracle, Postgres), TableHiLoGenerator (Derby).-->
       <generator class="native"/>
     </id>
     <property name="title"/>
