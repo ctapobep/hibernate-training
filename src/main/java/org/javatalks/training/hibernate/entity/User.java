@@ -35,24 +35,33 @@ public class User {
     }
 
     /**
-     * This is a method for pervert guys, but we need it. Only DAO has to use this method because while fetching objects
-     * from DB, DAO may decide not to load a full User, but leave some its fields not initialized. If we were just
-     * creating and setting an empty collection here, users of the API would not distinguish between 'the collection is
-     * really empty' and 'collection is not initialized during the fetch' cases.
-     *
-     * @param books the collection that may or may not be initialized during the fetching from DB
-     * @return this
+     * Replaces the current list of books by removing previous ones and setting the new collection of books. For each
+     * specified book, the author is set to the current user in this method.
+     * @param books books to be set instead of previous ones
      */
-    public User setBooksByDao(Set<Book> books) {
-        this.books = books;
-        return this;
-    }
-
     public void setBooks(Collection<Book> books) {
         removeAllBooks();
         for (Book book : books) {
             addBook(book);
         }
+    }
+
+    /**
+     * Internal hidden getter for ORM-only usage. Now we can freely use {@link #setBooks(java.util.Collection)} method
+     * and put some additional logic there without fear that it breaks something inside Hibernate.
+     *
+     * @return the internal list of books
+     */
+    Set<Book> getBooksByOrm() {
+        return books;
+    }
+
+    /**
+     * Accessible only by Hibernate, because we don't want any logic being put into an accessor that is used by ORM.
+     * @param books the books collection to be just set to the field, without copying the elements or anything
+     */
+    void setBooksByOrm(Set<Book> books) {
+        this.books = books;
     }
 
     public void addBook(Book book) {

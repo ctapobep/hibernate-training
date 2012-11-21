@@ -5,9 +5,12 @@
 <hibernate-mapping package="org.javatalks.training.hibernate.entity">
   <class name="User" table="users">
     <id name="id">
-      <!--you have to manually assign the value-->
-      <generator class="assigned"/>
+      <generator class="native"/>
     </id>
-    <property name="username"/>
+    <property name="username" />
+    <set name="booksByOrm">
+      <key column="author_id" foreign-key="book_author_fk"/>
+      <one-to-many class="User"/>
+    </set>
   </class>
 </hibernate-mapping>
