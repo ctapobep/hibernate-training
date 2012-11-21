@@ -18,6 +18,7 @@
         <property name="jdbcUrl" value="${jdbc.url}"/>
         <property name="user" value="${jdbc.user}"/>
         <property name="password" value="${jdbc.password}"/>
+        <property name="acquireRetryAttempts" value="1"/>
         <!--Every hour we'll be hitting DB to make sure MySQL doesn't kill the connection. By default if connection
             is idle for 8 hrs, MySQL kills it-->
         <property name="idleConnectionTestPeriod" value="3600"/>
