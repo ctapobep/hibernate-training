@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/org/javatalks/training/hibernate/appContext.xml")
-@TransactionConfiguration(defaultRollback = false)
+@TransactionConfiguration
 @Transactional
 class OneToOneTest {
     @Test
@@ -27,7 +27,8 @@ class OneToOneTest {
         libraryDao.save(library)
     }
 
-    /**I can't show this automatically, you should look at generated SQL what's the effect:
+    /**
+     * I can't show this automatically, you should look at generated SQL what's the effect:
      * <ul>
      *  <li> If the user->books is {@code inverse="true"}, then collection is the main part that saved the whole
      *    association thus you'll have a single insert of User and then 2 inserts of the book. In these inserts the
