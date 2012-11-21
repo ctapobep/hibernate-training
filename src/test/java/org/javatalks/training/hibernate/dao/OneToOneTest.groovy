@@ -43,7 +43,7 @@ class OneToOneTest {
     }
 
     private Book givenPersistedBook() {
-        Book book = new Book(title: RandomStringUtils.random(10))
+        Book book = new Book(title: RandomStringUtils.random(10, UUID.toString()))
         bookDao.save(book)
         return book
     }
