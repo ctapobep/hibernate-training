@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/org/javatalks/training/hibernate/appContext.xml")
-@TransactionConfiguration
+@TransactionConfiguration(defaultRollback = false)
 @Transactional
 class OneToOneTest {
     @Test
@@ -27,11 +27,41 @@ class OneToOneTest {
         libraryDao.save(library)
     }
 
+    /**I can't show this automatically, you should look at generated SQL what's the effect:
+     * <ul>
+     *  <li> If the user->books is {@code inverse="true"}, then collection is the main part that saved the whole
+     *    association thus you'll have a single insert of User and then 2 inserts of the book. In these inserts the
+     *    association itself will be saved which means that column author_id will carry the value of user.id.</li>
+     *  <li> If you try to set {@code inverse="false"} which is the default option, you'll see that first User is
+     *    inserted, then book is inserted because there is a cascade, and then the association is inserted as updates
+     *    to the book table, Thus you can see that inverse="false" makes Book the main side and its the Book's
+     *    responsibility to save the association.</li>
+     *  </ul>
+     *
+     *  <p>That's why in most cases the recommended option is inverse="true".</p>
+     *
+     *  Don't mix cascades and saving the association - these are different things, cascades would say
+     *  <b>"my associated Entity should be saved when I'm saved"</b>
+     *  while inverse says
+     *  <b>"my <u>association</u> with that entity should be saved when I'm saved"</b>.<br/>
+     *
+     *  But even though cascades and inversity are different things, cascades usually are set only from inverse side,
+     *  we'll talk about this later.
+     */
     @Test
     void "OTM should have a main side"() {
         User user = new User(username: "Who's the man?")
-        user.setBooks(givenPersistedBooks(10))
+        user.setBooks(givenTransientBooks(2))
         usersDao.saveOrUpdate(user)
+        usersDao.session().flush()
+    }
+
+    private static Collection<Book> givenTransientBooks(int amount = 1) {
+        Set<Book> books = new HashSet<>(amount)
+        for (int i = 0; i < amount; i++) {
+            books.add(new Book(title: RandomStringUtils.random(20, UUID.toString())))
+        }
+        return books
     }
 
     private Collection<Book> givenPersistedBooks(int amount = 1) {

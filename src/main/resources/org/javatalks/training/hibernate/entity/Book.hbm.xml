@@ -13,5 +13,6 @@
       <generator class="native"/>
     </id>
     <property name="title"/>
+    <many-to-one name="author" class="User" column="author_id" cascade="save-update"/>
   </class>
 </hibernate-mapping>

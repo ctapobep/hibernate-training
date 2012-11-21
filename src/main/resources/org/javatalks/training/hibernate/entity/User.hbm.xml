@@ -8,9 +8,9 @@
       <generator class="native"/>
     </id>
     <property name="username" />
-    <set name="booksByOrm">
+    <set name="booksByOrm" inverse="false" cascade="save-update">
       <key column="author_id" foreign-key="book_author_fk"/>
-      <one-to-many class="User"/>
+      <one-to-many class="Book" />
     </set>
   </class>
 </hibernate-mapping>
