@@ -17,13 +17,15 @@ public class CrudDao<T> implements Crud<T> {
     }
 
     @Override
-    public void save(T entity) {
+    public CrudDao<T> save(T entity) {
         session().save(entity);
+        return this;
     }
 
     @Override
-    public void update(T entity) {
+    public CrudDao<T> update(T entity) {
         session().update(entity);
+        return this;
     }
 
     @Override
@@ -47,8 +49,9 @@ public class CrudDao<T> implements Crud<T> {
     }
 
     @Override
-    public void delete(T entity) {
+    public Crud<T> delete(T entity) {
         session().delete(entity);
+        return this;
     }
 
     public long count() {

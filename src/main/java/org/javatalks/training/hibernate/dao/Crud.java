@@ -6,11 +6,11 @@ package org.javatalks.training.hibernate.dao;
  * @author stanislav bashkirtsev
  */
 public interface Crud<T> {
-    void save(T entity);
+    Crud<T> save(T entity);
 
-    void update(T entity);
+    Crud<T> update(T entity);
 
     T get(long id);
 
-    void delete(T entity);
+    Crud<T> delete(T entity);
 }
