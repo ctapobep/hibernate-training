@@ -44,6 +44,8 @@ for (int i = branches.indexOf(fromBranch) + 1; i <= branches.indexOf(toBranch); 
         return
     }
 
+    evaluate(new File("./run-tests.groovy"))
+
     String pushCommand = "git push"
     println "[HIBERNATE TRAINING] Executing [$pushCommand]"
     process = pushCommand.execute()

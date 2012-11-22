@@ -14,7 +14,7 @@ logger("liquibase", WARN)
 /**
  * This would allow us to see parameters passed into prepared statements
  */
-logger("org.hibernate.type", TRACE)
+logger("org.hibernate.type.descriptor.sql", TRACE)
 /**
  * Shows executed SQL statements. This one is better than show_sql because the latter can log only to console. Note,
  * capitalized SQL letters, it's important.
