@@ -1,6 +1,8 @@
 package org.javatalks.training.hibernate.entity;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /** @author stanislav bashkirtsev */
 public class Book {
@@ -8,6 +10,7 @@ public class Book {
     private String title;
     private BookCover cover;
     private List<Chapter> chapters;
+    private Map<String, Object> properties = new HashMap<>();
     /**
      * Book is not the main side of the association, but User is. If both sides would be able to store the whole
      * association, this might lead to the chaos, because while saving the Book, we would need for instance to load
@@ -18,12 +21,24 @@ public class Book {
      */
     private User author;
 
+    public void putProperty(String name, Object value){
+        properties.put(name, value);
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Map<String, Object> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Map<String, Object> properties) {
+        this.properties = properties;
     }
 
     public String getTitle() {

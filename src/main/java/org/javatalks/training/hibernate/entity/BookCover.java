@@ -1,9 +1,11 @@
 package org.javatalks.training.hibernate.entity;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+
 /** @author stanislav bashkirtsev */
 public class BookCover {
     private String color;
-    private boolean hard;
+    private Boolean hard;
 
     public String getColor() {
         return color;
@@ -13,11 +15,16 @@ public class BookCover {
         this.color = color;
     }
 
-    public boolean isHard() {
+    public Boolean isHard() {
         return hard;
     }
 
-    public void setHard(boolean hard) {
+    public void setHard(Boolean hard) {
         this.hard = hard;
+    }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
     }
 }
