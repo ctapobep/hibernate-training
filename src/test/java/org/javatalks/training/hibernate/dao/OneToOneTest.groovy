@@ -2,6 +2,7 @@ package org.javatalks.training.hibernate.dao
 
 import org.apache.commons.lang.math.RandomUtils
 import org.apache.commons.lang3.RandomStringUtils
+import org.hibernate.LazyInitializationException
 import org.javatalks.training.hibernate.entity.Book
 import org.javatalks.training.hibernate.entity.Chapter
 import org.javatalks.training.hibernate.entity.Library
@@ -70,6 +71,17 @@ class OneToOneTest {
         assert amountOfChaptersAfter == book.chapters.size()
     }
 
+    @Test(expected = LazyInitializationException.class)
+    void "list of embedded objects is lazy. Let's see what lazy collection is inside"() {
+        Book book = givenPersistedBookWithChapters()
+        bookDao.session().clear()
+
+        Book fromDb = bookDao.get(book.id)
+        bookDao.session().clear()
+
+        fromDb.chapters[0]
+    }
+
     private static Collection<Chapter> chapters() {
         return [
                 new Chapter(name: UUID.randomUUID().toString(), pageCount: RandomUtils.nextInt()),
@@ -84,17 +96,10 @@ class OneToOneTest {
         return books
     }
 
-    private Collection<Book> givenPersistedBooks(int amount = 1) {
-        Set<Book> books = new HashSet<>(amount)
-        for (int i = 0; i < amount; i++) {
-            books.add(givenPersistedBook())
-        }
-        return books
-    }
-
-    private Book givenPersistedBook() {
-        Book book = new Book(title: RandomStringUtils.random(10, UUID.toString()))
+    private Book givenPersistedBookWithChapters() {
+        Book book = new Book(title: RandomStringUtils.random(10, UUID.toString()), chapters: chapters())
         bookDao.save(book)
+        bookDao.session().flush()
         return book
     }
 
