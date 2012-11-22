@@ -8,6 +8,7 @@ import java.util.Set;
 public class User {
     private Long id;
     private String username;
+    private AccessCard accessCard;
     /**
      * Author is the main side of the association, so it's responsible for managing relationship. Main side has to
      * ensure that book has its author. See {@link Book} for more details on this decision.
@@ -28,6 +29,14 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public AccessCard getAccessCard() {
+        return accessCard;
+    }
+
+    public void setAccessCard(AccessCard accessCard) {
+        this.accessCard = accessCard;
     }
 
     public Set<Book> getBooks() {

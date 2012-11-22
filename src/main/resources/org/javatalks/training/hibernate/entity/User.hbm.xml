@@ -13,4 +13,17 @@
       <one-to-many class="Book" />
     </set>
   </class>
+  <class name="AccessCard" table="access_card">
+    <id name="id">
+      <generator class="native"/>
+    </id>
+    <property name="code"/>
+    <property name="type">
+      <type name="org.hibernate.type.EnumType">
+        <param name="enumClass">AccessCard$Type</param>
+        <!-- 5 means 'SMALLINT', see java.sql.Types -->
+        <param name="type">5</param>
+      </type>
+    </property>
+  </class>
 </hibernate-mapping>
