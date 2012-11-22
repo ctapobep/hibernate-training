@@ -37,7 +37,7 @@ for (int i = branches.indexOf(fromBranch) + 1; i <= branches.indexOf(toBranch); 
 
     String mergeCommand = "git merge $fromBranch"
     println "[HIBERNATE TRAINING] Executing [$mergeCommand]"
-    process = checkoutCommand.execute()
+    process = mergeCommand.execute()
     process.consumeProcessOutput(System.out, System.err)
     if (process.waitFor() != 0) {
         println "[ERROR HIBERNATE TRAINING] Return Code: [${process.exitValue()}]"
