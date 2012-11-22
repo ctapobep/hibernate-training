@@ -37,6 +37,7 @@ public class User {
 
     public void setAccessCard(AccessCard accessCard) {
         this.accessCard = accessCard;
+        accessCard.setUser(this);
     }
 
     public Set<Book> getBooks() {

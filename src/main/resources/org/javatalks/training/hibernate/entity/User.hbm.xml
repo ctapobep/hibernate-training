@@ -8,6 +8,7 @@
       <generator class="native"/>
     </id>
     <property name="username" />
+    <one-to-one name="accessCard" cascade="all"/>
     <set name="booksByOrm" inverse="false" cascade="save-update">
       <key column="author_id" foreign-key="book_author_fk"/>
       <one-to-many class="Book" />
@@ -15,14 +16,18 @@
   </class>
   <class name="AccessCard" table="access_card">
     <id name="id">
-      <generator class="native"/>
+      <generator class="foreign">
+        <param name="property">user</param>
+      </generator>
     </id>
     <property name="code"/>
+    <one-to-one name="user" class="User" constrained="true" foreign-key="card_user_fk"/>
     <property name="type">
       <type name="org.hibernate.type.EnumType">
-        <param name="enumClass">AccessCard$Type</param>
+        <param name="enumClass">org.javatalks.training.hibernate.entity.AccessCard$Type</param>
         <!-- 5 means 'SMALLINT', see java.sql.Types -->
-        <param name="type">5</param>
+        <param name="type">12</param>
+        <param name="useNamed">true</param>
       </type>
     </property>
   </class>
