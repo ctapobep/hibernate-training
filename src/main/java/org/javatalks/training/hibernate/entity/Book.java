@@ -1,9 +1,12 @@
 package org.javatalks.training.hibernate.entity;
 
+import java.util.List;
+
 /** @author stanislav bashkirtsev */
 public class Book {
     private Long id;
     private String title;
+    private List<Chapter> chapters;
     /**
      * Book is not the main side of the association, but User is. If both sides would be able to store the whole
      * association, this might lead to the chaos, because while saving the Book, we would need for instance to load
@@ -40,6 +43,14 @@ public class Book {
 
     public Long getAuthorId() {
         return author == null ? null : author.getId();
+    }
+
+    public List<Chapter> getChapters() {
+        return chapters;
+    }
+
+    public void setChapters(List<Chapter> chapters) {
+        this.chapters = chapters;
     }
 
     @Override

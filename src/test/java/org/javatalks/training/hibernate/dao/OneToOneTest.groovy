@@ -1,7 +1,9 @@
 package org.javatalks.training.hibernate.dao
 
+import org.apache.commons.lang.math.RandomUtils
 import org.apache.commons.lang3.RandomStringUtils
 import org.javatalks.training.hibernate.entity.Book
+import org.javatalks.training.hibernate.entity.Chapter
 import org.javatalks.training.hibernate.entity.Library
 import org.javatalks.training.hibernate.entity.User
 import org.junit.Test
@@ -50,17 +52,29 @@ class OneToOneTest {
      *  we'll talk about this later.
      */
     @Test
-    void "OTM should have a main side"() {
+    void "bidi-OTM should have a main side"() {
         User user = new User(username: "Who's the man?")
         user.setBooks(givenTransientBooks(2))
         usersDao.saveOrUpdate(user)
         usersDao.session().flush()
     }
 
+    @Test
+    void "list of embedded objects (components) should be stored in a separate table without primary key"() {
+        Book book = new Book(title: "Yet another book", chapters: chapters())
+        bookDao.save(book)
+    }
+
+    private static Collection<Chapter> chapters() {
+        return [
+                new Chapter(name: UUID.toString(), pageCount: RandomUtils.nextInt()),
+                new Chapter(name: UUID.toString(), pageCount: RandomUtils.nextInt())]
+    }
+
     private static Collection<Book> givenTransientBooks(int amount = 1) {
         Set<Book> books = new HashSet<>(amount)
         for (int i = 0; i < amount; i++) {
-            books.add(new Book(title: RandomStringUtils.random(20, UUID.toString())))
+            books.add(new Book(title: UUID.toString()))
         }
         return books
     }
