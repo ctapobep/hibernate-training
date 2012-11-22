@@ -18,11 +18,9 @@ String fromBranch = args[0]
 String toBranch = args[1]
 
 if (!branches.contains(fromBranch)) {
-    println "[HIBERNATE TRAINING] First argument (from-branch) is not of: $branches"
-    return
+    throw new IllegalArgumentException("[HIBERNATE TRAINING] First argument (from-branch) is not of: $branches")
 } else if (!branches.contains(toBranch)) {
-    println "[HIBERNATE TRAINING] Second argument (to-branch) is not of: $branches"
-    return
+    throw new IllegalArgumentException("[HIBERNATE TRAINING] Second argument (to-branch) is not of: $branches")
 }
 
 for (int i = branches.indexOf(fromBranch) + 1; i <= branches.indexOf(toBranch); i++) {
@@ -31,8 +29,7 @@ for (int i = branches.indexOf(fromBranch) + 1; i <= branches.indexOf(toBranch); 
     Process process = checkoutCommand.execute()
     process.consumeProcessOutput(System.out, System.err)
     if (process.waitFor() != 0) {
-        println "[ERROR HIBERNATE TRAINING] Return Code: [${process.exitValue()}]"
-        return
+        throw new IllegalStateException("[ERROR HIBERNATE TRAINING] Return Code: [${process.exitValue()}]")
     }
 
     String mergeCommand = "git merge $fromBranch"
@@ -40,16 +37,16 @@ for (int i = branches.indexOf(fromBranch) + 1; i <= branches.indexOf(toBranch); 
     process = mergeCommand.execute()
     process.consumeProcessOutput(System.out, System.err)
     if (process.waitFor() != 0) {
-        println "[ERROR HIBERNATE TRAINING] Return Code: [${process.exitValue()}]"
-        return
+        throw new IllegalStateException("[ERROR HIBERNATE TRAINING] Return Code: [${process.exitValue()}]")
     }
+
+    evaluate(new File("./run-tests.groovy"))
 
     String pushCommand = "git push"
     println "[HIBERNATE TRAINING] Executing [$pushCommand]"
     process = pushCommand.execute()
     process.consumeProcessOutput(System.out, System.err)
     if (process.waitFor() != 0) {
-        println "[ERROR HIBERNATE TRAINING] Return Code: [${process.exitValue()}]"
-        return
+        throw new IllegalStateException("[ERROR HIBERNATE TRAINING] Return Code: [${process.exitValue()}]")
     }
 }
