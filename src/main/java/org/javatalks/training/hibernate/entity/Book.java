@@ -6,6 +6,7 @@ import java.util.List;
 public class Book {
     private Long id;
     private String title;
+    private BookCover cover;
     private List<Chapter> chapters;
     /**
      * Book is not the main side of the association, but User is. If both sides would be able to store the whole
@@ -55,6 +56,14 @@ public class Book {
 
     public void setChapters(List<Chapter> chapters) {
         this.chapters = chapters;
+    }
+
+    public BookCover getCover() {
+        return cover;
+    }
+
+    public void setCover(BookCover cover) {
+        this.cover = cover;
     }
 
     @Override
