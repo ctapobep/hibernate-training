@@ -30,5 +30,5 @@ if (failedDbs.empty) {
         reason = "Tests are not covering the behavior of specific DBs"
     }
     println "[HIBERNATE TRAINING] Failed DBs: $failedDbs. Most probable reason: $reason"
-    return //in order to stop merge-to-next-branches.groovy script if tests failed
+    throw new IllegalStateException("[HIBERNATE TRAINING] Failed DBs: $failedDbs. Most probable reason: $reason") //in order to stop merge-to-next-branches.groovy script if tests failed
 }
