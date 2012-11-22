@@ -49,6 +49,10 @@ public class Book {
         return chapters;
     }
 
+    public void addChapter(Chapter chapter){
+        chapters.add(chapter);
+    }
+
     public void setChapters(List<Chapter> chapters) {
         this.chapters = chapters;
     }

@@ -9,6 +9,7 @@ import org.javatalks.training.hibernate.entity.User
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.context.transaction.TransactionConfiguration
@@ -63,18 +64,22 @@ class OneToOneTest {
     void "list of embedded objects (components) should be stored in a separate table without primary key"() {
         Book book = new Book(title: "Yet another book", chapters: chapters())
         bookDao.save(book)
+        bookDao.session().flush()
+
+        int amountOfChaptersAfter = jdbcTemplate.queryForInt("select count(*) from chapter where book_id=" + book.id)
+        assert amountOfChaptersAfter == book.chapters.size()
     }
 
     private static Collection<Chapter> chapters() {
         return [
-                new Chapter(name: UUID.toString(), pageCount: RandomUtils.nextInt()),
-                new Chapter(name: UUID.toString(), pageCount: RandomUtils.nextInt())]
+                new Chapter(name: UUID.randomUUID().toString(), pageCount: RandomUtils.nextInt()),
+                new Chapter(name: UUID.randomUUID().toString(), pageCount: RandomUtils.nextInt())]
     }
 
     private static Collection<Book> givenTransientBooks(int amount = 1) {
         Set<Book> books = new HashSet<>(amount)
         for (int i = 0; i < amount; i++) {
-            books.add(new Book(title: UUID.toString()))
+            books.add(new Book(title: UUID.randomUUID().toString()))
         }
         return books
     }
@@ -102,4 +107,5 @@ class OneToOneTest {
     @Autowired BookDao bookDao;
     @Autowired UserDao usersDao;
     @Autowired LibraryDao libraryDao;
+    @Autowired JdbcTemplate jdbcTemplate;
 }

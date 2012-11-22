@@ -20,4 +20,24 @@ public class Chapter {
     public void setPageCount(int pageCount) {
         this.pageCount = pageCount;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Chapter chapter = (Chapter) o;
+
+        if (pageCount != chapter.pageCount) return false;
+        if (!name.equals(chapter.name)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + pageCount;
+        return result;
+    }
 }
