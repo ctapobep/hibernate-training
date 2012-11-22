@@ -10,4 +10,5 @@
   <include file="/org/javatalks/training/hibernate/dbschema/postgres/AddLibraryTable.xml"/>
   <!--does not include sequences, thus can be reused in Postgres-->
   <include file="/org/javatalks/training/hibernate/dbschema/mysql/AddPublisherTable.xml"/>
+  <include file="/org/javatalks/training/hibernate/dbschema/mysql/AddChapterTable.xml"/>
 </databaseChangeLog>

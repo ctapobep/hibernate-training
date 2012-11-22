@@ -8,4 +8,5 @@
   <include file="/org/javatalks/training/hibernate/dbschema/mysql/AddBookTable.xml"/>
   <include file="/org/javatalks/training/hibernate/dbschema/mysql/AddLibraryTable.xml"/>
   <include file="/org/javatalks/training/hibernate/dbschema/mysql/AddPublisherTable.xml"/>
+  <include file="/org/javatalks/training/hibernate/dbschema/mysql/AddChapterTable.xml"/>
 </databaseChangeLog>
