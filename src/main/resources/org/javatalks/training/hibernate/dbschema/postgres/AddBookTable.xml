@@ -7,7 +7,7 @@
   <changeSet id="AddBookTable" author="ctapobep">
     <sql>
       create table book (
-        id bigint NOT NULL DEFAULT nextval('hibernate_sequence'),
+        id bigint PRIMARY KEY DEFAULT nextval('hibernate_sequence'),
         title varchar(255) NOT NULL,
         author_id bigint);
     </sql>
