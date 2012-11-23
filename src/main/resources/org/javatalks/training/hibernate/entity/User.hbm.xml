@@ -22,6 +22,12 @@
       <key column="author_id" foreign-key="book_author_fk"/>
       <one-to-many class="Book"/>
     </set>
+    <!--optional means that row should be inserted if both sides are not nulls-->
+    <join table="user_reserved_desk" optional="true">
+      <key column="user_id" unique="true" foreign-key="reserved_desk_user_fk" />
+      <many-to-one name="reservedDesk" column="reserved_desk_id" unique="true" unique-key="user_reserved_desk_id_uk"
+                   cascade="save-update"/>
+    </join>
   </class>
 
   <class name="AccessCard" table="access_card">
@@ -68,5 +74,15 @@
     </id>
     <many-to-one name="user" column="user_id" unique="true" unique-key="rented_pc_user_id_uk"
                  foreign-key="rented_pc_user_fk" cascade="save-update"/>
+  </class>
+  <class name="ReservedDesk" table="reserved_desk">
+    <id name="id">
+      <generator class="native"/>
+    </id>
+    <property name="number"/>
+    <join table="user_reserved_desk" optional="true" inverse="true">
+      <key column="reserved_desk_id" foreign-key="user_reserved_desk_to_desk_fk" />
+      <many-to-one name="userReserved" column="user_id"/>
+    </join>
   </class>
 </hibernate-mapping>

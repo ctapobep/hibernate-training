@@ -7,6 +7,7 @@ import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.BeanPropertyRowMapper
 import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.context.transaction.TransactionConfiguration
@@ -140,6 +141,17 @@ class OneToOneTest {
 
         User fromDb = userDao.get(user.id)
         assertReflectionEquals(user, fromDb)
+    }
+
+    @Test
+    @Rollback(false)
+    void "OTO with joined table demonstration"() {
+        User user = userWithCard()
+        userDao.save(user).session().flush()
+
+        user.reservedDesk = new ReservedDesk(userReserved: user, number: 12)
+        userDao.session().flush()
+        assert jdbc.queryForInt("select count(*) from user_reserved_desk where user_id=" + user.id + " and reserved_desk_id=" + user.reservedDesk.id) == 1
     }
 
     private static User userWithCard() {

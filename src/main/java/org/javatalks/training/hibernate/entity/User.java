@@ -13,6 +13,7 @@ public class User {
     private AccountForPaidUsers account;
     private Passport passport;
     private RentedPc rentedPc;
+    private ReservedDesk reservedDesk;
 
     /**
      * Author is the main side of the association, so it's responsible for managing relationship. Main side has to
@@ -26,6 +27,14 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public ReservedDesk getReservedDesk() {
+        return reservedDesk;
+    }
+
+    public void setReservedDesk(ReservedDesk reservedDesk) {
+        this.reservedDesk = reservedDesk;
     }
 
     public RentedPc getRentedPc() {
