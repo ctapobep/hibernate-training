@@ -18,6 +18,10 @@
     <one-to-one name="account" cascade="all"/>
     <many-to-one name="rentedPc" column="rented_pc_id" foreign-key="user_rented_pc_fk"
                  unique="true" unique-key="user_rented_pc_id_uk"/>
+    <set name="booksByOrm" inverse="false" cascade="save-update">
+      <key column="author_id" foreign-key="book_author_fk"/>
+      <one-to-many class="Book"/>
+    </set>
     <!--optional means that row should be inserted if both sides are not nulls-->
     <join table="user_reserved_desk" optional="true">
       <key column="user_id" unique="true" foreign-key="reserved_desk_user_fk" />
@@ -40,7 +44,6 @@
       </type>
     </property>
   </class>
-
   <class name="AccountForPaidUsers" table="user_account">
     <id name="id">
       <generator class="foreign">
@@ -51,7 +54,6 @@
     <property name="number"/>
     <property name="availableMoney" column="available_money"/>
   </class>
-
   <class name="DiscountCard" table="discount_card">
     <id name="id">
       <generator class="native"/>
