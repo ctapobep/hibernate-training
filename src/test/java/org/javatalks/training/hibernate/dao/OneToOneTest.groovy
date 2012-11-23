@@ -144,7 +144,6 @@ class OneToOneTest {
     }
 
     @Test
-    @Rollback(false)
     void "OTO with joined table demonstration"() {
         User user = userWithCard()
         userDao.save(user).session().flush()
