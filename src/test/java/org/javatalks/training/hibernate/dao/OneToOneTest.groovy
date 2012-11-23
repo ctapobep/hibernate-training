@@ -104,7 +104,7 @@ class OneToOneTest {
     }
 
     @Test
-    void "MTO with inverse OTO gives access to main side from secondary side and it's never lazy"() {
+    void "MTO with inverse OTO gives access to main side from secondary side, but it's never lazy"() {
         User user = userWithCard()
         user.passport = new Passport(issuer: "Some cool organization")
         userDao.save(user).session().flush()
@@ -112,6 +112,34 @@ class OneToOneTest {
 
         Passport fromDb = userDao.session().get(Passport.class, user.passport.id) as Passport
         assert fromDb.user == user
+    }
+
+    @Test
+    void "MTO with inverse OTO may have nulls from any side"() {
+        Passport passport = new Passport(issuer: "Some cool organization")
+        userDao.session().save(passport)
+        userDao.session().flush()
+        userDao.session().clear()
+
+        Passport fromDb = userDao.session().get(Passport.class, passport.id) as Passport
+        assert fromDb.user == null
+    }
+
+    /**
+     * This kind of association does not guarantee consistency. You may find yourself in a situation when user1 has pc1,
+     * and in the same time you can have pc1 having user2. In order to guarantee consistency, you need to have a
+     * separate join table.
+     */
+    @Test
+    void "MTO from both sides demo"() {
+        User user = userWithCard()
+        RentedPc pc = new RentedPc(user: user)
+        userDao.session().save(pc)
+        userDao.session().flush()
+        userDao.session().clear()
+
+        User fromDb = userDao.get(user.id)
+        assertReflectionEquals(user, fromDb)
     }
 
     private static User userWithCard() {
