@@ -1,5 +1,6 @@
 package org.javatalks.training.hibernate.dao
 
+import org.javatalks.training.hibernate.entity.AccessCard
 import org.javatalks.training.hibernate.entity.Book
 import org.javatalks.training.hibernate.entity.Library
 import org.javatalks.training.hibernate.entity.User
@@ -21,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional
 class BidirectionalAssociationTest {
     @Test
     void "OTO doesn't use lazy loading by default"() {
-        User user = new User(username: "I'm not lazy!")
+        User user = givenUser()
         Library library = new Library(name: "I have a non-lazy owner", owner: user)
         libraryDao.save(library)
     }
@@ -50,12 +51,11 @@ class BidirectionalAssociationTest {
      */
     @Test
     void "bidi-OTM should have a main side"() {
-        User user = new User(username: "Who's the man?")
+        User user = givenUser()
         user.setBooks(givenTransientBooks(2))
         usersDao.saveOrUpdate(user)
         usersDao.session().flush()
     }
-
 
     private static Collection<Book> givenTransientBooks(int amount = 1) {
         Set<Book> books = new HashSet<>(amount)
@@ -63,6 +63,12 @@ class BidirectionalAssociationTest {
             books.add(new Book(title: UUID.randomUUID().toString()))
         }
         return books
+    }
+
+    private static User givenUser() {
+        AccessCard card = new AccessCard(code: "EK91234", type: AccessCard.Type.USUAL)
+        User user = new User(username: "I'm the One", accessCard: card)
+        return user
     }
 
     @Autowired UserDao usersDao;

@@ -11,6 +11,7 @@
     </id>
     <property name="username" />
     <one-to-one name="accessCard" cascade="all" constrained="true" foreign-key="user_card_fk" />
+    <one-to-one name="account" cascade="all"/>
     <set name="booksByOrm" inverse="false" cascade="save-update">
       <key column="author_id" foreign-key="book_author_fk"/>
       <one-to-many class="Book" />
@@ -30,5 +31,15 @@
         <param name="useNamed">true</param>
       </type>
     </property>
+  </class>
+  <class name="AccountForPaidUsers">
+    <id name="id">
+      <generator class="foreign">
+        <param name="property">user</param>
+      </generator>
+    </id>
+    <one-to-one name="user" constrained="true" foreign-key="account_user_fk"/>
+    <property name="number"/>
+    <property name="availableMoney" column="available_money"/>
   </class>
 </hibernate-mapping>

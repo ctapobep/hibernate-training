@@ -1,6 +1,8 @@
 package org.javatalks.training.hibernate.dao
 
+import org.hibernate.LazyInitializationException
 import org.javatalks.training.hibernate.entity.AccessCard
+import org.javatalks.training.hibernate.entity.AccountForPaidUsers
 import org.javatalks.training.hibernate.entity.User
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -48,9 +50,28 @@ class OneToOneTest {
      * association, that's why in this case we don't have laziness.
      */
     @Test
+    void "OTO with shared PK cannot be lazy"() {
+        User user = userWithCard()
+        user.account = new AccountForPaidUsers(user: user, number: "123", availableMoney: 10.0)
+        userDao.save(user).session().flush()
+        userDao.session().clear()
+
+        User fromDb = userDao.get(user.id)
+        fromDb.books = user.books//get rid of noise
+        fromDb.accessCard = user.accessCard//get rid of noise
+        userDao.session().clear()
+
+        assertReflectionEquals(user.account, fromDb.account)
+    }
+
+    /**
+     * Weeell. Actually OTO can be lazy, but you need to configure constraint="true" so that Hibernate knows exactly
+     * that association <b>always</b> exists. So now Hibernate can create proxy because it's sure the association will
+     * be loaded from DB.
+     */
+    @Test(expected = LazyInitializationException.class)
     void "OTO with shared PK is not lazy by default"() {
-        def card = new AccessCard(code: "EK91234", type: AccessCard.Type.USUAL)
-        User user = new User(username: "I'm the One", accessCard: card)
+        User user = userWithCard()
         userDao.save(user).session().flush()
         userDao.session().clear()
 
@@ -58,7 +79,13 @@ class OneToOneTest {
         fromDb.books = user.books//get rid of lazy collection
         userDao.session().clear()
 
-        assertReflectionEquals(card, fromDb.accessCard)
+        assertReflectionEquals(user, fromDb)
+    }
+
+    private static User userWithCard() {
+        AccessCard card = new AccessCard(code: "EK91234", type: AccessCard.Type.USUAL)
+        User user = new User(username: "I'm the One", accessCard: card)
+        return user
     }
 
     @Autowired UserDao userDao;

@@ -9,6 +9,7 @@ public class User {
     private Long id;
     private String username;
     private AccessCard accessCard;
+    private AccountForPaidUsers account;
     /**
      * Author is the main side of the association, so it's responsible for managing relationship. Main side has to
      * ensure that book has its author. See {@link Book} for more details on this decision.
@@ -21,6 +22,14 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public AccountForPaidUsers getAccount() {
+        return account;
+    }
+
+    public void setAccount(AccountForPaidUsers account) {
+        this.account = account;
     }
 
     public String getUsername() {
