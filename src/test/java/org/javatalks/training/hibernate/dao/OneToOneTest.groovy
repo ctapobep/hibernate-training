@@ -7,7 +7,6 @@ import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.BeanPropertyRowMapper
 import org.springframework.jdbc.core.JdbcTemplate
-import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.context.transaction.TransactionConfiguration
@@ -20,7 +19,7 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/org/javatalks/training/hibernate/appContext.xml")
-@TransactionConfiguration
+@TransactionConfiguration(defaultRollback = false)
 @Transactional
 class OneToOneTest {
 
@@ -56,7 +55,6 @@ class OneToOneTest {
         userDao.session().clear()
 
         User fromDb = userDao.get(user.id)
-        fromDb.books = user.books//get rid of noise
         fromDb.accessCard = user.accessCard//get rid of noise
         userDao.session().clear()
 
@@ -75,7 +73,6 @@ class OneToOneTest {
         userDao.session().clear()
 
         User fromDb = userDao.get(user.id)
-        fromDb.books = user.books//get rid of lazy collection
         userDao.session().clear()
 
         assertReflectionEquals(user, fromDb)
@@ -135,6 +132,7 @@ class OneToOneTest {
     void "MTO from both sides demo"() {
         User user = userWithCard()
         RentedPc pc = new RentedPc(user: user)
+        user.rentedPc = pc
         userDao.session().save(pc)
         userDao.session().flush()
         userDao.session().clear()
