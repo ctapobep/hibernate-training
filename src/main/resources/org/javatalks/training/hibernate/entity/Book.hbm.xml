@@ -8,7 +8,6 @@
       <generator class="native"/>
     </id>
     <property name="title"/>
-    <many-to-one name="author" class="User" column="author_id"/>
     <component name="cover" class="BookCover">
       <property name="color"/>
       <property name="hard"/>
