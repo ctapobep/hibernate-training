@@ -5,27 +5,27 @@
 <hibernate-mapping package="org.javatalks.training.hibernate.entity">
   <class name="User" table="users">
     <id name="id">
-      <generator class="native"/>
+      <generator class="foreign">
+        <param name="property">accessCard</param>
+      </generator>
     </id>
     <property name="username" />
-    <one-to-one name="accessCard" cascade="all"/>
+    <one-to-one name="accessCard" cascade="all" constrained="true" foreign-key="user_card_fk" />
     <set name="booksByOrm" inverse="false" cascade="save-update">
       <key column="author_id" foreign-key="book_author_fk"/>
       <one-to-many class="Book" />
     </set>
   </class>
+
   <class name="AccessCard" table="access_card">
     <id name="id">
-      <generator class="foreign">
-        <param name="property">user</param>
-      </generator>
+      <generator class="native"/>
     </id>
     <property name="code"/>
-    <one-to-one name="user" class="User" constrained="true" foreign-key="card_user_fk"/>
     <property name="type">
       <type name="org.hibernate.type.EnumType">
         <param name="enumClass">org.javatalks.training.hibernate.entity.AccessCard$Type</param>
-        <!-- 5 means 'SMALLINT', see java.sql.Types -->
+        <!-- 12 means 'VARCHAR', see java.sql.Types -->
         <param name="type">12</param>
         <param name="useNamed">true</param>
       </type>

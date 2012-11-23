@@ -14,7 +14,6 @@ public class AccessCard {
     private long id;
     private String code;
     private Type type;
-    private User user;
 
     public long getId() {
         return id;
@@ -40,11 +39,4 @@ public class AccessCard {
         this.type = type;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }
