@@ -11,6 +11,10 @@
     </id>
     <property name="username" />
     <one-to-one name="accessCard" cascade="all" constrained="true" foreign-key="user_card_fk" />
+    <many-to-one name="discountCard" cascade="all" column="discount_card_id" foreign-key="user_discount_card_fk"
+                 unique="true" unique-key="discount_id_uk"/>
+    <many-to-one name="passport" cascade="all" column="passport_id" foreign-key="user_passport_fk"
+                 unique-key="passport_id_uk" unique="true"/>
     <one-to-one name="account" cascade="all"/>
     <set name="booksByOrm" inverse="false" cascade="save-update">
       <key column="author_id" foreign-key="book_author_fk"/>
@@ -32,7 +36,7 @@
       </type>
     </property>
   </class>
-  <class name="AccountForPaidUsers">
+  <class name="AccountForPaidUsers" table="user_account">
     <id name="id">
       <generator class="foreign">
         <param name="property">user</param>
@@ -41,5 +45,19 @@
     <one-to-one name="user" constrained="true" foreign-key="account_user_fk"/>
     <property name="number"/>
     <property name="availableMoney" column="available_money"/>
+  </class>
+  <class name="DiscountCard" table="discount_card">
+    <id name="id">
+      <generator class="native"/>
+    </id>
+    <property name="expiry"/>
+    <property name="number"/>
+  </class>
+  <class name="Passport" table="passport">
+    <id name="id">
+      <generator class="native"/>
+    </id>
+    <one-to-one name="user" class="User" property-ref="passport"/>
+    <property name="issuer"/>
   </class>
 </hibernate-mapping>

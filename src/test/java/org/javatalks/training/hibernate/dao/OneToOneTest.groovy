@@ -1,9 +1,7 @@
 package org.javatalks.training.hibernate.dao
 
 import org.hibernate.LazyInitializationException
-import org.javatalks.training.hibernate.entity.AccessCard
-import org.javatalks.training.hibernate.entity.AccountForPaidUsers
-import org.javatalks.training.hibernate.entity.User
+import org.javatalks.training.hibernate.entity.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -80,6 +78,40 @@ class OneToOneTest {
         userDao.session().clear()
 
         assertReflectionEquals(user, fromDb)
+    }
+
+    @Test(expected = LazyInitializationException.class)
+    void "OTO foreign key association (via MTO) has additional column and thus lazy by default"() {
+        User user = userWithCard()
+        user.discountCard = new DiscountCard(expiry: new Date(), number: "NU07")
+        userDao.save(user).session().flush()
+        userDao.session().clear()
+
+        User fromDb = userDao.get(user.id)
+        userDao.session().clear()
+        fromDb.discountCard.number
+    }
+
+    @Test
+    void "MTO with inverse OTO gives access to main side from secondary side"() {
+        User user = userWithCard()
+        user.passport = new Passport(issuer: "Some cool organization")
+        userDao.save(user).session().flush()
+        userDao.session().clear()
+
+        User fromDb = userDao.get(user.id)
+        assert fromDb.passport.user.is(fromDb)
+    }
+
+    @Test
+    void "MTO with inverse OTO gives access to main side from secondary side and it's never lazy"() {
+        User user = userWithCard()
+        user.passport = new Passport(issuer: "Some cool organization")
+        userDao.save(user).session().flush()
+        userDao.session().clear()
+
+        Passport fromDb = userDao.session().get(Passport.class, user.passport.id) as Passport
+        assert fromDb.user == user
     }
 
     private static User userWithCard() {
