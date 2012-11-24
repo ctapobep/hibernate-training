@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.javatalks.training.hibernate.entity">
+  <class name="Book" table="book">
+    <id name="id">
+      <generator class="native"/>
+    </id>
+    <property name="title"/>
+    <list name="comments" cascade="all">
+      <key column="book_id" foreign-key="comment_book_id"/>
+      <list-index column="comment_order"/>
+      <one-to-many class="Comment"/>
+    </list>
+    <bag name="authors" inverse="true" cascade="save-update">
+      <key column="book_id" foreign-key="book_author_fk"/>
+      <one-to-many class="Author"/>
+    </bag>
+  </class>
+
+  <class name="Comment" table="comment">
+    <id name="id">
+      <generator class="native"/>
+    </id>
+    <property name="body"/>
+  </class>
+  <class name="Author" table="author">
+    <id name="id">
+      <generator class="native"/>
+    </id>
+    <property name="name"/>
+
+  </class>
+</hibernate-mapping>

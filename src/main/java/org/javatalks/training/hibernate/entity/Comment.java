@@ -1,9 +1,9 @@
 package org.javatalks.training.hibernate.entity;
 
 /** @author stanislav bashkirtsev */
-public class RentedPc {
+public class Comment {
     private long id;
-    private User user;
+    private String body;
 
     public long getId() {
         return id;
@@ -13,11 +13,11 @@ public class RentedPc {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public String getBody() {
+        return body;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setBody(String body) {
+        this.body = body;
     }
 }
