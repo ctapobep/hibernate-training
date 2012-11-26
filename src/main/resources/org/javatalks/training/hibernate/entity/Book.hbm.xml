@@ -8,14 +8,27 @@
       <generator class="native"/>
     </id>
     <property name="title" />
+
     <list name="comments" cascade="all">
       <key column="book_id" foreign-key="comment_book_id" not-null="true"/>
       <list-index column="comment_order"/>
       <one-to-many class="Comment"/>
     </list>
+
+    <list name="chapters" inverse="true" cascade="all-delete-orphan">
+      <key column="book_id" not-null="true" foreign-key="chapter_book_fk"/>
+      <list-index column="chapter_order"/>
+      <one-to-many class="Chapter"/>
+    </list>
+
     <bag name="authors" cascade="save-update">
       <key column="book_id" foreign-key="book_author_fk" not-null="true"/>
       <one-to-many class="Author"/>
+    </bag>
+
+    <bag name="bookmarks" cascade="all-delete-orphan" inverse="true">
+      <key column="book_id" foreign-key="bookmark_book_fk" not-null="true"/>
+      <one-to-many class="Bookmark"/>
     </bag>
   </class>
 
@@ -30,6 +43,22 @@
       <generator class="native"/>
     </id>
     <property name="name"/>
+  </class>
 
+  <class name="Bookmark" table="bookmark">
+    <id name="id">
+      <generator class="native"/>
+    </id>
+    <property name="name"/>
+    <property name="pageNumber"/>
+    <many-to-one name="book" class="Book" column="book_id"/>
+  </class>
+
+  <class name="Chapter" table="chapter">
+    <id name="id">
+      <generator class="native"/>
+    </id>
+    <property name="name"/>
+    <many-to-one name="book" column="book_id" />
   </class>
 </hibernate-mapping>

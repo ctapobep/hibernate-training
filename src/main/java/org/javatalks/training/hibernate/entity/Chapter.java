@@ -1,11 +1,9 @@
 package org.javatalks.training.hibernate.entity;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /** @author stanislav bashkirtsev */
-public class Author {
+public class Chapter {
     private long id;
+    private Book book;
     private String name;
 
     public long getId() {
@@ -16,6 +14,14 @@ public class Author {
         this.id = id;
     }
 
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
     public String getName() {
         return name;
     }
@@ -23,5 +29,4 @@ public class Author {
     public void setName(String name) {
         this.name = name;
     }
-
 }

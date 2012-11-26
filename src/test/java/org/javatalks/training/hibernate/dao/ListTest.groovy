@@ -1,7 +1,8 @@
 package org.javatalks.training.hibernate.dao
 
-import org.javatalks.training.hibernate.entity.Author
+import org.hibernate.HibernateException
 import org.javatalks.training.hibernate.entity.Book
+import org.javatalks.training.hibernate.entity.Chapter
 import org.javatalks.training.hibernate.entity.Comment
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -18,7 +19,8 @@ import org.springframework.transaction.annotation.Transactional
 @ContextConfiguration("/org/javatalks/training/hibernate/appContext.xml")
 @TransactionConfiguration
 @Transactional
-class CollectionsTest {
+class ListTest {
+
     @Test
     void "List demonstration"(){
         List<Comment> comments = [new Comment(body: "comment1"), new Comment(body: "comment2")]
@@ -32,16 +34,20 @@ class CollectionsTest {
         bookDao.session().flush()
     }
 
-    @Test
-    void "Bag demonstration"(){
-        List<Author> authors = [new Author(name: "a1"), new Author(name: "a2")]
-        Book book = new Book(title: "with authors", authors: authors)
+    @Test(expected = HibernateException.class)
+    void "inverse=true cannot be applied to lists because from 'one' side there is no knowledge about list index"() {
+        Book book = new Book(title: "with chapter")
+        book.addChapter(new Chapter(name: "ch1"))
         bookDao.save(book).session().flush()
         bookDao.session().clear()
 
-        Book fromDb = bookDao.get(book.id)
-        fromDb.authors.add(new Author(name: "a3"))
+        Chapter chapter = new Chapter(name: "ch2")
+        chapter.book = book
+        bookDao.session().save(chapter)
         bookDao.session().flush()
+
+        book = bookDao.get(book.id)
+        book.chapters.size()// here we get an exception
     }
 
     @Autowired BookDao bookDao;
