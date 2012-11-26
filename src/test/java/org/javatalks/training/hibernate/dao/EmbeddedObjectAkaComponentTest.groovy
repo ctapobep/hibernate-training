@@ -165,14 +165,6 @@ class EmbeddedObjectAkaComponentTest {
         return book
     }
 
-    private Book persistedBookWithComments() {
-        Book book = new Book(title: RandomStringUtils.random(10, UUID.toString()), comments: comments())
-        bookDao.save(book)
-        bookDao.session().flush()
-        return book
-    }
-
-
     @Autowired BookDao bookDao;
     @Autowired JdbcTemplate jdbcTemplate;
     @Value("\${dbname}") String dbname;
