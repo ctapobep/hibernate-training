@@ -143,13 +143,16 @@ class EmbeddedObjectAkaComponentTest {
 
     @Test
     void "bidi-components cannot reference parent if they were loaded alone"(){
-        Book book = new Book(cover: new BookCover(hard: true))
+        Book book = new Book(cover: new BookCover(hard: true, color: "blue"))
         bookDao.save(book).session().flush()
         bookDao.session().clear()
 
-        Query query = bookDao.session().createQuery("select b.cover from Book b where id = :bookId")//sadly you can't select component collection like this
+        Query query = bookDao.session().createQuery("select b.cover from Book b where id = :bookId")//sadly you can't select component collection like this, the only way - using joins
         query.setLong("bookId", book.id)
-        assert query.uniqueResult().book == null
+        BookCover coverFromDb = query.uniqueResult() as BookCover
+
+        assertReflectionEquals(book.cover, coverFromDb)
+        assert coverFromDb.book == null
     }
 
     private static Collection<Chapter> chapters() {
