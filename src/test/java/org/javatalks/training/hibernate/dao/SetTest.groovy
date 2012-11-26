@@ -1,5 +1,6 @@
 package org.javatalks.training.hibernate.dao
 
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
@@ -15,5 +16,10 @@ import org.springframework.transaction.annotation.Transactional
 @TransactionConfiguration
 @Transactional
 class SetTest {
+    @Test
+    void "tmp"(){
+
+    }
+
     @Autowired BookDao bookDao;
 }

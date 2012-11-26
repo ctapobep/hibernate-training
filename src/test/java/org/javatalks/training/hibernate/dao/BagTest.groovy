@@ -48,6 +48,7 @@ class BagTest {
         Bookmark bookmark = new Bookmark("b3", 30)
         bookmark.book = book;
         bookDao.session().save(bookmark)
+        bookDao.session().flush()
         book = bookDao.get(book.id)
         assert book.bookmarks.size() == 2
     }
