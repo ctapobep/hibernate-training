@@ -22,15 +22,26 @@ class CollectionsTest {
     @Test
     void "List demonstration"(){
         List<Comment> comments = [new Comment(body: "comment1"), new Comment(body: "comment2")]
-        Book book = new Book(comments: comments)
-        bookDao.save(book)
+        Book book = new Book(title: "with comments", comments: comments)
+        bookDao.save(book).session().flush()
+        bookDao.session().clear()
+
+        Book fromDb = bookDao.get(book.id)
+        fromDb.comments.add(new Comment(body: "comment3"))
+
+        bookDao.session().flush()
     }
 
     @Test
     void "Bag demonstration"(){
         List<Author> authors = [new Author(name: "a1"), new Author(name: "a2")]
-        Book book = new Book(authors: authors)
-        bookDao.save(book)
+        Book book = new Book(title: "with authors", authors: authors)
+        bookDao.save(book).session().flush()
+        bookDao.session().clear()
+
+        Book fromDb = bookDao.get(book.id)
+        fromDb.authors.add(new Author(name: "a3"))
+        bookDao.session().flush()
     }
 
     @Autowired BookDao bookDao;
