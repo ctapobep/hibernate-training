@@ -9,6 +9,7 @@
     </id>
     <property name="title"/>
     <component name="cover" class="BookCover">
+      <parent name="book"/>
       <property name="color"/>
       <property name="hard"/>
     </component>

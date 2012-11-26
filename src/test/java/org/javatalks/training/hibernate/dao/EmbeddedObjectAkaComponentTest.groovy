@@ -3,6 +3,7 @@ package org.javatalks.training.hibernate.dao
 import org.apache.commons.lang.math.RandomUtils
 import org.apache.commons.lang3.RandomStringUtils
 import org.hibernate.LazyInitializationException
+import org.hibernate.Query
 import org.javatalks.training.hibernate.entity.Book
 import org.javatalks.training.hibernate.entity.BookCover
 import org.javatalks.training.hibernate.entity.Chapter
@@ -87,7 +88,7 @@ class EmbeddedObjectAkaComponentTest {
 
     @Test(expected = LazyInitializationException.class)
     void "list of embedded objects is lazy. Let's see what lazy collection is inside"() {
-        Book book = givenPersistedBookWithChapters()
+        Book book = persistedBookWithChapters()
         bookDao.session().clear()
 
         Book fromDb = bookDao.get(book.id)
@@ -130,14 +131,42 @@ class EmbeddedObjectAkaComponentTest {
         assert fromDb.properties == null
     }
 
+    @Test
+    void "bidi-components can reference parent"(){
+        Book book = new Book(cover: new BookCover(hard: true))
+        bookDao.save(book).session().flush()
+        bookDao.session().clear()
+
+        Book fromDb = bookDao.get(book.id)
+        assert fromDb.is(fromDb.cover.book)
+    }
+
+    @Test
+    void "bidi-components cannot reference parent if they were loaded alone"(){
+        Book book = new Book(cover: new BookCover(hard: true))
+        bookDao.save(book).session().flush()
+        bookDao.session().clear()
+
+        Query query = bookDao.session().createQuery("select b.cover from Book b where id = :bookId")//sadly you can't select component collection like this
+        query.setLong("bookId", book.id)
+        assert query.uniqueResult().book == null
+    }
+
     private static Collection<Chapter> chapters() {
         return [
                 new Chapter(name: UUID.randomUUID().toString(), pageCount: RandomUtils.nextInt()),
                 new Chapter(name: UUID.randomUUID().toString(), pageCount: RandomUtils.nextInt())]
     }
 
-    private Book givenPersistedBookWithChapters() {
+    private Book persistedBookWithChapters() {
         Book book = new Book(title: RandomStringUtils.random(10, UUID.toString()), chapters: chapters())
+        bookDao.save(book)
+        bookDao.session().flush()
+        return book
+    }
+
+    private Book persistedBookWithComments() {
+        Book book = new Book(title: RandomStringUtils.random(10, UUID.toString()), comments: comments())
         bookDao.save(book)
         bookDao.session().flush()
         return book

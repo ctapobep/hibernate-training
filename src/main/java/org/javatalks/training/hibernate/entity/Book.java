@@ -12,7 +12,7 @@ public class Book {
     private List<Chapter> chapters;
     private Map<String, Object> properties = new HashMap<>();
 
-    public void putProperty(String name, Object value){
+    public void putProperty(String name, Object value) {
         properties.put(name, value);
     }
 
@@ -44,7 +44,7 @@ public class Book {
         return chapters;
     }
 
-    public void addChapter(Chapter chapter){
+    public void addChapter(Chapter chapter) {
         chapters.add(chapter);
     }
 

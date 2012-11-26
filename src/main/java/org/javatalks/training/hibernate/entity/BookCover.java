@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 public class BookCover {
     private String color;
     private Boolean hard;
+    private Book book;
 
     public String getColor() {
         return color;
@@ -21,6 +22,14 @@ public class BookCover {
 
     public void setHard(Boolean hard) {
         this.hard = hard;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 
     @Override
