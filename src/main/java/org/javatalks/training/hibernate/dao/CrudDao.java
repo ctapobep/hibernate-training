@@ -58,6 +58,16 @@ public class CrudDao<T> implements Crud<T> {
         return (long) session().createQuery("select count(*) from " + entityClass.getSimpleName()).uniqueResult();
     }
 
+    /** Convenient method for tests-only purpose. */
+    protected void flushAndClearSession() {
+        session().flush();
+        session().clear();
+    }
+    /** Convenient method for tests-only purpose. */
+    protected void flushSession() {
+        session().flush();
+    }
+
     /**
      * This method will be handy for both this class and its test.
      *

@@ -21,34 +21,56 @@ import org.springframework.transaction.annotation.Transactional
 class BagTest {
 
     @Test
-    void "unidirectional bag (and thus inverse=false) is not effective at all"(){
-        List<Author> authors = [new Author(name: "a1"), new Author(name: "a2")]
-        Book book = new Book(title: "with authors", authors: authors)
+    void "unidirectional bag (and thus inverse=false) issues update for every its elements"() {
+        Book book = new Book(title: "with authors", authors: [new Author(name: "a1"), new Author(name: "a2")])
         bookDao.save(book).session().flush()
-        bookDao.session().clear()
+    }
+
+    @Test
+    void "bag inverse=false issues delete if element is removed from collection (unless it has not-null=true)"() {
+        Book book = new Book(title: "with authors", authors: [new Author(name: "a1"), new Author(name: "a2")])
+        bookDao.save(book).flushAndClearSession()
 
         Book fromDb = bookDao.get(book.id)
-        fromDb.authors.add(new Author(name: "a3"))
-        fromDb.authors.add(new Author(name: "a4"))
-        bookDao.session().flush()
-        bookDao.session().clear()
-
-        fromDb = bookDao.get(book.id)
-        fromDb.authors.add(new Author(name: "a5"))
-        bookDao.session().flush()
+        fromDb.authors.remove(0)
+        bookDao.flushSession()
     }
+
+    @Test
+    void "bag does not duplicate elements on DB level"() {
+        Book original = new Book(title: "with authors", authors: [new Author(name: "a1"), new Author(name: "a2")])
+        bookDao.save(original).session().flush()
+        original.authors.add(original.authors[0])//adding an element that's already there
+        bookDao.flushAndClearSession()
+
+        Book fromDb = bookDao.get(original.id)
+        assert fromDb.authors.size() == original.authors.size() - 1
+    }
+
+    @Test
+    void "unidirectional bag. changing the owner of element simply changes book_id in author table"() {
+        Book original = new Book(title: "with authors", authors: [new Author(name: "a1"), new Author(name: "a2")])
+        bookDao.save(original).session().flush()
+
+        Book newBook = new Book(title: "stealing an author")
+        newBook.authors.add(original.authors[0]) //now the whole association will be saved for this new book
+        bookDao.save(newBook).flushAndClearSession()
+
+        Book originalFromDb = bookDao.get(original.id)
+        assert originalFromDb.authors.size() == original.authors.size() - 1
+    }
+
 
     @Test
     void "bidi bag with inverse=true is the most effective collection ever!"(){
         Book book = new Book(title: "bags are the best")
         book.addBookmark(new Bookmark("b1", 10))
-        bookDao.save(book).session().flush()
-        bookDao.session().clear()
+        bookDao.save(book).flushAndClearSession()
 
         Bookmark bookmark = new Bookmark("b3", 30)
-        bookmark.book = book;
+        bookmark.book = book
         bookDao.session().save(bookmark)
-        bookDao.session().flush()
+        bookDao.flushAndClearSession()
         book = bookDao.get(book.id)
         assert book.bookmarks.size() == 2
     }

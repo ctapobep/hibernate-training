@@ -21,8 +21,8 @@
       <one-to-many class="Chapter"/>
     </list>
 
-    <bag name="authors" cascade="save-update">
-      <key column="book_id" foreign-key="book_author_fk" not-null="true"/>
+    <bag name="authors" cascade="all">
+      <key column="book_id" foreign-key="book_author_fk" />
       <one-to-many class="Author"/>
     </bag>
 
