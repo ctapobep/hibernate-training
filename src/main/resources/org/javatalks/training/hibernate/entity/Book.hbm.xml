@@ -30,6 +30,11 @@
       <key column="book_id" foreign-key="bookmark_book_fk" not-null="true"/>
       <one-to-many class="Bookmark"/>
     </bag>
+
+    <bag name="appendixes" table="book_appendix" inverse="true" cascade="save-update">
+      <key column="book_id"/>
+      <many-to-many class="Appendix" column="appendix_id" unique="true"/>
+    </bag>
   </class>
 
   <class name="Comment" table="comment">
@@ -60,5 +65,16 @@
     </id>
     <property name="name"/>
     <many-to-one name="book" column="book_id" />
+  </class>
+
+  <class name="Appendix" table="appendix">
+    <id name="id">
+      <generator class="native"/>
+    </id>
+    <property name="name"/>
+    <join table="book_appendix" optional="true">
+      <key column="appendix_id" unique="true" not-null="true"/>
+      <many-to-one name="book" column="book_id" />
+    </join>
   </class>
 </hibernate-mapping>

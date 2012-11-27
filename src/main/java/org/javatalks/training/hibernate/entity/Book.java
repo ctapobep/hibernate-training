@@ -9,8 +9,9 @@ public class Book {
     private long id;
     private String title;
     private List<Comment> comments = new ArrayList<>();
-    private List<Author> authors = new ArrayList<>();
-    private Collection<Bookmark> bookmarks = new ArrayList<>();
+    private List<Author> authors = new ArrayList<>();//uni-bag
+    private Collection<Bookmark> bookmarks = new ArrayList<>();//bidi-bag
+    private Collection<Appendix> appendixes = new ArrayList<>();//bidi-bag: MTO with joined table
     private List<Chapter> chapters = new ArrayList<>();
 
     public long getId() {
@@ -19,6 +20,14 @@ public class Book {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Collection<Appendix> getAppendixes() {
+        return appendixes;
+    }
+
+    public void setAppendixes(Collection<Appendix> appendixes) {
+        this.appendixes = appendixes;
     }
 
     public List<Chapter> getChapters() {
