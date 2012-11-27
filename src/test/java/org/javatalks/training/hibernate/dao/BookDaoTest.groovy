@@ -60,7 +60,7 @@ class BookDaoTest {
     }
 
     @Test(expected = ObjectNotFoundException.class)
-    void "load() will throw if there is no such record in DB when we initialize the proxy"(){
+    void "load() will throw if there is no such record in DB when we initialize the proxy"() {
         Book book = sut.load(-1L)
         book.title
     }
@@ -113,7 +113,7 @@ class BookDaoTest {
     }
 
     @Test
-    void "merge() is saving if object was transient"(){
+    void "merge() is saving if object was transient"() {
         Book toBeMerged = new Book(title: "I'm going to be stored!")
         Book merged = (Book) sut.merge(toBeMerged)//after that original object should be thrown away!
 
@@ -122,7 +122,7 @@ class BookDaoTest {
     }
 
     @Test
-    void "merge() does nothing if object is in session"(){
+    void "merge() does nothing if object is in session"() {
         Book originalBook = new Book(title: "I'm going to be stored!")
         sut.save(originalBook)
 
@@ -131,7 +131,7 @@ class BookDaoTest {
     }
 
     @Test
-    void "merge() is attaching if object was detached"(){
+    void "merge() is attaching if object was detached"() {
         Book originalBook = new Book(title: "I'm going to be stored!")
         sut.save(originalBook)
         evict(originalBook)
@@ -141,7 +141,7 @@ class BookDaoTest {
     }
 
     @Test
-    void "merge() is updating if object was detached and changed"(){
+    void "merge() is updating if object was detached and changed"() {
         Book originalBook = new Book(title: "I'm going to be stored!")
         sut.save(originalBook)
         evict(originalBook)
