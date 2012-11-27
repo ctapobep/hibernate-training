@@ -4,11 +4,9 @@ import org.javatalks.training.hibernate.entity.Appendix
 import org.javatalks.training.hibernate.entity.Author
 import org.javatalks.training.hibernate.entity.Book
 import org.javatalks.training.hibernate.entity.Bookmark
-import org.javatalks.training.hibernate.entity.Reviewer
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.context.transaction.TransactionConfiguration
@@ -30,7 +28,7 @@ class BagTest {
     }
 
     @Test
-    void "bag inverse=false issues delete if element is removed from collection (unless it has not-null=true)"() {
+    void "inverse=false issues delete if element is removed from collection (unless it has not-null=true)"() {
         Book book = new Book(title: "with authors", authors: [new Author(name: "a1"), new Author(name: "a2")])
         bookDao.save(book).flushAndClearSession()
 
@@ -51,7 +49,7 @@ class BagTest {
     }
 
     @Test
-    void "unidirectional bag. changing the owner of element simply changes book_id in author table"() {
+    void "unidirectional. changing the owner of element simply changes book_id in author table"() {
         Book original = new Book(title: "with authors", authors: [new Author(name: "a1"), new Author(name: "a2")])
         bookDao.save(original).session().flush()
 
@@ -85,6 +83,11 @@ class BagTest {
 
         Book fromDb = bookDao.get(book.id)
         assert fromDb.appendixes == book.appendixes
+    }
+
+    @Test
+    void "bidi MTM with bags"() {
+
     }
 
     @Autowired BookDao bookDao;

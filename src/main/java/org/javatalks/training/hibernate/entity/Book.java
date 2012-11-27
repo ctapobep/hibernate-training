@@ -12,6 +12,7 @@ public class Book {
     private List<Author> authors = new ArrayList<>();//uni-bag
     private Collection<Bookmark> bookmarks = new ArrayList<>();//bidi-bag
     private Collection<Appendix> appendixes = new ArrayList<>();//bidi-bag: MTO with joined table
+    private Collection<Reviewer> reviewers = new ArrayList<>();//bidi-bag: MTM
     private List<Chapter> chapters = new ArrayList<>();
 
     public long getId() {
@@ -20,6 +21,14 @@ public class Book {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Collection<Reviewer> getReviewers() {
+        return reviewers;
+    }
+
+    public void setReviewers(Collection<Reviewer> reviewers) {
+        this.reviewers = reviewers;
     }
 
     public Collection<Appendix> getAppendixes() {
