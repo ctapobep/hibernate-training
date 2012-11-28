@@ -1,16 +1,16 @@
 package org.javatalks.training.hibernate.dao
 
-import org.javatalks.training.hibernate.entity.Appendix
-import org.javatalks.training.hibernate.entity.Author
-import org.javatalks.training.hibernate.entity.Book
-import org.javatalks.training.hibernate.entity.Bookmark
+import org.javatalks.training.hibernate.entity.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.context.transaction.TransactionConfiguration
 import org.springframework.transaction.annotation.Transactional
+
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals
 
 /**
  * @author stanislav bashkirtsev
@@ -86,8 +86,36 @@ class BagTest {
     }
 
     @Test
-    void "bidi MTM with bags"() {
+    void "bidi MTM with bags. loading works from both sides"() {
+        def reviewers = [new Reviewer(name: "reviewer1"), new Reviewer(name: "reviewer2")]
+        def books = [
+                new Book(title: "book1", reviewers: reviewers),
+                new Book(title: "book2", reviewers: reviewers.subList(0, 1))]
+        reviewers[0].reviewedBooks = books
+        reviewers[1].reviewedBooks = books.subList(0,1)
 
+        bookDao.save(books[0])
+        bookDao.save(books[1]).flushAndClearSession()
+
+        def bookFromDb = bookDao.get(books[0].id)
+        println "[!!!][HIB TRAINING] Comparing [book.reviewers]"
+        assert books[0].reviewers == bookFromDb.reviewers
+        bookDao.flushAndClearSession()
+
+        Reviewer reviewerFromDb = bookDao.session().get(Reviewer.class, reviewers[1].id) as Reviewer
+        println "[!!!][HIB TRAINING] Comparing [reviewer.reviewedBooks]"
+        assert reviewers[1].reviewedBooks == reviewerFromDb.reviewedBooks
+    }
+
+    @Test
+    void "bidi MTM with bags. recreating collections when at least 1 element was added"() {
+        def reviewers = [new Reviewer(name: "reviewer1"), new Reviewer(name: "reviewer2")]
+        Book book = new Book(title: "book1", reviewers: reviewers)
+        bookDao.save(book).flushAndClearSession()
+
+        def bookFromDb = bookDao.get(book.id)
+        bookFromDb.reviewers.add(new Reviewer(name: "reviewer3"))
+        bookDao.flushSession() //look at logs, the whole collection is recreated!
     }
 
     @Autowired BookDao bookDao;

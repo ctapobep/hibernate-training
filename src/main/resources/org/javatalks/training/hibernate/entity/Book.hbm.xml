@@ -36,7 +36,7 @@
       <many-to-many class="Appendix" column="appendix_id" unique="true"/>
     </bag>
 
-    <bag name="reviewers">
+    <bag name="reviewers" inverse="false" cascade="save-update" table="book_reviewer">
       <key column="book_id" foreign-key="reviewer_book_fk"/>
       <many-to-many class="Reviewer" column="reviewer_id"/>
     </bag>
@@ -88,7 +88,7 @@
       <generator class="native"/>
     </id>
     <property name="name"/>
-    <bag name="reviewedBooks" inverse="false">
+    <bag name="reviewedBooks" inverse="true" table="book_reviewer">
       <key column="reviewer_id" foreign-key="book_reviewer_fk"/>
       <many-to-many class="Book" column="book_id"/>
     </bag>
