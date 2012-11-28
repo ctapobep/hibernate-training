@@ -6,6 +6,7 @@ import java.util.Map;
 /** @author stanislav bashkirtsev */
 public class Equipment {
     private long id;
+    private String libraryName;
     private Map<String, Table> tables = new HashMap<>();
     private Map<Shelf, Stand> shelves = new HashMap<>();
 
@@ -15,6 +16,14 @@ public class Equipment {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getLibraryName() {
+        return libraryName;
+    }
+
+    public void setLibraryName(String libraryName) {
+        this.libraryName = libraryName;
     }
 
     public Map<Shelf, Stand> getShelves() {

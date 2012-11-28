@@ -7,5 +7,39 @@
     <id name="id">
       <generator class="native"/>
     </id>
+    <property name="libraryName"/>
+    <map name="tables">
+      <key column="equipment_id"/>
+      <map-key type="java.lang.String" column="table_number"/>
+      <one-to-many class="Table"/>
+    </map>
+
+    <map name="shelves" table="shelf_stand">
+      <key column="equipment_id"/>
+      <map-key-many-to-many column="shelf_id" class="Shelf" foreign-key="stand_shelf"/>
+      <many-to-many column="stand_id" foreign-key="shelf_stand" class="Stand"/>
+    </map>
+  </class>
+
+  <class name="Shelf">
+    <id name="id">
+      <generator class="native"/>
+    </id>
+    <property name="number"/>
+  </class>
+
+  <class name="Stand">
+    <id name="id">
+      <generator class="native"/>
+    </id>
+    <property name="number"/>
+  </class>
+
+  <class name="Table">
+    <id name="id">
+      <generator class="native"/>
+    </id>
+    <property name="size"/>
+    <property name="number"/>
   </class>
 </hibernate-mapping>

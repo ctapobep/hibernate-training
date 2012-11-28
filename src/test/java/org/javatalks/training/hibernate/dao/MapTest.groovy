@@ -1,5 +1,6 @@
 package org.javatalks.training.hibernate.dao
 
+import org.javatalks.training.hibernate.entity.map.Equipment
 import org.junit.Test
 
 /**
@@ -8,6 +9,6 @@ import org.junit.Test
 class MapTest {
     @Test
     void "todo"() {
-
+        Equipment equipment = new Equipment()
     }
 }
