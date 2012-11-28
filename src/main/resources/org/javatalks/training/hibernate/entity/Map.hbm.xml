@@ -8,34 +8,34 @@
       <generator class="native"/>
     </id>
     <property name="libraryName"/>
-    <map name="tables">
+    <map name="tables" cascade="save-update">
       <key column="equipment_id"/>
       <map-key type="java.lang.String" column="table_number"/>
       <one-to-many class="Table"/>
     </map>
 
-    <map name="shelves" table="shelf_stand">
+    <map name="shelves" table="shelf_stand" cascade="save-update">
       <key column="equipment_id"/>
       <map-key-many-to-many column="shelf_id" class="Shelf" foreign-key="stand_shelf"/>
       <many-to-many column="stand_id" foreign-key="shelf_stand" class="Stand"/>
     </map>
   </class>
 
-  <class name="Shelf">
+  <class name="Shelf" table="shelf">
     <id name="id">
       <generator class="native"/>
     </id>
     <property name="number"/>
   </class>
 
-  <class name="Stand">
+  <class name="Stand" table="stand">
     <id name="id">
       <generator class="native"/>
     </id>
     <property name="number"/>
   </class>
 
-  <class name="Table">
+  <class name="Table" table="tables">
     <id name="id">
       <generator class="native"/>
     </id>
