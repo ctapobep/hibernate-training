@@ -1,8 +1,7 @@
-package org.javatalks.training.hibernate.entity;
+package org.javatalks.training.hibernate.entity.bag;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /** @author stanislav bashkirtsev */
 public class Reviewer {

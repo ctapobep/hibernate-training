@@ -1,16 +1,17 @@
 package org.javatalks.training.hibernate.dao
 
-import org.javatalks.training.hibernate.entity.*
+import org.javatalks.training.hibernate.entity.bag.Appendix
+import org.javatalks.training.hibernate.entity.bag.Author
+import org.javatalks.training.hibernate.entity.bag.Book
+import org.javatalks.training.hibernate.entity.bag.Bookmark
+import org.javatalks.training.hibernate.entity.bag.Reviewer
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.context.transaction.TransactionConfiguration
 import org.springframework.transaction.annotation.Transactional
-
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals
 
 /**
  * @author stanislav bashkirtsev

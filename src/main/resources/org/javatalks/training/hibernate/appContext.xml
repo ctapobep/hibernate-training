@@ -35,7 +35,7 @@
     <property name="dataSource" ref="dataSource"/>
     <property name="mappingResources">
       <list>
-        <value>/org/javatalks/training/hibernate/entity/Book.hbm.xml</value>
+        <value>/org/javatalks/training/hibernate/entity/Bag.hbm.xml</value>
       </list>
     </property>
     <property name="hibernateProperties">

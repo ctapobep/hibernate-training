@@ -1,9 +1,9 @@
 package org.javatalks.training.hibernate.dao
 
 import org.hibernate.HibernateException
-import org.javatalks.training.hibernate.entity.Book
-import org.javatalks.training.hibernate.entity.Chapter
-import org.javatalks.training.hibernate.entity.Comment
+import org.javatalks.training.hibernate.entity.bag.Book
+import org.javatalks.training.hibernate.entity.bag.Chapter
+import org.javatalks.training.hibernate.entity.bag.Comment
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired

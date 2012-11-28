@@ -1,4 +1,4 @@
-package org.javatalks.training.hibernate.entity;
+package org.javatalks.training.hibernate.entity.bag;
 
 import java.util.HashSet;
 import java.util.Set;

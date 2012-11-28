@@ -1,4 +1,4 @@
-package org.javatalks.training.hibernate.entity;
+package org.javatalks.training.hibernate.entity.bag;
 
 /** @author stanislav bashkirtsev */
 public class Comment {
