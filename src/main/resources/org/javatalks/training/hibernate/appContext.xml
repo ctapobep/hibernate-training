@@ -22,6 +22,9 @@
         <!--Every hour we'll be hitting DB to make sure MySQL doesn't kill the connection. By default if connection
             is idle for 8 hrs, MySQL kills it-->
         <property name="idleConnectionTestPeriod" value="3600"/>
+        <!--This option is useful if threads are waiting for the connection from pool. Without this threads would wait
+        forever and you're risking to get your app down if all the threads stuck.-->
+        <property name="checkoutTimeout" value="10000"/>
       </bean>
     </property>
   </bean>
