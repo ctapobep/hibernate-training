@@ -24,11 +24,11 @@ public class Shelf {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!Shelf.class.isInstance(o)) return false;
 
         Shelf shelf = (Shelf) o;
 
-        if (number != null ? !number.equals(shelf.number) : shelf.number != null) return false;
+        if (number != null ? !number.equals(shelf.getNumber()) : shelf.getNumber() != null) return false;
 
         return true;
     }

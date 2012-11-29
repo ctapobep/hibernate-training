@@ -15,8 +15,8 @@
     </map>
 
     <map name="shelves" table="shelf_stand" cascade="save-update">
-      <key column="equipment_id"/>
-      <map-key-many-to-many column="shelf_id" class="Shelf" foreign-key="stand_shelf"/>
+      <key column="equipment_id" foreign-key="shelves_equipment_fk" not-null="true" />
+      <map-key-many-to-many column="shelf_id" class="Shelf" foreign-key="stand_shelf" />
       <many-to-many column="stand_id" foreign-key="shelf_stand" class="Stand"/>
     </map>
   </class>
