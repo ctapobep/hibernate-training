@@ -39,7 +39,7 @@ class MapTest {
     }
 
     @Test
-    void "todo"() {
+    void "mapping entity as a key"() {
         Shelf shelf = new Shelf(number: "shelf2")
         Stand stand = new Stand(number: "stand2")
         Equipment equipment = new Equipment(libraryName: "lib2")
