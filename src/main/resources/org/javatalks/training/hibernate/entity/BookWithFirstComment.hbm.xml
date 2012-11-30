@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.javatalks.training.hibernate.entity">
+  <class name="BookWithFirstComment" subselect="select book.id as id, book.title as title,
+         comment.id as comment, comment.body as comment.body from book
+         left join comment on book.id=comment.id order by comment.comment_order limit 1">
+    <id name="id">
+      <generator class="native"/>
+    </id>
+
+    <property name="title"/>
+    <many-to-one name="comment"/>
+    <sql-query name="select * from book where id = ?" read-only="true" />
+  </class>
+</hibernate-mapping>

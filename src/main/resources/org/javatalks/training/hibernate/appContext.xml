@@ -39,6 +39,7 @@
     <property name="mappingResources">
       <list>
         <value>/org/javatalks/training/hibernate/entity/Book.hbm.xml</value>
+        <value>/org/javatalks/training/hibernate/entity/BookWithFirstComment.hbm.xml</value>
       </list>
     </property>
     <property name="hibernateProperties">

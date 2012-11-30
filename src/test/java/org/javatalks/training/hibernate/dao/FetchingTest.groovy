@@ -1,6 +1,7 @@
 package org.javatalks.training.hibernate.dao
 
 import org.javatalks.training.hibernate.entity.Book
+import org.javatalks.training.hibernate.entity.BookWithFirstComment
 import org.javatalks.training.hibernate.entity.Comment
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -27,6 +28,16 @@ class FetchingTest {
         println "[HIBERNATE TRAINING] Let's load something!"
         println "[HIBERNATE TRAINING] COLLECTION SIZE: " + book.comments.size()
         println "[HIBERNATE TRAINING] FIRST ELEMENT: " + book.comments.subList(0, 0)
+    }
+
+    @Test
+    void "fetch entity by custom sql"(){
+        Book book = new Book(title: "try me out", comments: Comment.randomComments(2))
+        dao.save(book).flushAndClearSession()
+
+        BookWithFirstComment bookWithFirstComment = dao.session().get(BookWithFirstComment.class, book.id) as BookWithFirstComment
+        assert bookWithFirstComment.title == "try me out"
+        assert bookWithFirstComment.comment.body == book.comments[0].body
     }
 
     @Autowired BookDao dao;
