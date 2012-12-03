@@ -3,6 +3,8 @@ package org.javatalks.training.hibernate.dao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import java.util.List;
+
 /**
  * Contains all the basic and the most primitive operations that are common for all the entities so that we don't
  * duplicate the same thing over and over again. You can either extend this class and use it as basic or use it as a
