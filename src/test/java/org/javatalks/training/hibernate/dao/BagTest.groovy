@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional
 class BagTest {
 
     @Test
-    void "unidirectional bag (and thus inverse=false) issues update for every its elements"() {
+    void "unidirectional bag (and thus inverse=false) issues update for every element"() {
         Book book = new Book(title: "with authors", authors: [new Author(name: "a1"), new Author(name: "a2")])
         bookDao.save(book).session().flush()
     }
