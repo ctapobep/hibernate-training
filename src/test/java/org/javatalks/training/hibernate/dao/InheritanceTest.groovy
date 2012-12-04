@@ -39,6 +39,16 @@ class InheritanceTest {
         dao.delete(users[1])
     }
 
+    @Test
+    void "fetching concrete sub-class issues only one join"() {
+        Author author = new Author(name: "author", rating: 5)
+        Personnel personnel = new Personnel(name: "personnel", position: "pj for reading advertisement")
+        dao.save(author)
+        dao.save(personnel).flushAndClearSession()
+
+        personnel = dao.session().get(Personnel.class, personnel.id) as Personnel
+    }
+
     @Autowired UserDao dao;
 
 }
