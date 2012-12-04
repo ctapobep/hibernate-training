@@ -1,8 +1,9 @@
 package org.javatalks.training.hibernate.entity;
 
 /** @author stanislav bashkirtsev */
-public abstract class User {
+public class User {
     private long id;
+    private int version;
     private String name;
 
     public long getId() {
@@ -19,5 +20,13 @@ public abstract class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 }
