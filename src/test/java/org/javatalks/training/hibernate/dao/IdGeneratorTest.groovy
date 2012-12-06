@@ -52,7 +52,7 @@ class IdGeneratorTest {
     @Test
     void "foreign uses another property as an ID"() {
         User owner = new User(id: 100500L, username: "Da Boss")
-        Library lib = new Library(name: "Get my name hash!", owner: owner)
+        Library lib = new Library(name: "Yes, my master", owner: owner)
         assert libraryDao.get(lib.name.hashCode()) == null, "Make sure you don't have records in the database before you run this test"
         libraryDao.save(lib)
         assert lib.id == lib.owner.id

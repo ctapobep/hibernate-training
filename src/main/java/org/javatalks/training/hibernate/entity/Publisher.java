@@ -1,5 +1,7 @@
 package org.javatalks.training.hibernate.entity;
 
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
 import java.io.Serializable;
 
 /**
@@ -7,9 +9,11 @@ import java.io.Serializable;
  *
  * @author stanislav bashkirtsev
  */
+@Entity
 public class Publisher {
     private Id id;
 
+    @EmbeddedId
     public Id getId() {
         return id;
     }

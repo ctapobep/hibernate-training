@@ -38,29 +38,6 @@
     <property name="validateExistingTransaction" value="true"/>
   </bean>
 
-  <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" >
-    <property name="dataSource" ref="dataSource"/>
-    <property name="mappingResources">
-      <list>
-        <value>/org/javatalks/training/hibernate/entity/Book.hbm.xml</value>
-        <value>/org/javatalks/training/hibernate/entity/User.hbm.xml</value>
-        <value>/org/javatalks/training/hibernate/entity/Library.hbm.xml</value>
-        <value>/org/javatalks/training/hibernate/entity/Publisher.hbm.xml</value>
-      </list>
-    </property>
-    <property name="hibernateProperties">
-      <props>
-        <!--will show SQL nicely formatted instead of a one-line format-->
-        <prop key="hibernate.format_sql">true</prop>
-        <!--will show hints on what query is executed and sometimes why: whether to load some collection or what-->
-        <prop key="hibernate.use_sql_comments">true</prop>
-        <prop key="hibernate.dialect">${hibernate.dialect}</prop>
-        <prop key="hibernate.hbm2ddl.auto">create-drop</prop>
-      </props>
-    </property>
-  </bean>
-
-
   <bean id="bookDao" class="org.javatalks.training.hibernate.dao.BookDao">
     <constructor-arg index="0" ref="sessionFactory"/>
   </bean>

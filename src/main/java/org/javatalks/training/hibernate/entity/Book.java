@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 /** @author stanislav bashkirtsev */
 @Entity
+@Table(name = "book")
 public class Book {
     private Long id;
     private String title;
@@ -36,6 +37,7 @@ public class Book {
         this.title = title;
     }
 
+    @Transient
     public User getAuthor() {
         return author;
     }
@@ -44,6 +46,7 @@ public class Book {
         this.author = author;
     }
 
+    @Transient
     public Long getAuthorId() {
         return author == null ? null : author.getId();
     }

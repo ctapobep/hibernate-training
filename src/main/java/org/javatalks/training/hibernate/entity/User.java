@@ -1,10 +1,13 @@
 package org.javatalks.training.hibernate.entity;
 
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 /** @author stanislav bashkirtsev */
+@Entity
+@Table(name = "users")
 public class User {
     private Long id;
     private String username;
@@ -15,6 +18,7 @@ public class User {
 
     private Set<Book> books = new HashSet<>();
 
+    @Id
     public Long getId() {
         return id;
     }
@@ -31,6 +35,7 @@ public class User {
         this.username = username;
     }
 
+    @Transient
     public Set<Book> getBooks() {
         return books;
     }
