@@ -6,9 +6,10 @@
     <property name="dataSource" ref="dataSource"/>
     <property name="annotatedClasses">
       <list>
-        <value>com.otv.model.User</value>
+        <value>org.javatalks.training.hibernate.entity.Book</value>
       </list>
     </property>
+    <!--all the properties are defined in the main context, we're just referencing them from here-->
     <property name="hibernateProperties" ref="hibernateProps"/>
   </bean>
 
