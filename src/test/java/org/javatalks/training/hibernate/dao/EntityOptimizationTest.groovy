@@ -1,6 +1,5 @@
 package org.javatalks.training.hibernate.dao
 
-import org.hibernate.StaleObjectStateException
 import org.javatalks.training.hibernate.entity.User
 import org.junit.Test
 import org.junit.runner.RunWith
