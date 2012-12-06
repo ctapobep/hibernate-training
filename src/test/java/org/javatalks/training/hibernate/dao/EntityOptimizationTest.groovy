@@ -17,19 +17,20 @@ import org.springframework.transaction.annotation.Transactional
 @ContextConfiguration("/org/javatalks/training/hibernate/appContext.xml")
 @TransactionConfiguration
 @Transactional
-class OptimisticLockTest {
+class EntityOptimizationTest {
 
-    @Test(expected = StaleObjectStateException.class)
-    void "version based locking"() {
-        User original = new User(name: "user1")
-        dao.save(original).flushAndClearSession()
+    @Test
+    void "update=false does not update the field"() {
+        User original = new User(name: "original name", base64avatar: "original avatar")
+        dao.save(original).flushSession()
+
+        original.base64avatar = "updated avatar"
+        original.name = "updated name"
+        dao.flushAndClearSession()
 
         User fromDb = dao.get(original.id)
-        fromDb.name = "updated value"
-        dao.flushAndClearSession()
-
-        dao.saveOrUpdate(original)
-        dao.flushAndClearSession()
+        assert fromDb.name == "updated name"
+        assert fromDb.base64avatar != "updated avatar"
     }
 
     @Autowired UserDao dao;

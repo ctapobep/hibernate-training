@@ -3,8 +3,8 @@ package org.javatalks.training.hibernate.entity;
 /** @author stanislav bashkirtsev */
 public class User {
     private long id;
-    private int version;
     private String name;
+    private String base64avatar;
 
     public long getId() {
         return id;
@@ -22,11 +22,11 @@ public class User {
         this.name = name;
     }
 
-    public int getVersion() {
-        return version;
+    public String getBase64avatar() {
+        return base64avatar;
     }
 
-    public void setVersion(int version) {
-        this.version = version;
+    public void setBase64avatar(String base64avatar) {
+        this.base64avatar = base64avatar;
     }
 }
