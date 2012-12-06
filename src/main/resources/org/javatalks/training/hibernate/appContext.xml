@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
   <!--You can specify dbname as env variable, or you can simply change the default value here to run with other dbs-->
   <context:property-placeholder location="/org/javatalks/training/hibernate/env/${dbname:hsqldb}.properties"/>
+  <!--you can define either xml or annotations to use either XML based mapping or Annotations based Mapping-->
+  <import resource="classpath:/org/javatalks/training/hibernate/${mapping:xml}SessionFactory.xml"/>
 
   <!--We're wrapping our underlying data source with lazy one so that connection is not retrieved from the pool unless-->
   <!--it's really necessary. E.g. if Hibernate hits only cache, there is no need to fetch connection, but without lazy-->
@@ -34,26 +38,6 @@
     <property name="validateExistingTransaction" value="true"/>
   </bean>
 
-  <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" >
-    <property name="dataSource" ref="dataSource"/>
-    <property name="mappingResources">
-      <list>
-        <value>/org/javatalks/training/hibernate/entity/Book.hbm.xml</value>
-      </list>
-    </property>
-    <property name="hibernateProperties">
-      <props>
-        <!--will show SQL nicely formatted instead of a one-line format-->
-        <prop key="hibernate.format_sql">true</prop>
-        <!--will show hints on what query is executed and sometimes why: whether to load some collection or what-->
-        <prop key="hibernate.use_sql_comments">true</prop>
-        <prop key="hibernate.dialect">${hibernate.dialect}</prop>
-        <prop key="hibernate.hbm2ddl.auto">create-drop</prop>
-      </props>
-    </property>
-  </bean>
-
-
   <bean id="bookDao" class="org.javatalks.training.hibernate.dao.BookDao">
     <constructor-arg index="0" ref="sessionFactory"/>
   </bean>
@@ -61,4 +45,13 @@
   <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
     <constructor-arg index="0" ref="dataSource"/>
   </bean>
+
+  <util:properties id="hibernateProps">
+    <!--will show SQL nicely formatted instead of a one-line format-->
+    <prop key="hibernate.format_sql">true</prop>
+    <!--will show hints on what query is executed and sometimes why: whether to load some collection or what-->
+    <prop key="hibernate.use_sql_comments">true</prop>
+    <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+    <prop key="hibernate.hbm2ddl.auto">create-drop</prop>
+  </util:properties>
 </beans>

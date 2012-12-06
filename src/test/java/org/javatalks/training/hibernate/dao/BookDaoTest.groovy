@@ -4,6 +4,7 @@ import org.hibernate.LockOptions
 import org.hibernate.ObjectDeletedException
 import org.hibernate.ObjectNotFoundException
 import org.javatalks.training.hibernate.entity.Book
+import org.junit.BeforeClass
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,6 +25,7 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
 @TransactionConfiguration
 @Transactional
 class BookDaoTest {
+
     @Test
     void "save() sets the ID since generator=native is used"() {
         Book book = new Book(title: "I need an ID to be generated and set!")
