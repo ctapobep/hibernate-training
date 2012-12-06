@@ -1,6 +1,9 @@
 package org.javatalks.training.hibernate.entity;
 
+import javax.persistence.*;
+
 /** @author stanislav bashkirtsev */
+@Entity
 public class Book {
     private Long id;
     private String title;
@@ -15,6 +18,8 @@ public class Book {
 
     private User author;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getId() {
         return id;
     }
