@@ -12,6 +12,7 @@ public class User {
      * Author is the main side of the association, so it's responsible for managing relationship. Main side has to
      * ensure that book has its author. See {@link Book} for more details on this decision.
      */
+
     private Set<Book> books = new HashSet<>();
 
     public Long getId() {

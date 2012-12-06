@@ -12,6 +12,7 @@ public class Book {
      * <p/> In order to escape the chaos of 'any entity can save the association', we assume that while storing the
      * Book, its Author should already be present in DB.
      */
+
     private User author;
 
     public Long getId() {
