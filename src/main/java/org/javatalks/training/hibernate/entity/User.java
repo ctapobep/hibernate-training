@@ -46,7 +46,8 @@ public class User {
         return reservedDesk;
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @ForeignKey(name = "user_passport_fk")
     public Passport getPassport() {
         return passport;
     }
