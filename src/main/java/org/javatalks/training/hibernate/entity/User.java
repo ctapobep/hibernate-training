@@ -61,13 +61,12 @@ public class User {
      * User's id is references to access card's ID.
      * @return
      */
-    @OneToOne
-    @PrimaryKeyJoinColumn
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     public AccessCard getAccessCard() {
         return accessCard;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
     @JoinColumn(name = "discount_card_id", unique = true)
     @ForeignKey(name = "discount_card_fk")
     public DiscountCard getDiscountCard() {

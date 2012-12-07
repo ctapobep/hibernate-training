@@ -1,9 +1,6 @@
 package org.javatalks.training.hibernate.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.*;
 
 /** @author stanislav bashkirtsev */
 @Entity
@@ -12,9 +9,22 @@ public class AccountForPaidUsers {
     private String number;
     private double availableMoney;
     private User user;
+
     @Id
+    @GeneratedValue(generator = "userIdGenerator")
+    @org.hibernate.annotations.GenericGenerator(
+            name = "userIdGenerator",
+            strategy = "foreign",
+            parameters = @org.hibernate.annotations.Parameter(name = "property", value = "user")
+    )
     public long getId() {
         return id;
+    }
+
+    @OneToOne
+    @PrimaryKeyJoinColumn
+    public User getUser() {
+        return user;
     }
 
     public void setId(long id) {
@@ -35,12 +45,6 @@ public class AccountForPaidUsers {
 
     public void setAvailableMoney(double availableMoney) {
         this.availableMoney = availableMoney;
-    }
-
-    @OneToOne
-    @PrimaryKeyJoinColumn
-    public User getUser() {
-        return user;
     }
 
     public void setUser(User user) {

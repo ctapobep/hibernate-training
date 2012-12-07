@@ -67,7 +67,7 @@ class OneToOneTest {
      * be loaded from DB.
      */
     @Test(expected = LazyInitializationException.class)
-    void "OTO with shared PK is not lazy by default"() {
+    void "OTO with shared PK is not lazy by default, but there are means"() {
         User user = userWithCard()
         userDao.save(user).session().flush()
         userDao.session().clear()
