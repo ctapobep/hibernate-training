@@ -1,10 +1,11 @@
 package org.javatalks.training.hibernate.entity;
 
+import org.hibernate.annotations.ForeignKey;
+
+import javax.persistence.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.persistence.*;
 
 /** @author stanislav bashkirtsev */
 @Entity
@@ -26,12 +27,25 @@ public class Book {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    @ElementCollection
+    @CollectionTable(name = "chapter", joinColumns = @JoinColumn(name = "book_id"))
+    @ForeignKey(name = "chapter_book_fk")
+    public List<Chapter> getChapters() {
+        return chapters;
     }
 
+    @Embedded
+    public BookCover getCover() {
+        return cover;
+    }
+
+    @Transient//no way to map dynamic components via annotations
     public Map<String, Object> getProperties() {
         return properties;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setProperties(Map<String, Object> properties) {
@@ -46,20 +60,12 @@ public class Book {
         this.title = title;
     }
 
-    public List<Chapter> getChapters() {
-        return chapters;
-    }
-
     public void addChapter(Chapter chapter) {
         chapters.add(chapter);
     }
 
     public void setChapters(List<Chapter> chapters) {
         this.chapters = chapters;
-    }
-
-    public BookCover getCover() {
-        return cover;
     }
 
     public void setCover(BookCover cover) {

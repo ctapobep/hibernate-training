@@ -1,12 +1,23 @@
 package org.javatalks.training.hibernate.entity;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.hibernate.annotations.Parent;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 
 /** @author stanislav bashkirtsev */
+@Embeddable
 public class BookCover {
     private String color;
     private Boolean hard;
     private Book book;
+
+    @Parent
+    @Column(name = "book_id")
+    public Book getBook() {
+        return book;
+    }
 
     public String getColor() {
         return color;
@@ -22,10 +33,6 @@ public class BookCover {
 
     public void setHard(Boolean hard) {
         this.hard = hard;
-    }
-
-    public Book getBook() {
-        return book;
     }
 
     public void setBook(Book book) {

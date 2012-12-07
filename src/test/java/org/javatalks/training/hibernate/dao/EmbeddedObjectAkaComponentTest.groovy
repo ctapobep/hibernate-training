@@ -105,7 +105,13 @@ class EmbeddedObjectAkaComponentTest {
         bookDao.session().clear()
 
         Book fromDb = bookDao.get(book.id)
-        assert fromDb.properties["size"] == book.properties["size"]
+        try {
+            assert fromDb.properties["size"] == book.properties["size"]
+            assert mapping != "annotations"
+        } catch (AssertionError e) {
+            assert mapping == "annotations"
+            println "Annotations do not support dynamic components"
+        }
     }
 
     @Test
@@ -128,7 +134,13 @@ class EmbeddedObjectAkaComponentTest {
         bookDao.session().clear()
 
         Book fromDb = bookDao.get(book.id)
-        assert fromDb.properties == null
+        try {
+            assert fromDb.properties == null
+            assert mapping != "annotations"
+        } catch (AssertionError e) {
+            assert mapping == "annotations"
+            println "Annotations do not support dynamic components"
+        }
     }
 
     @Test
@@ -168,7 +180,8 @@ class EmbeddedObjectAkaComponentTest {
         return book
     }
 
-    @Autowired BookDao bookDao;
-    @Autowired JdbcTemplate jdbcTemplate;
-    @Value("\${dbname}") String dbname;
+    @Autowired BookDao bookDao
+    @Autowired JdbcTemplate jdbcTemplate
+    @Value("\${dbname}") String dbname
+    @Value("\${mapping}") String mapping
 }

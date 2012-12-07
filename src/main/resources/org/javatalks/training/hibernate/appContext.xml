@@ -6,9 +6,9 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
   <!--You can specify dbname as env variable, or you can simply change the default value here to run with other dbs-->
-  <context:property-placeholder location="/org/javatalks/training/hibernate/env/${dbname:hsqldb}.properties"/>
+  <context:property-placeholder location="/org/javatalks/training/hibernate/env/${dbname:hsqldb}.properties" properties-ref="mappingProps"/>
   <!--you can define either xml or annotations to use either XML based mapping or Annotations based Mapping-->
-  <import resource="classpath:/org/javatalks/training/hibernate/${mapping:xml}SessionFactory.xml"/>
+  <import resource="classpath:/org/javatalks/training/hibernate/${mapping:annotations}SessionFactory.xml"/>
 
   <!--We're wrapping our underlying data source with lazy one so that connection is not retrieved from the pool unless-->
   <!--it's really necessary. E.g. if Hibernate hits only cache, there is no need to fetch connection, but without lazy-->

@@ -1,6 +1,11 @@
 package org.javatalks.training.hibernate.entity;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Table;
+
 /** @author stanislav bashkirtsev */
+@Embeddable
+@Table(name = "chapter")
 public class Chapter {
     private String name;
     private int pageCount;
