@@ -4,7 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.*;
+
 /** @author stanislav bashkirtsev */
+@Entity
+@Table(name = "book")
 public class Book {
     private Long id;
     private String title;
@@ -16,6 +20,8 @@ public class Book {
         properties.put(name, value);
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getId() {
         return id;
     }
