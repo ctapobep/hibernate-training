@@ -1,8 +1,11 @@
 package org.javatalks.training.hibernate.entity;
 
-import org.hibernate.annotations.ForeignKey;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /** @author stanislav bashkirtsev */
 @Entity
@@ -36,12 +39,14 @@ public class User {
         return account;
     }
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne
     @JoinTable(
             name = "user_reserved_desk",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "reserved_desk_id")
     )
+    @ForeignKey(name = "user_reserved_desk_fk")
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     public ReservedDesk getReservedDesk() {
         return reservedDesk;
     }

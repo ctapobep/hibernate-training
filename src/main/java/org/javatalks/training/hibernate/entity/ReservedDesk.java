@@ -10,6 +10,7 @@ public class ReservedDesk {
     private User userReserved;
 
     @Id
+    @GeneratedValue
     public long getId() {
         return id;
     }
@@ -26,7 +27,7 @@ public class ReservedDesk {
         this.number = number;
     }
 
-    @OneToOne
+    @OneToOne(mappedBy = "reservedDesk")
     @JoinTable(
             name = "user_reserved_desk",
             joinColumns = @JoinColumn(name = "reserved_desk_id"),
