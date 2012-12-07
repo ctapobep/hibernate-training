@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 /** @author stanislav bashkirtsev */
 @Entity
-@Table(uniqueConstraints = {
+@Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = "discount_card_id", name = "discount_id_uk"),
         @UniqueConstraint(columnNames = "rented_pc_id", name = "user_rented_pc_id_uk")
 })
@@ -21,6 +21,12 @@ public class User {
     private ReservedDesk reservedDesk;
 
     @Id
+    @GeneratedValue(generator = "accessCardIdGenerator")
+    @org.hibernate.annotations.GenericGenerator(
+            name = "accessCardIdGenerator",
+            strategy = "foreign",
+            parameters = @org.hibernate.annotations.Parameter(name = "property", value = "accessCard")
+    )
     public Long getId() {
         return id;
     }

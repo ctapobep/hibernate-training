@@ -1,7 +1,6 @@
 package org.javatalks.training.hibernate.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * User can access the library if he has an access card which can grant permissions to several libraries at the same
@@ -10,6 +9,7 @@ import javax.persistence.Id;
  * @author stanislav bashkirtsev
  */
 @Entity
+@Table(name = "access_card")
 public class AccessCard {
     public enum Type {
         USUAL, GOLDEN
@@ -20,8 +20,14 @@ public class AccessCard {
     private Type type;
 
     @Id
+    @GeneratedValue
     public long getId() {
         return id;
+    }
+
+    @Enumerated(EnumType.STRING)
+    public Type getType() {
+        return type;
     }
 
     public void setId(long id) {
@@ -34,10 +40,6 @@ public class AccessCard {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public Type getType() {
-        return type;
     }
 
     public void setType(Type type) {
