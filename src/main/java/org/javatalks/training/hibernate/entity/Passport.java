@@ -1,11 +1,17 @@
 package org.javatalks.training.hibernate.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+
 /** @author stanislav bashkirtsev */
+@Entity
 public class Passport {
     private long id;
     private User user;
     private String issuer;
 
+    @Id
     public long getId() {
         return id;
     }
@@ -14,6 +20,7 @@ public class Passport {
         this.id = id;
     }
 
+    @OneToOne(mappedBy = "passport")
     public User getUser() {
         return user;
     }

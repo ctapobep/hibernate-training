@@ -10,9 +10,11 @@
       </generator>
     </id>
     <property name="username"/>
+    <!--oto with shared key-->
     <one-to-one name="accessCard" cascade="all" constrained="true" foreign-key="user_card_fk"/>
     <many-to-one name="discountCard" cascade="all" column="discount_card_id" foreign-key="user_discount_card_fk"
                  unique="true" unique-key="discount_id_uk"/>
+    <!--it is inverse=true from the other side-->
     <many-to-one name="passport" cascade="all" column="passport_id" foreign-key="user_passport_fk"
                  unique-key="passport_id_uk" unique="true"/>
     <one-to-one name="account" cascade="all"/>
@@ -61,6 +63,7 @@
     <id name="id">
       <generator class="native"/>
     </id>
+    <!--let's call it inverse=true-->
     <one-to-one name="user" class="User" property-ref="passport"/>
     <property name="issuer"/>
   </class>

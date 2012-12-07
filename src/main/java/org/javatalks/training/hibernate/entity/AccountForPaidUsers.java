@@ -1,12 +1,18 @@
 package org.javatalks.training.hibernate.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+
 /** @author stanislav bashkirtsev */
+@Entity
 public class AccountForPaidUsers {
     private long id;
     private String number;
     private double availableMoney;
     private User user;
-
+    @Id
     public long getId() {
         return id;
     }
@@ -31,6 +37,8 @@ public class AccountForPaidUsers {
         this.availableMoney = availableMoney;
     }
 
+    @OneToOne
+    @PrimaryKeyJoinColumn
     public User getUser() {
         return user;
     }

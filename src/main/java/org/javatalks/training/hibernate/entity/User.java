@@ -1,10 +1,15 @@
 package org.javatalks.training.hibernate.entity;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import org.hibernate.annotations.ForeignKey;
+
+import javax.persistence.*;
 
 /** @author stanislav bashkirtsev */
+@Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = "discount_card_id", name = "discount_id_uk"),
+        @UniqueConstraint(columnNames = "rented_pc_id", name = "user_rented_pc_id_uk")
+})
 public class User {
     private Long id;
     private String username;
@@ -15,49 +20,73 @@ public class User {
     private RentedPc rentedPc;
     private ReservedDesk reservedDesk;
 
-
+    @Id
     public Long getId() {
         return id;
+    }
+
+    @OneToOne(cascade = CascadeType.ALL)
+    public AccountForPaidUsers getAccount() {
+        return account;
+    }
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "user_reserved_desk",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "reserved_desk_id")
+    )
+    public ReservedDesk getReservedDesk() {
+        return reservedDesk;
+    }
+
+    @ManyToOne
+    public Passport getPassport() {
+        return passport;
+    }
+
+    /**
+     * User's id is references to access card's ID.
+     * @return
+     */
+    @OneToOne
+    @PrimaryKeyJoinColumn
+    public AccessCard getAccessCard() {
+        return accessCard;
+    }
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "discount_card_id", unique = true)
+    @ForeignKey(name = "discount_card_fk")
+    public DiscountCard getDiscountCard() {
+        return discountCard;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "rented_pc_id", unique = true)
+    @ForeignKey(name = "user_rented_pc_fk")
+    public RentedPc getRentedPc() {
+        return rentedPc;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public ReservedDesk getReservedDesk() {
-        return reservedDesk;
-    }
-
     public void setReservedDesk(ReservedDesk reservedDesk) {
         this.reservedDesk = reservedDesk;
-    }
-
-    public RentedPc getRentedPc() {
-        return rentedPc;
     }
 
     public void setRentedPc(RentedPc rentedPc) {
         this.rentedPc = rentedPc;
     }
 
-    public Passport getPassport() {
-        return passport;
-    }
-
     public void setPassport(Passport passport) {
         this.passport = passport;
     }
 
-    public DiscountCard getDiscountCard() {
-        return discountCard;
-    }
-
     public void setDiscountCard(DiscountCard discountCard) {
         this.discountCard = discountCard;
-    }
-
-    public AccountForPaidUsers getAccount() {
-        return account;
     }
 
     public void setAccount(AccountForPaidUsers account) {
@@ -70,10 +99,6 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public AccessCard getAccessCard() {
-        return accessCard;
     }
 
     public void setAccessCard(AccessCard accessCard) {

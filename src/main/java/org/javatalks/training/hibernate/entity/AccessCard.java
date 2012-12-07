@@ -1,11 +1,15 @@
 package org.javatalks.training.hibernate.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 /**
  * User can access the library if he has an access card which can grant permissions to several libraries at the same
  * time.
  *
  * @author stanislav bashkirtsev
  */
+@Entity
 public class AccessCard {
     public enum Type {
         USUAL, GOLDEN
@@ -15,6 +19,7 @@ public class AccessCard {
     private String code;
     private Type type;
 
+    @Id
     public long getId() {
         return id;
     }
