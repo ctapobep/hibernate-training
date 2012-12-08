@@ -62,6 +62,7 @@ public class User {
      * @return
      */
     @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @ForeignKey(name = "user_access_card_fk")
     public AccessCard getAccessCard() {
         return accessCard;
     }
