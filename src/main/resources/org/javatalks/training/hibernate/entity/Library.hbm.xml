@@ -3,24 +3,22 @@
     "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="org.javatalks.training.hibernate.entity">
+  <class name="Library" table="library">
+    <id name="id">
+      <generator class="native"/>
+    </id>
+
+    <list name="books" cascade="all">
+      <key column="library_id" foreign-key="book_library_fk"/>
+      <list-index column="book_order"/>
+      <one-to-many class="Book"/>
+    </list>
+  </class>
+
   <class name="Book" table="book">
     <id name="id">
       <generator class="native"/>
     </id>
-
-    <property name="title"/>
-
-    <list name="comments" cascade="all" lazy="false" fetch="select">
-      <key column="book_id" foreign-key="comment_book_id" not-null="true"/>
-      <list-index column="comment_order"/>
-      <one-to-many class="Comment"/>
-    </list>
-  </class>
-
-  <class name="Comment" table="comment">
-    <id name="id">
-      <generator class="native"/>
-    </id>
-    <property name="body"/>
+    <property name="name"/>
   </class>
 </hibernate-mapping>
