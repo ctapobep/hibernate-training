@@ -60,6 +60,27 @@ class UserJdbcDaoTest {
         assertReflectionEquals(alreadySaved, sut.get(alreadySaved.id));
     }
 
+    /**
+     * This test might not be fair because there is an overhead inside of {@link UserJdbcDao#insert(User)}) like logging
+     * or generated key returning, but you can try to remove all that stuff to get more accurate results.
+     * @throws Exception no one cares
+     */
+    @Test
+    public void batchDemonstration() throws Exception {
+        long start = System.currentTimeMillis();
+        sut.batchInsert(User.create(10000))
+        long batchFinished = System.currentTimeMillis() - start
+
+        start = System.currentTimeMillis()
+        for (User user : User.create(10000)) {
+            sut.saveOrUpdate(user)
+        }
+        long insertsFinished = System.currentTimeMillis() - start
+
+        println "JDBC batch took: " + batchFinished
+        println "JDBC insert took: " + insertsFinished
+    }
+
     User givenSavedUser() {
         User user = new User(username: "Kot Matthew Rosskin")
         sut.saveOrUpdate(user)

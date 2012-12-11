@@ -38,6 +38,30 @@ public class UserJdbcDao implements Crud<User> {
         }
     }
 
+    /**
+     * Batch insert results in a less traffic going forth and back. Instead of separate INSERT statements, we have:
+     * {@code insert into users(username) values("first"), ("second")}. This might improve performance significantly.
+     * Note, though that this might be a DB specific feature and you might need to configure it for your database.
+     *
+     * @param users users to batchly insert into DB
+     * @throws SQLException
+     */
+    public void batchInsert(Iterable<User> users) throws SQLException {
+        try (PreparedStatement statement = getConnection().prepareStatement(INSERT)) {
+            int userIndex = 0;
+            for (User user : users) {
+                statement.setString(1, user.getUsername());
+                statement.addBatch();
+                if (++userIndex % 500 == 0) {//to escape OutOfMemoryException
+                    statement.executeBatch();
+                }
+            }
+            if (userIndex % 500 != 0) { //let's dump everything that's left
+                statement.executeBatch();
+            }
+        }
+    }
+
     @Override
     public User get(long id) throws SQLException {
         User user = null;
@@ -99,6 +123,14 @@ public class UserJdbcDao implements Crud<User> {
         }
     }
 
+    public long count() throws SQLException {
+        try (PreparedStatement statement = getConnection().prepareStatement(COUNT)) {
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            return resultSet.getLong(1);
+        }
+    }
+
     /**
      * We want to work with Spring's Transaction Support which means that Spring should open connections and start
      * transactions. By the time DAO is reached, connection should be opened and transaction should be started and all
@@ -116,4 +148,5 @@ public class UserJdbcDao implements Crud<User> {
     private static final String UPDATE = "update users set username = ? where id = ?";
     private static final String DELETE = "delete from users where id = ?";
     private static final String SELECT = "select * from users where id = ?";
+    private static final String COUNT = "select count(*) from users";
 }
