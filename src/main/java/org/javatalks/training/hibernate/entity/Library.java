@@ -34,4 +34,10 @@ public class Library {
     public void setBooks(List<Book> books) {
         this.books = books;
     }
+
+    public static Library createWithBook(int numberOfBooks) {
+        Library library = new Library();
+        library.setBooks(Book.createBooks(numberOfBooks));
+        return library;
+    }
 }
