@@ -40,4 +40,8 @@ public class Book {
         }
         return books;
     }
+
+    public String toString(){
+        return "book:"+id;
+    }
 }

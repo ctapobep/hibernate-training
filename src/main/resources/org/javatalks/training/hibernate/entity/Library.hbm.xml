@@ -5,7 +5,7 @@
 <hibernate-mapping package="org.javatalks.training.hibernate.entity">
   <class name="Library" table="library">
     <id name="id">
-      <generator class="native"/>
+      <generator class="increment"/>
     </id>
 
     <list name="books" cascade="all">
@@ -13,12 +13,24 @@
       <list-index column="book_order"/>
       <one-to-many class="Book"/>
     </list>
+
+    <list name="owners" inverse="true">
+      <key column="library_id" foreign-key="owner_library_id"/>
+      <list-index column="owner_order"/>
+      <one-to-many class="LibraryOwner"/>
+    </list>
   </class>
 
   <class name="Book" table="book">
     <id name="id">
-      <generator class="native"/>
+      <generator class="increment"/>
     </id>
     <property name="name"/>
+  </class>
+  <class name="LibraryOwner" table="library_owner">
+    <id name="id">
+      <generator class="increment"/>
+    </id>
+    <many-to-one name="library" column="library_id" class="Library"/>
   </class>
 </hibernate-mapping>

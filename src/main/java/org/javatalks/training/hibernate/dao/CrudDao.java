@@ -2,6 +2,7 @@ package org.javatalks.training.hibernate.dao;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.StatelessSession;
 
 /**
  * Contains all the basic and the most primitive operations that are common for all the entities so that we don't
@@ -75,6 +76,10 @@ public class CrudDao<T> implements Crud<T> {
      */
     protected Session session() {
         return sessionFactory.getCurrentSession();
+    }
+
+    protected StatelessSession statelessSession(){
+        return sessionFactory.openStatelessSession();
     }
 
     private final SessionFactory sessionFactory;
