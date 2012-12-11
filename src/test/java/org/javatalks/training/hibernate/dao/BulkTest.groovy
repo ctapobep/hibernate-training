@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 class BulkTest {
     @Test
-    void "you cannot get much of performance with uni-directional collections"() {
+    void "you cannot get much of performance with uni-directional collections because it issues 2x queries"() {
         Library library = Library.createWithBook(10)
         libraryDao.save(library).flushAndClearSession()
     }
