@@ -1,10 +1,16 @@
 package org.javatalks.training.hibernate.entity.bag;
 
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
+
+import javax.persistence.*;
+import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 /** @author stanislav bashkirtsev */
+@Entity
 public class Book {
     private long id;
     private String title;
@@ -15,64 +21,68 @@ public class Book {
     private Collection<Reviewer> reviewers = new ArrayList<>();//bidi-bag: MTM
     private List<Chapter> chapters = new ArrayList<>();
 
+    @Id
+    @GeneratedValue
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    @OneToMany
+    @Cascade(CascadeType.SAVE_UPDATE)
+    public List<Author> getAuthors() {
+        return authors;
     }
-
+    @Transient
     public Collection<Reviewer> getReviewers() {
         return reviewers;
     }
-
-    public void setReviewers(Collection<Reviewer> reviewers) {
-        this.reviewers = reviewers;
-    }
-
+    @Transient
     public Collection<Appendix> getAppendixes() {
         return appendixes;
     }
-
-    public void setAppendixes(Collection<Appendix> appendixes) {
-        this.appendixes = appendixes;
-    }
-
+    @Transient
     public List<Chapter> getChapters() {
         return chapters;
     }
-
-    public void setChapters(List<Chapter> chapters) {
-        this.chapters = chapters;
-    }
-
+    @Transient
     public Collection<Bookmark> getBookmarks() {
         return bookmarks;
     }
-
-    public void setBookmarks(Collection<Bookmark> bookmarks) {
-        this.bookmarks = bookmarks;
+    @Transient
+    public List<Comment> getComments() {
+        return comments;
     }
 
     public String getTitle() {
         return title;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setReviewers(Collection<Reviewer> reviewers) {
+        this.reviewers = reviewers;
+    }
+
+    public void setAppendixes(Collection<Appendix> appendixes) {
+        this.appendixes = appendixes;
+    }
+
+    public void setChapters(List<Chapter> chapters) {
+        this.chapters = chapters;
+    }
+
+    public void setBookmarks(Collection<Bookmark> bookmarks) {
+        this.bookmarks = bookmarks;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public List<Comment> getComments() {
-        return comments;
-    }
-
     public void setComments(List<Comment> comments) {
         this.comments = comments;
-    }
-
-    public List<Author> getAuthors() {
-        return authors;
     }
 
     public void setAuthors(List<Author> authors) {

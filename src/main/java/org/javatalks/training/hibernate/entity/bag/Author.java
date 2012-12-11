@@ -1,13 +1,17 @@
 package org.javatalks.training.hibernate.entity.bag;
 
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 /** @author stanislav bashkirtsev */
+@Entity
 public class Author {
     private long id;
     private String name;
 
+    @Id
+    @GeneratedValue
     public long getId() {
         return id;
     }
