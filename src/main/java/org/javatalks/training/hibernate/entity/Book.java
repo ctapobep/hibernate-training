@@ -1,20 +1,30 @@
 package org.javatalks.training.hibernate.entity;
 
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
+
+import javax.persistence.*;
+import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.List;
 
 /** @author stanislav bashkirtsev */
+@Entity
 public class Book {
     private long id;
     private String title;
     private List<Comment> comments = new ArrayList<>();
 
+    @Id
+    @GeneratedValue
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    @OneToMany(fetch = FetchType.LAZY)
+    @Cascade(CascadeType.SAVE_UPDATE)
+    public List<Comment> getComments() {
+        return comments;
     }
 
 
@@ -22,12 +32,12 @@ public class Book {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public List<Comment> getComments() {
-        return comments;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public void setComments(List<Comment> comments) {
