@@ -32,15 +32,6 @@ class BulkTest {
         libraryDao.session().flush()
     }
 
-    @Test
-    void "to-remove"() {
-        for(Library lib: Library.create(10)){
-            libraryDao.save(lib)
-        }
-        libraryDao.flushAndClearSession()
-        println "[SPARTA!!]"+libraryDao.session().createQuery("select distinct l from Library l join l.books b where id < 10 and b.id in(select id from Book where id < 150)").list()
-    }
-
 
     @Autowired LibraryDao libraryDao
 }
