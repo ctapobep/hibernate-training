@@ -87,7 +87,7 @@ public class UserJdbcDao implements Crud<User> {
         try (PreparedStatement statement = getConnection().prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, user.getUsername());
             int affectedRows = statement.executeUpdate();
-            if (affectedRows == 0) {
+            if (affectedRows == 0) { // It is possible if 'SET NOCOUNT ON' in MS SQL which can lead to performance gains
                 throw new SQLException("Creating user failed, no rows affected.");
             }
             ResultSet generatedKeys = statement.getGeneratedKeys();//result set will be closed when statement is closed
