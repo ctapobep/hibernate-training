@@ -2,6 +2,7 @@ package org.javatalks.training.hibernate.entity.bag;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.ForeignKey;
+import org.hibernate.annotations.IndexColumn;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -58,7 +59,8 @@ public class Book {
         return reviewers;
     }
 
-    @Transient
+    @OneToMany(orphanRemoval = true, mappedBy = "book", cascade = CascadeType.ALL)
+    @IndexColumn(name="chapter_order")
     public List<Chapter> getChapters() {
         return chapters;
     }

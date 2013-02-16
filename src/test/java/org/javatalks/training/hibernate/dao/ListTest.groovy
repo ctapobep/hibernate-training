@@ -12,6 +12,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.context.transaction.TransactionConfiguration
 import org.springframework.transaction.annotation.Transactional
 
+import static org.junit.Assert.assertTrue
+import static org.junit.Assert.fail
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals
+
 /**
  * @author stanislav bashkirtsev
  */
@@ -24,30 +28,26 @@ class ListTest {
     @Test
     void "List demonstration"(){
         List<Comment> comments = [new Comment(body: "comment1"), new Comment(body: "comment2")]
-        Book book = new Book(title: "with comments", comments: comments)
-        bookDao.save(book).session().flush()
-        bookDao.session().clear()
+        Book original = new Book(title: "with comments", comments: comments)
+        bookDao.save(original).flushAndClearSession()
 
-        Book fromDb = bookDao.get(book.id)
-        fromDb.comments.add(new Comment(body: "comment3"))
-
-        bookDao.session().flush()
+        Book fromDb = bookDao.get(original.id)
+        assertReflectionEquals(fromDb, original)
     }
 
-    @Test(expected = HibernateException.class)
+    @Test
     void "inverse=true cannot be applied to lists because from 'one' side there is no knowledge about list index"() {
         Book book = new Book(title: "with chapter")
         book.addChapter(new Chapter(name: "ch1"))
-        bookDao.save(book).session().flush()
-        bookDao.session().clear()
-
-        Chapter chapter = new Chapter(name: "ch2")
-        chapter.book = book
-        bookDao.session().save(chapter)
-        bookDao.session().flush()
+        bookDao.save(book).flushAndClearSession()
 
         book = bookDao.get(book.id)
-        book.chapters.size()// here we get an exception
+        try {
+            book.chapters.size()// here we get an exception
+            fail("Exception should have been thrown")
+        } catch (HibernateException e) {
+            assertTrue(e.getMessage().contains("null index column for collection"))
+        }
     }
 
     @Autowired BookDao bookDao;
