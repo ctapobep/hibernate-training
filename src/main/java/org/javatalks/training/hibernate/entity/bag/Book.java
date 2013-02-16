@@ -1,16 +1,17 @@
 package org.javatalks.training.hibernate.entity.bag;
 
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.ForeignKey;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 /** @author stanislav bashkirtsev */
 @Entity
+@Table(name = "book")
 public class Book {
     private long id;
     private String title;
@@ -29,25 +30,32 @@ public class Book {
 
     @OneToMany
     @Cascade(CascadeType.SAVE_UPDATE)
+    @ForeignKey(name = "book_author_fk")
+    @JoinColumn(name = "book_id")
     public List<Author> getAuthors() {
         return authors;
     }
+
     @Transient
     public Collection<Reviewer> getReviewers() {
         return reviewers;
     }
+
     @Transient
     public Collection<Appendix> getAppendixes() {
         return appendixes;
     }
+
     @Transient
     public List<Chapter> getChapters() {
         return chapters;
     }
+
     @Transient
     public Collection<Bookmark> getBookmarks() {
         return bookmarks;
     }
+
     @Transient
     public List<Comment> getComments() {
         return comments;
@@ -95,7 +103,7 @@ public class Book {
         return this;
     }
 
-    public Book addChapter(Chapter chapter){
+    public Book addChapter(Chapter chapter) {
         chapters.add(chapter);
         chapter.setBook(this);
         return this;
