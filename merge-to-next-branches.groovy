@@ -7,7 +7,8 @@
  */
 def branches = [
         "master", "m1.jdbc", "m1.springjdbc.ch1", "m1.springjdbc.ch2", "m1.mybatis",
-        "m2.entitylifecycle", "m2.ids", "m3.associations.components", "m3.associations.oto", "m3.associations.collections"]
+        "m2.entitylifecycle", "m2.ids", "m3.associations.components", "m3.associations.oto",
+        "m3.associations.collections", "m4.fetching", "m4.bulk"]
 
 if (args.length < 2) {
     println "[HIBERNATE TRAINING] Not enough number of arguments"
