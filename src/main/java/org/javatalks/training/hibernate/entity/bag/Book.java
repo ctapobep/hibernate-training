@@ -1,5 +1,6 @@
 package org.javatalks.training.hibernate.entity.bag;
 
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.ForeignKey;
 
 import javax.persistence.*;
@@ -40,14 +41,16 @@ public class Book {
         return bookmarks;
     }
 
-    @Transient
-    public Collection<Reviewer> getReviewers() {
-        return reviewers;
+    @OneToMany(mappedBy = "book")
+    @ForeignKey(name = "appendix_book_fk")
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    public Collection<Appendix> getAppendixes() {
+        return appendixes;
     }
 
     @Transient
-    public Collection<Appendix> getAppendixes() {
-        return appendixes;
+    public Collection<Reviewer> getReviewers() {
+        return reviewers;
     }
 
     @Transient
