@@ -30,12 +30,6 @@
     </bag>
   </class>
 
-  <class name="org.javatalks.training.hibernate.entity.bag.Comment" table="comment">
-    <id name="id">
-      <generator class="native"/>
-    </id>
-    <property name="body"/>
-  </class>
   <class name="org.javatalks.training.hibernate.entity.bag.Author" table="author">
     <id name="id">
       <generator class="native"/>
@@ -50,14 +44,6 @@
     <property name="name"/>
     <property name="pageNumber"/>
     <many-to-one name="book" class="org.javatalks.training.hibernate.entity.bag.Book" column="book_id"/>
-  </class>
-
-  <class name="org.javatalks.training.hibernate.entity.bag.Chapter" table="chapter">
-    <id name="id">
-      <generator class="native"/>
-    </id>
-    <property name="name"/>
-    <many-to-one name="book" column="book_id" />
   </class>
 
   <class name="org.javatalks.training.hibernate.entity.bag.Appendix" table="appendix">
