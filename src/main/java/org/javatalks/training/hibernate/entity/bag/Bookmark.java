@@ -1,6 +1,10 @@
 package org.javatalks.training.hibernate.entity.bag;
 
+import javax.persistence.*;
+
 /** @author stanislav bashkirtsev */
+@Entity
+@Table(name = "bookmark")
 public class Bookmark {
     private long id;
     private Book book;
@@ -15,8 +19,15 @@ public class Bookmark {
         this.pageNumber = pageNumber;
     }
 
+    @Id
+    @GeneratedValue
     public long getId() {
         return id;
+    }
+
+    @ManyToOne(optional = false)
+    public Book getBook() {
+        return book;
     }
 
     public void setId(long id) {
@@ -29,10 +40,6 @@ public class Bookmark {
 
     public void setPageNumber(int pageNumber) {
         this.pageNumber = pageNumber;
-    }
-
-    public Book getBook() {
-        return book;
     }
 
     public void setBook(Book book) {

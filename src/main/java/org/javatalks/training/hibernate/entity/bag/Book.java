@@ -1,7 +1,5 @@
 package org.javatalks.training.hibernate.entity.bag;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.ForeignKey;
 
 import javax.persistence.*;
@@ -28,12 +26,18 @@ public class Book {
         return id;
     }
 
-    @OneToMany
-    @Cascade(CascadeType.SAVE_UPDATE)
+    @OneToMany(cascade = javax.persistence.CascadeType.ALL)
+    @JoinColumn(name = "book_id", nullable = false)
     @ForeignKey(name = "book_author_fk")
-    @JoinColumn(name = "book_id")
     public List<Author> getAuthors() {
         return authors;
+    }
+
+    @OneToMany(orphanRemoval = true, mappedBy = "book",
+            cascade = javax.persistence.CascadeType.ALL, targetEntity = Bookmark.class)
+    @ForeignKey(name = "book_bookmark_fk")
+    public Collection<Bookmark> getBookmarks() {
+        return bookmarks;
     }
 
     @Transient
@@ -49,11 +53,6 @@ public class Book {
     @Transient
     public List<Chapter> getChapters() {
         return chapters;
-    }
-
-    @Transient
-    public Collection<Bookmark> getBookmarks() {
-        return bookmarks;
     }
 
     @Transient
