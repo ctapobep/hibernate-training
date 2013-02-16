@@ -14,12 +14,10 @@ import java.util.List;
 public class Book {
     private long id;
     private String title;
-    private List<Comment> comments = new ArrayList<>();
     private List<Author> authors = new ArrayList<>();//uni-bag
     private Collection<Bookmark> bookmarks = new ArrayList<>();//bidi-bag
     private Collection<Appendix> appendixes = new ArrayList<>();//bidi-bag: MTO with joined table
     private Collection<Reviewer> reviewers = new ArrayList<>();//bidi-bag: MTM
-    private List<Chapter> chapters = new ArrayList<>();
 
     @Id
     @GeneratedValue
@@ -48,19 +46,14 @@ public class Book {
         return appendixes;
     }
 
-    @Transient
+    @ManyToMany
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @JoinTable(name = "book_reviewer",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "reviewer_id"),
+            uniqueConstraints = @UniqueConstraint(name = "book_reviewer_uk", columnNames = {"book_id", "reviewer_id"}))
     public Collection<Reviewer> getReviewers() {
         return reviewers;
-    }
-
-    @Transient
-    public List<Chapter> getChapters() {
-        return chapters;
-    }
-
-    @Transient
-    public List<Comment> getComments() {
-        return comments;
     }
 
     public String getTitle() {
@@ -79,20 +72,12 @@ public class Book {
         this.appendixes = appendixes;
     }
 
-    public void setChapters(List<Chapter> chapters) {
-        this.chapters = chapters;
-    }
-
     public void setBookmarks(Collection<Bookmark> bookmarks) {
         this.bookmarks = bookmarks;
     }
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
     }
 
     public void setAuthors(List<Author> authors) {
@@ -102,12 +87,6 @@ public class Book {
     public Book addBookmark(Bookmark bookmark) {
         bookmarks.add(bookmark);
         bookmark.setBook(this);
-        return this;
-    }
-
-    public Book addChapter(Chapter chapter) {
-        chapters.add(chapter);
-        chapter.setBook(this);
         return this;
     }
 
