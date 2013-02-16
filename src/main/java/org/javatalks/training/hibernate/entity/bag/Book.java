@@ -65,7 +65,9 @@ public class Book {
         return chapters;
     }
 
-    @Transient
+    @OneToMany(cascade = CascadeType.ALL)
+    @IndexColumn(name = "comment_order")
+    @ForeignKey(name = "comment_book_fk")
     public List<Comment> getComments() {
         return comments;
     }
