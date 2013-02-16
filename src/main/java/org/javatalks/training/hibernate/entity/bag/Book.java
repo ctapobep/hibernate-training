@@ -48,7 +48,12 @@ public class Book {
         return appendixes;
     }
 
-    @Transient
+    @ManyToMany
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @JoinTable(name = "book_reviewer",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "reviewer_id"),
+            uniqueConstraints = @UniqueConstraint(name = "book_reviewer_uk", columnNames = {"book_id", "reviewer_id"}))
     public Collection<Reviewer> getReviewers() {
         return reviewers;
     }
