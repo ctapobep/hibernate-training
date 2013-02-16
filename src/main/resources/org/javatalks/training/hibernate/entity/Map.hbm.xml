@@ -10,7 +10,7 @@
     <property name="libraryName"/>
     <map name="tables" cascade="save-update">
       <key column="equipment_id"/>
-      <map-key type="java.lang.String" column="table_number"/>
+      <map-key type="java.lang.String" column="number"/>
       <one-to-many class="Table"/>
     </map>
 

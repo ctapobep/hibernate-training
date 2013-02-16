@@ -24,7 +24,7 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
 class MapTest {
     @Test
     void "mapping primitive-to-entity (effectively OTM)"() {
-        Table table = new Table(number: "table1")
+        Table table = new Table(number: "t1")
         Equipment equipment = new Equipment(libraryName: "lib-name")
         equipment.tables.put("t1", table)
         dao.save(equipment).flushAndClearSession()
