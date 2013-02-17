@@ -4,9 +4,9 @@
   <!--import this context from the main one if you want to use annotation-based Hibernate mapping-->
   <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
     <property name="dataSource" ref="dataSource"/>
-    <property name="annotatedClasses">
+    <property name="annotatedPackages">
       <list>
-        <value>org.javatalks.training.hibernate.entity.Book</value>
+        <value>org.javatalks.training.hibernate.entity</value>
       </list>
     </property>
     <!--all the properties are defined in the main context, we're just referencing them from here-->
