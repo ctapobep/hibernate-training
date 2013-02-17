@@ -14,7 +14,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** @author stanislav bashkirtsev */
+/**
+ * Problems of Spring Jdbc: <ul> <li>Manual cascading to associations</li> <li>Checking constraints like not-null</li>
+ * <li>Load or not to load associations?</li> </ul>
+ *
+ * @author stanislav bashkirtsev
+ */
 public class BookSpringJdbcDao implements Crud<Book> {
     public BookSpringJdbcDao(JdbcTemplate jdbcTemplate) {
         this.jdbc = jdbcTemplate;
