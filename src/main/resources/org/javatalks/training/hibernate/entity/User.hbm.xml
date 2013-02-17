@@ -4,8 +4,13 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="org.javatalks.training.hibernate.entity">
   <class name="User" table="users">
-    <id name="id">
+    <id name="id" unsaved-value="null">
       <generator class="native"/>
     </id>
+    <property name="username"/>
+    <property name="biography"/>
+    <property name="avatar"/>
+    <property name="birthday"/>
+    <property name="age"/>
   </class>
 </hibernate-mapping>

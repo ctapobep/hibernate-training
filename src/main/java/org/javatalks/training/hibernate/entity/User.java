@@ -1,6 +1,8 @@
 package org.javatalks.training.hibernate.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 
@@ -15,6 +17,8 @@ public class User {
     private byte[] avatar;
     private int age;
 
+    @Id
+    @GeneratedValue
     public Long getId() {
         return id;
     }
