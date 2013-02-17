@@ -27,8 +27,6 @@ class BookMybatisDaoTest {
         assertReflectionEquals(expected, sut.get(expected.id))
     }
 
-
-
     @Test
     void "inserting collection should generate IDs for each of them"() {
         List<Book> books = [new Book(title: "title1"), new Book(title: "title2")]
@@ -96,8 +94,6 @@ class BookMybatisDaoTest {
         return user
     }
 
-    @Autowired
-    private BookMybatisDao sut;
-    @Autowired
-    private UserMapper userMapper;
+    @Autowired BookMybatisDao sut;
+    @Autowired UserMapper userMapper;
 }
