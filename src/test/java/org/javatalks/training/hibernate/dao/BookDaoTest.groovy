@@ -4,7 +4,6 @@ import org.hibernate.LockOptions
 import org.hibernate.ObjectDeletedException
 import org.hibernate.ObjectNotFoundException
 import org.javatalks.training.hibernate.entity.Book
-import org.junit.BeforeClass
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
