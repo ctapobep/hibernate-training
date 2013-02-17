@@ -1,6 +1,5 @@
 package org.javatalks.training.hibernate.springdao;
 
-import org.javatalks.training.hibernate.Crud;
 import org.javatalks.training.hibernate.entity.Book;
 import org.javatalks.training.hibernate.entity.Library;
 import org.javatalks.training.hibernate.entity.User;
