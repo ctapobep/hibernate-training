@@ -23,7 +23,7 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
 @ContextConfiguration("/org/javatalks/training/hibernate/appContext.xml")
 @TransactionConfiguration
 @Transactional
-class BookDaoTest {
+class EntityLifecycleTest {
 
     @Test
     void "save() sets the ID since generator=native is used"() {
