@@ -15,7 +15,7 @@ public class BookDao implements Crud<Book> {
         session().save(entity);
     }
 
-    public void saveOrUpdate(Book entity){
+    public void saveOrUpdate(Book entity) {
         session().saveOrUpdate(entity);
     }
 
@@ -33,7 +33,7 @@ public class BookDao implements Crud<Book> {
         return (Book) session().load(Book.class, id);
     }
 
-    public Book merge(Book toBeMergedAndThrownAway){
+    public Book merge(Book toBeMergedAndThrownAway) {
         return (Book) session().merge(toBeMergedAndThrownAway);
     }
 
@@ -42,12 +42,13 @@ public class BookDao implements Crud<Book> {
         session().delete(entity);
     }
 
-    public long count(){
+    public long count() {
         return (long) session().createQuery("select count(*) from Book").uniqueResult();
     }
 
     /**
      * This method will be handy for both this class and its test.
+     *
      * @return the session currently associated with the tread
      */
     Session session() {

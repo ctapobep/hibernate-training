@@ -205,7 +205,7 @@ class BookDaoTest {
      * Flushes session and evicts the specified entity from it. Flush is actually very important: if we use sequences,
      * the object might not been inserted yet, evicting it without flushing will result in object being never inserted.
      *
-     * @param entity an entity to be removed from first level cache
+     * @param entity an entity to be removed from first level cache thus becomes detached
      */
     private void evict(Object entity) {
         sut.session().flush()
