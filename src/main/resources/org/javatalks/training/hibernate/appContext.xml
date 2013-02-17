@@ -39,7 +39,7 @@
     <property name="validateExistingTransaction" value="true"/>
   </bean>
 
-  <bean id="userDao" class="org.javatalks.training.hibernate.dao.UserDao">
+  <bean id="userDao" class="org.javatalks.training.hibernate.dao.BookDao">
     <constructor-arg index="0" ref="sessionFactory"/>
   </bean>
   <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">

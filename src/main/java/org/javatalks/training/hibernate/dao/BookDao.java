@@ -1,18 +1,18 @@
 package org.javatalks.training.hibernate.dao;
 
 import org.hibernate.SessionFactory;
-import org.javatalks.training.hibernate.entity.User;
+import org.javatalks.training.hibernate.entity.Book;
 
 import java.util.List;
 
 /** @author stanislav bashkirtsev */
-public class BookDao extends CrudDao<User> {
+public class BookDao extends CrudDao<Book> {
     public BookDao(SessionFactory sessionFactory) {
-        super(sessionFactory, User.class);
+        super(sessionFactory, Book.class);
     }
 
 
-    public List<User> all(){
-        return (List<User>) session().createQuery("from User").list();
+    public List<Book> all(){
+        return (List<Book>) session().createQuery("from Book").list();
     }
 }
