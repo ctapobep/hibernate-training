@@ -12,6 +12,7 @@
       strategy.-->
       <generator class="native"/>
     </id>
+
     <property name="title"/>
   </class>
 </hibernate-mapping>
