@@ -3,10 +3,7 @@ package org.javatalks.training.hibernate.entity;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +27,7 @@ public class Library {
     }
 
     @OneToMany(mappedBy = "library")
+    @OrderColumn(name = "owner_order")
     public List<LibraryOwner> getOwners() {
         return owners;
     }

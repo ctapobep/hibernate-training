@@ -15,7 +15,7 @@
     </list>
 
     <list name="owners" inverse="true">
-      <key column="library_id" foreign-key="owner_library_id"/>
+      <key column="library_id" foreign-key="owner_library_fk"/>
       <list-index column="owner_order"/>
       <one-to-many class="LibraryOwner"/>
     </list>
