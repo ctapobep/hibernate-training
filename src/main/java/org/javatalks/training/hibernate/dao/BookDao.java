@@ -6,8 +6,8 @@ import org.javatalks.training.hibernate.entity.User;
 import java.util.List;
 
 /** @author stanislav bashkirtsev */
-public class UserDao extends CrudDao<User> {
-    public UserDao(SessionFactory sessionFactory) {
+public class BookDao extends CrudDao<User> {
+    public BookDao(SessionFactory sessionFactory) {
         super(sessionFactory, User.class);
     }
 
