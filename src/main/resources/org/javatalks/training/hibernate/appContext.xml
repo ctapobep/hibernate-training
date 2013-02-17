@@ -38,7 +38,7 @@
     <property name="validateExistingTransaction" value="true"/>
   </bean>
 
-  <bean id="bookDao" class="org.javatalks.training.hibernate.dao.BookDao">
+  <bean id="userDao" class="org.javatalks.training.hibernate.dao.UserDao">
     <constructor-arg index="0" ref="sessionFactory"/>
   </bean>
 
