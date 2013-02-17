@@ -1,6 +1,11 @@
 package org.javatalks.training.hibernate.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /** @author stanislav bashkirtsev */
+@Entity
+@Table(name = "personnel")
 public class Personnel extends User {
     private String position;
 

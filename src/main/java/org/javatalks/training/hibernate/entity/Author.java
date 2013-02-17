@@ -1,7 +1,12 @@
 package org.javatalks.training.hibernate.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /** @author stanislav bashkirtsev */
-public class Author extends User{
+@Entity
+@Table(name = "author")
+public class Author extends User {
     private int rating;
 
     public int getRating() {
