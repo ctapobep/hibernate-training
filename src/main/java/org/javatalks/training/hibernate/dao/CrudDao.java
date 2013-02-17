@@ -2,6 +2,7 @@ package org.javatalks.training.hibernate.dao;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.StatelessSession;
 
 import java.util.List;
 
@@ -77,6 +78,10 @@ public class CrudDao<T> implements Crud<T> {
      */
     protected Session session() {
         return sessionFactory.getCurrentSession();
+    }
+
+    protected StatelessSession statelessSession(){
+        return sessionFactory.openStatelessSession();
     }
 
     private final SessionFactory sessionFactory;
