@@ -6,7 +6,7 @@
  * @author stanislav bashkirtsev
  */
 def branches = [
-        "master", "m1.jdbc", "m1.springjdbc.ch1", "m1.springjdbc.ch2", "m1.mybatis",
+        "master", "m1.jdbc", "m1.springjdbc.ch1", "m1.springjdbc.ch2", "m1.mybatis", "m2.properties",
         "m2.entitylifecycle", "m2.ids", "m3.associations.components", "m3.associations.oto",
         "m3.associations.collections", "m4.fetching", "m4.bulk", "m5.inheritance", "m5.queries"]
 
