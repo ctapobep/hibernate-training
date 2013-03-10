@@ -32,6 +32,9 @@ class EntityLifecycleTest {
         assert book.id != null
     }
 
+    //*******************
+    //***SESSION CACHE***
+    //*******************
     @Test
     void "get() returns same reference to object that was stored because it's taken from session-level cache"() {
         Book saved = new Book(title: "I need to be stored and retrieved from session level cache!")
@@ -60,12 +63,9 @@ class EntityLifecycleTest {
         assertReflectionEquals(saved, loadedAgainFromDb) // but the same values
     }
 
-    @Test(expected = ObjectNotFoundException.class)
-    void "load() will throw if there is no such record in DB when we initialize the proxy"() {
-        Book book = sut.load(-1L)
-        book.title
-    }
-
+    // **********
+    // ***LOAD***
+    // **********
     @Test
     void "load() should create a proxy instead of retrieving object from DB"() {
         Book saved = new Book(title: "Soon I'll be a proxy")
@@ -101,6 +101,15 @@ class EntityLifecycleTest {
         assert proxyOfBook.handler.target.title == "Soon I'll be a proxy" //each proxy has a Handler which knows how to load lazy objects
     }
 
+    @Test(expected = ObjectNotFoundException.class)
+    void "load() will throw if there is no such record in DB when we initialize the proxy"() {
+        Book book = sut.load(-1L)
+        book.title
+    }
+
+    // ************
+    // ***UPDATE***
+    // ************
     @Test
     void "update() is not necessary for Hibernate to update the state of changed object"() {
         Book saved = new Book(title: "I'm going to be stored!")
@@ -113,6 +122,9 @@ class EntityLifecycleTest {
         assert sut.get(saved.id).title == "I'm going to be stored even though save() was not invoked"
     }
 
+    // ***********
+    // ***MERGE***
+    // ***********
     @Test
     void "merge() is saving if object was transient"() {
         Book toBeMerged = new Book(title: "I'm going to be stored!")
