@@ -76,6 +76,30 @@ class EmbeddedObjectAkaComponentTest {
     }
 
     @Test
+    void "bidi-components can reference parent"(){
+        Book book = new Book(cover: new BookCover(hard: true))
+        bookDao.save(book).session().flush()
+        bookDao.session().clear()
+
+        Book fromDb = bookDao.get(book.id)
+        assert fromDb.is(fromDb.cover.book)
+    }
+
+    @Test
+    void "bidi-components cannot reference parent if they were loaded alone"(){
+        Book book = new Book(cover: new BookCover(hard: true, color: "blue"))
+        bookDao.save(book).session().flush()
+        bookDao.session().clear()
+
+        Query query = bookDao.session().createQuery("select b.cover from Book b where id = :bookId")//sadly you can't select component collection like this, the only way - using joins
+        query.setLong("bookId", book.id)
+        BookCover coverFromDb = query.uniqueResult() as BookCover
+
+        assertReflectionEquals(book.cover, coverFromDb)
+        assert coverFromDb.book == null
+    }
+
+    @Test
     void "list of embedded objects (components) should be stored in a separate table without primary key"() {
         Book book = new Book(title: "Yet another book", chapters: chapters())
         bookDao.save(book)
@@ -140,30 +164,6 @@ class EmbeddedObjectAkaComponentTest {
             assert mapping == "annotations"
             println "Annotations do not support dynamic components"
         }
-    }
-
-    @Test
-    void "bidi-components can reference parent"(){
-        Book book = new Book(cover: new BookCover(hard: true))
-        bookDao.save(book).session().flush()
-        bookDao.session().clear()
-
-        Book fromDb = bookDao.get(book.id)
-        assert fromDb.is(fromDb.cover.book)
-    }
-
-    @Test
-    void "bidi-components cannot reference parent if they were loaded alone"(){
-        Book book = new Book(cover: new BookCover(hard: true, color: "blue"))
-        bookDao.save(book).session().flush()
-        bookDao.session().clear()
-
-        Query query = bookDao.session().createQuery("select b.cover from Book b where id = :bookId")//sadly you can't select component collection like this, the only way - using joins
-        query.setLong("bookId", book.id)
-        BookCover coverFromDb = query.uniqueResult() as BookCover
-
-        assertReflectionEquals(book.cover, coverFromDb)
-        assert coverFromDb.book == null
     }
 
     private static Collection<Chapter> chapters() {
