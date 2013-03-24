@@ -30,6 +30,7 @@ public class Book {
     @ElementCollection
     @CollectionTable(name = "chapter", joinColumns = @JoinColumn(name = "book_id"))
     @ForeignKey(name = "chapter_book_fk")
+    @OrderColumn(name = "order_in_book")
     public List<Chapter> getChapters() {
         return chapters;
     }

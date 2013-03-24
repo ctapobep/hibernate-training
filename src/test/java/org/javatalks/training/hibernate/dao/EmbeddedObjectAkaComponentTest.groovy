@@ -63,10 +63,9 @@ class EmbeddedObjectAkaComponentTest {
     void "empty string can be treated as null by some DBs thus component still might be null"() {
         Book book = new Book(title: "Yet another book", cover: new BookCover(color: ""))
         bookDao.save(book).session().flush()
-        bookDao.get(book.id)
+        bookDao.session().clear()
 
         Book fromDb = bookDao.get(book.id)
-        bookDao.session().clear()
         try {
             assert fromDb.cover != null
             println "Hello, normal databases!"
