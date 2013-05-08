@@ -74,8 +74,7 @@ class OneToOneTest {
 
         User fromDb = userDao.get(user.id)
         userDao.session().clear()
-
-        assertReflectionEquals(user, fromDb)
+        fromDb.accessCard.code//throws
     }
 
     @Test(expected = LazyInitializationException.class)
