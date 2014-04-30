@@ -26,7 +26,7 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
 class ListTest {
 
     @Test
-    void "List demonstration"(){
+    void "List demonstration"() {
         List<Comment> comments = [new Comment(body: "comment1"), new Comment(body: "comment2")]
         Book original = new Book(title: "with comments", comments: comments)
         bookDao.save(original).flushAndClearSession()
@@ -50,5 +50,18 @@ class ListTest {
         }
     }
 
-    @Autowired BookDao bookDao;
+    @Test
+    void 'when merging, if collections differ, elements are removed from managed entity'() {
+        List<Comment> comments = [new Comment(body: "comment1"), new Comment(body: "comment2")]
+        Book original = new Book(title: "with comments", comments: comments)
+        bookDao.save(original).flushAndClearSession()
+
+        //merging a book with the same ID but with different number of comments
+        Book merged = bookDao.merge(new Book(id: original.id, title: 'after merge', comments: [comments[0]]))
+        assert merged.id == original.id
+        assert merged.comments.size() == original.comments.size() - 1
+    }
+
+    @Autowired
+    BookDao bookDao;
 }
