@@ -63,14 +63,35 @@ class ListTest {
     }
 
 
-    @Test(expected = HibernateException)
-    void 'when merging, if collection brand new & owner is removed, exception thrown'() {
+    @Test
+    void 'when updating, if orphan collection is dereferenced, exception thrown'() {
         List<Comment> comments = [new Comment(body: "comment1"), new Comment(body: "comment2")]
         Book original = new Book(title: "with comments", comments: comments)
         bookDao.save(original).flushSession()
 
-        original.comments = [new Comment(body: 'new')]//it's not allowed to replace collection with cascade=orphan
-        bookDao.saveOrUpdate(original).flushSession()
+        try {
+            original.comments = [new Comment(body: 'new')]//it's not allowed to replace collection with cascade=orphan
+            bookDao.saveOrUpdate(original).flushSession()
+            assert false
+        } catch (HibernateException e) {
+            assert e.message.startsWith('A collection with cascade="all-delete-orphan" was no longer referenced by the owning entity instance')
+        }
+    }
+
+    @Test
+    void 'when merging, if new collection is null, exception thrown'() {
+        List<Comment> comments = [new Comment(body: "a"), new Comment(body: "b")]
+        Book original = new Book(title: "with comments", comments: comments)
+        bookDao.save(original).flushAndClearSession()
+        bookDao.load(original.id).comments
+
+        try {
+            bookDao.merge(new Book(id: original.id, comments: null))//A collection with cascade="all-delete-orphan" was no longer referenced by the owning entity instance
+            bookDao.flushAndClearSession()
+            assert false
+        } catch (Exception e) {
+            assert e.message.startsWith('A collection with cascade="all-delete-orphan" was no longer referenced by the owning entity instance')
+        }
     }
 
     @Autowired
