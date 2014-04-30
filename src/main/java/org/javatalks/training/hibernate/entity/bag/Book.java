@@ -1,10 +1,11 @@
 package org.javatalks.training.hibernate.entity.bag;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.ForeignKey;
-import org.hibernate.annotations.IndexColumn;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -65,7 +66,7 @@ public class Book {
         return chapters;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
     @IndexColumn(name = "comment_order")
     @ForeignKey(name = "comment_book_fk")
     public List<Comment> getComments() {

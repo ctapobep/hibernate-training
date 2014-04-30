@@ -62,6 +62,17 @@ class ListTest {
         assert merged.comments.size() == original.comments.size() - 1
     }
 
+
+    @Test(expected = HibernateException)
+    void 'when merging, if collection brand new & owner is removed, exception thrown'() {
+        List<Comment> comments = [new Comment(body: "comment1"), new Comment(body: "comment2")]
+        Book original = new Book(title: "with comments", comments: comments)
+        bookDao.save(original).flushSession()
+
+        original.comments = [new Comment(body: 'new')]//it's not allowed to replace collection with cascade=orphan
+        bookDao.saveOrUpdate(original).flushSession()
+    }
+
     @Autowired
     BookDao bookDao;
 }

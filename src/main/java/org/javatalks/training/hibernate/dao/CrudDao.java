@@ -44,8 +44,9 @@ public class CrudDao<T> implements Crud<T> {
         return (T) session().merge(toBeMergedAndThrownAway);
     }
 
-    public void saveOrUpdate(T entity) {
+    public CrudDao<T> saveOrUpdate(T entity) {
         session().saveOrUpdate(entity);
+        return this;
     }
 
     @Override
