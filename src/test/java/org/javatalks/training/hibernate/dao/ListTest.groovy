@@ -83,13 +83,12 @@ class ListTest {
         List<Comment> comments = [new Comment(body: "a"), new Comment(body: "b")]
         Book original = new Book(title: "with comments", comments: comments)
         bookDao.save(original).flushAndClearSession()
-        bookDao.load(original.id).comments
 
         try {
-            bookDao.merge(new Book(id: original.id, comments: null))//A collection with cascade="all-delete-orphan" was no longer referenced by the owning entity instance
-            bookDao.flushAndClearSession()
+            bookDao.merge(new Book(id: original.id, comments: null))//exception only due to null
+            bookDao.flushSession()
             assert false
-        } catch (Exception e) {
+        } catch (HibernateException e) {
             assert e.message.startsWith('A collection with cascade="all-delete-orphan" was no longer referenced by the owning entity instance')
         }
     }
