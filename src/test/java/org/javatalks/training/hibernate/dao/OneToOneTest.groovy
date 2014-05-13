@@ -46,6 +46,10 @@ class OneToOneTest {
      * Hibernate can't know whether there is an associated card or it's just null. In order to figure that out,
      * Hibernate would need to issue additional query which doesn't actually differ much from retrieving the whole
      * association, that's why in this case we don't have laziness.
+     *
+     * JPA: note, that classical hbm.xml differs from annotations (at least on 4.1.7.Final version of Hibernate) because
+     * even in {@link javax.persistence.OneToOne} case Hibernate will generate a column {@code secondary_table_id} which
+     * allows lazy loading (though by default it's eager) simply by saying {@code fetch = FetchType.LAZY}
      */
     @Test
     void "OTO with shared PK cannot be lazy"() {
