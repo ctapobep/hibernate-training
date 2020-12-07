@@ -5,6 +5,7 @@ import org.hibernate.annotations.*;
 import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,21 +31,18 @@ public class Book {
     }
 
     @OneToMany(cascade = javax.persistence.CascadeType.ALL)
-    @JoinColumn(name = "book_id", nullable = false)
-    @ForeignKey(name = "book_author_fk")
+    @JoinColumn(name = "book_id", nullable = false, foreignKey = @ForeignKey(name = "book_author_fk"))
     public List<Author> getAuthors() {
         return authors;
     }
 
     @OneToMany(orphanRemoval = true, mappedBy = "book",
             cascade = javax.persistence.CascadeType.ALL, targetEntity = Bookmark.class)
-    @ForeignKey(name = "book_bookmark_fk")
     public Collection<Bookmark> getBookmarks() {
         return bookmarks;
     }
 
     @OneToMany(mappedBy = "book")
-    @ForeignKey(name = "appendix_book_fk")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     public Collection<Appendix> getAppendixes() {
         return appendixes;
@@ -61,14 +59,14 @@ public class Book {
     }
 
     @OneToMany(orphanRemoval = true, mappedBy = "book", cascade = CascadeType.ALL)
-    @IndexColumn(name="chapter_order")
+    @OrderColumn(name="chapter_order")
     public List<Chapter> getChapters() {
         return chapters;
     }
 
     @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
-    @IndexColumn(name = "comment_order")
-    @ForeignKey(name = "comment_book_fk")
+    @JoinColumn(name = "comment", foreignKey = @ForeignKey(name = "comment_book_fk"))
+    @OrderColumn(name = "comment_order")
     public List<Comment> getComments() {
         return comments;
     }

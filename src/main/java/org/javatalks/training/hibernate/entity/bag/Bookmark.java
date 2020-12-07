@@ -26,6 +26,7 @@ public class Bookmark {
     }
 
     @ManyToOne(optional = false)
+    @JoinColumn(name = "book_id", foreignKey = @ForeignKey(name = "book_bookmark_fk"))
     public Book getBook() {
         return book;
     }

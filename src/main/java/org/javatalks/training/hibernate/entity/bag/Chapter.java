@@ -1,8 +1,5 @@
 package org.javatalks.training.hibernate.entity.bag;
 
-import liquibase.statement.ForeignKeyConstraint;
-import org.hibernate.annotations.ForeignKey;
-
 import javax.persistence.*;
 
 /** @author stanislav bashkirtsev */
@@ -20,7 +17,7 @@ public class Chapter {
     }
 
     @ManyToOne(optional = false)
-    @ForeignKey(name = "book_id")
+    @JoinColumn(name = "book_id", foreignKey = @ForeignKey(name = "book_id_fk"))
     public Book getBook() {
         return book;
     }

@@ -9,11 +9,10 @@ import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
-import org.springframework.test.context.transaction.TransactionConfiguration
 import org.springframework.transaction.annotation.Transactional
 
-import static org.junit.Assert.assertTrue
-import static org.junit.Assert.fail
+import javax.persistence.PersistenceException
+
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals
 
 /**
@@ -21,7 +20,6 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/org/javatalks/training/hibernate/appContext.xml")
-@TransactionConfiguration
 @Transactional
 class ListTest {
 
@@ -33,21 +31,6 @@ class ListTest {
 
         Book fromDb = bookDao.get(original.id)
         assertReflectionEquals(fromDb, original)
-    }
-
-    @Test
-    void "inverse=true cannot be applied to lists because from 'one' side there is no knowledge about list index"() {
-        Book book = new Book(title: "with chapter")
-        book.addChapter(new Chapter(name: "ch1"))
-        bookDao.save(book).flushAndClearSession()
-
-        book = bookDao.get(book.id)
-        try {
-            book.chapters.size()// here we get an exception
-            fail("Exception should have been thrown")
-        } catch (HibernateException e) {
-            assertTrue(e.getMessage().contains("null index column for collection"))
-        }
     }
 
     @Test
@@ -73,8 +56,8 @@ class ListTest {
             original.comments = [new Comment(body: 'new')]//it's not allowed to replace collection with cascade=orphan
             bookDao.saveOrUpdate(original).flushSession()
             assert false
-        } catch (HibernateException e) {
-            assert e.message.startsWith('A collection with cascade="all-delete-orphan" was no longer referenced by the owning entity instance')
+        } catch (PersistenceException e) {
+            assert e.message.startsWith('org.hibernate.HibernateException: A collection with cascade="all-delete-orphan" was no longer referenced by the owning entity instance')
         }
     }
 
@@ -88,8 +71,8 @@ class ListTest {
             bookDao.merge(new Book(id: original.id, comments: null))//exception only due to null
             bookDao.flushSession()
             assert false
-        } catch (HibernateException e) {
-            assert e.message.startsWith('A collection with cascade="all-delete-orphan" was no longer referenced by the owning entity instance')
+        } catch (PersistenceException e) {
+            assert e.message.startsWith('org.hibernate.HibernateException: A collection with cascade="all-delete-orphan" was no longer referenced by the owning entity instance')
         }
     }
 

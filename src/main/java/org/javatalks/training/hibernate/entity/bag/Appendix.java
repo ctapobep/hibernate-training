@@ -20,7 +20,8 @@ public class Appendix {
     @JoinTable(name = "book_appendix",
             joinColumns = @JoinColumn(name = "appendix_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id"),
-            uniqueConstraints = @UniqueConstraint(name = "appendix_uk", columnNames = "appendix_id"))
+            uniqueConstraints = @UniqueConstraint(name = "appendix_uk", columnNames = "appendix_id"),
+            foreignKey = @ForeignKey(name = "appendix_book_fk"))
     public Book getBook() {
         return book;
     }
