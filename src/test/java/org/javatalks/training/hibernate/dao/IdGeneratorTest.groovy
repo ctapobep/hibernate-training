@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
-import org.springframework.test.context.transaction.TransactionConfiguration
 import org.springframework.transaction.annotation.Transactional
 
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals
@@ -22,7 +21,6 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/org/javatalks/training/hibernate/appContext.xml")
-@TransactionConfiguration
 @Transactional
 class IdGeneratorTest {
     @Test
@@ -30,9 +28,9 @@ class IdGeneratorTest {
         Book book = new Book(title: "I'm inserted right away on save()")
         bookDao.save(book)
         if (isIdentityGenerator()) {
-            assert book.id == jdbc.queryForLong("select id from book where title = ?", "I'm inserted right away on save()")
+            assert book.id == jdbc.queryForObject("select id from book where title = ?", Long.class, book.title)
         } else if (isPostgres()) {
-            assert book.id == jdbc.queryForLong("select lastval()")
+            assert book.id == jdbc.queryForObject("select lastval()", Long.class)
         } else {
             assert false, "Database was not recognized to determine its native generator"
         }
